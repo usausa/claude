@@ -20,7 +20,7 @@ Program.cs → Application (組み立て/DI)
 | Application | 起動の組み立てを Program から切り出す拡張群、共通ヘルパー |
 | Worker | `BackgroundService`。実行ループ・スケジュールだけを持ち、実処理は Usecase へ委譲 |
 | Usecase | 一連の流れ (取得→処理→保存 等)。ステートレス |
-| Service | DB/ファイル/外部通信のプリミティブ。`IOptions<Setting>` で設定注入、DI |
+| Service | DB/ファイル/外部通信のプリミティブ。DI 登録。設定は注入で受ける (注入形は要件で選定) |
 | Models / Domain | POCO / 純粋ロジック |
 
 ## 🔄 実行モデル
@@ -38,12 +38,13 @@ Program.cs → Application (組み立て/DI)
 - 周期ジョブは開始・終了・処理件数を INFO で対にして残す (無音で動く常駐の可観測性)。
 
 ## 💾 データの具体 ([common/data.md](common/data.md) の実装)
-- EF Core / Micro-ORM 等 (用途で選定)。接続文字列は `appsettings` + `IOptions` / 環境変数。
+- ORM / データアクセス方式は用途で選定 ([common/data.md](common/data.md))。接続文字列は `appsettings` / 環境変数。
 
 ## 🔐 セキュリティの具体 ([common/security.md](common/security.md) の実装)
 - 実行アカウントは最小権限 (専用アカウント / gMSA、コンテナは非 root)。
 - 秘匿値は環境変数 / user-secrets / Key Vault 等 (平文の `appsettings` に置かない)。
 
 ## 📦 ホスティング / 配置
-- Windows Service (`UseWindowsService()`) / systemd (`UseSystemd()`) / コンテナのいずれか。要件で選定し `/adr` に残す。
+- Windows Service (`builder.Services.AddWindowsService()`) / systemd (`AddSystemd()`) / コンテナのいずれか。要件で選定し `/adr` に残す。
+  - `HostApplicationBuilder` (`Host.CreateApplicationBuilder`) では `IServiceCollection` 側の `AddXxx` を使う (`UseWindowsService()` / `UseSystemd()` は旧 `IHostBuilder` 用)。パッケージは `Microsoft.Extensions.Hosting.WindowsServices` / `.Systemd`。
 - 停止要求 (SCM / SIGTERM) の猶予時間内に終える graceful shutdown を実装する。

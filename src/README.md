@@ -9,8 +9,9 @@
 src/
   <App>/                    Web アプリ本体 (Blazor Server + minimal API)  [Microsoft.NET.Sdk.Web]
   <App>.AppHost/            .NET Aspire AppHost (オーケストレーション)       [Aspire.AppHost.Sdk]
-  <App>.ServiceDefaults/    Aspire ServiceDefaults (OpenTelemetry / health / resilience / service discovery)
 ```
+
+- **ServiceDefaults プロジェクトは作らない**。OpenTelemetry / ヘルスチェック / resilience / service discovery の共通設定は、**Web アプリ本体 (共有インフラプロジェクトがあればそちら) の `Application/` に拡張メソッドとして取り込む**。
 
 ## 想定構成 (MAUI の場合)
 

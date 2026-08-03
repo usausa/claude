@@ -19,4 +19,8 @@
   - **setup は単一排他 enum**: `-Sdd lite|full|full-pm`(既定 full)。`-PM` スイッチと lite+PM の実行時 throw を撤去(無効な組み合わせを構文的に表現不能へ)。
   - **機構**: base 本文に lite をインラインし `<!-- sdd:xxx:start/end -->` ブロックで囲む。lite=マーカー行のみ除去 / full=`.setup/sdd/xxx-full.md` でブロック置換 + `.setup/sdd/full/`(ミラーツリー)のファイル加算(spec・spec-close・done・workflow・work は上書き、trace・docs/spec・traceability は追加)。PM は従来どおり `.setup/pm/` 挿入 + 非採用時削除。経緯は [refactor-lite-base.md](refactor-lite-base.md)、最終形は [command-map.md](command-map.md)。
 - **deny 領域の保守手順(2026-07)**: `docs/reference/**` の deny に保護されたファイルを保守で修正する必要があるときは、`settings.json` の deny を**一時解除 → 修正 → 即復元**する(差分で監査可能)。生成物ガードとしての deny は恒久維持。
+- **データアクセスは EF Core を既定にしない(2026-08)**: ORM / データアクセス方式は用途で選定する(Micro-ORM・生 SQL も対等な選択肢)。原則の正は `common/data.md` に 1 行で置き、形態別 doc(`web.md` / `worker.md`)の「データの具体」はそこを参照する(形態ごとに ORM 名を列挙しない)。選定は `/adr` に残す。
+- **ServiceDefaults プロジェクトを作らない(2026-08)**: Aspire の ServiceDefaults 相当(OpenTelemetry / ヘルスチェック / resilience / service discovery)は独立プロジェクトにせず、**Web アプリ本体(共有インフラプロジェクトがあればそちら)の `Application/` に拡張メソッドとして取り込む**。`AppHost` は残す。プロジェクト数を増やさず、既存の「組み立ては `Application/` へ」の層方針に一致させるため。
+- **ホスティング API は `HostApplicationBuilder` 系に追随(2026-08)**: Worker のホスティングは `builder.Services.AddWindowsService()` / `AddSystemd()` を正とする(`UseWindowsService()` / `UseSystemd()` は旧 `IHostBuilder` 用)。
+- **設定の注入形は明示しない(2026-08)**: `IOptions<Setting>` と設定実体のどちらを注入するかは要件次第。architecture doc では「設定は注入で受ける(注入形は要件で選定)」に留め、既定を決めない。
 - **文体**: ASCII / 括弧は半角、`§` 不使用、冗長・自明な括弧補足は書かない。ドキュメント・コメントは日本語。

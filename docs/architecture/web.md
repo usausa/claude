@@ -22,7 +22,7 @@ Program.cs → Application (組み立て/DI/ルート定数)
 | Application | 起動の組み立てを Program から切り出す拡張群、ルート定数 (`ApiRoutes`)、共通ヘルパー |
 | Endpoints | minimal API (採用時。詳細は [`api.md`](api.md)) |
 | Components | Blazor UI (採用時。詳細は [`blazor.md`](blazor.md)) |
-| Services | DB/ファイル/外部通信のプリミティブ。`IOptions<Setting>` で設定注入、DI |
+| Services | DB/ファイル/外部通信のプリミティブ。DI 登録。設定は注入で受ける (注入形は要件で選定) |
 | Models / Domain | POCO / 純粋ロジック |
 
 - Endpoints / Components は**採用するものだけ置く**(API のみ・Blazor のみの構成も可)。
@@ -31,7 +31,7 @@ Program.cs → Application (組み立て/DI/ルート定数)
 - Serilog: `AddSerilog(o => o.ReadFrom.Configuration(builder.Configuration))`。`LoggerMessage` source generator (`Log.cs`)。
 
 ## 💾 データの具体 ([common/data.md](common/data.md) の実装)
-- EF Core 等。接続文字列は `appsettings` + `IOptions` / `GetConnectionString()`。
+- ORM / データアクセス方式は用途で選定 ([common/data.md](common/data.md))。接続文字列は `appsettings` / 環境変数 (`GetConnectionString()`)。
 
 ## 🔐 セキュリティの具体 ([common/security.md](common/security.md) の実装 / サーバ側)
 - 認証・認可は ASP.NET Core Authentication/Authorization。エンドポイントに `RequireAuthorization()`。

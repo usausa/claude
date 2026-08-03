@@ -16,7 +16,6 @@
     プロジェクト配置後に以下のように登録する:
     <Project Path="src/App/App.csproj" />
     <Project Path="src/App.AppHost/App.AppHost.csproj" />
-    <Project Path="src/App.ServiceDefaults/App.ServiceDefaults.csproj" />
     <Project Path="tests/App.UnitTests/App.UnitTests.csproj" />
     <Project Path="tests/App.IntegrationTests/App.IntegrationTests.csproj" />
   -->

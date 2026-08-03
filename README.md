@@ -16,7 +16,7 @@
 3. `AGENTS.md` の「スタック」節を採用形態に記入。
 4. LINT / ビルド設定(`.editorconfig` / `Directory.Build.props` / `Analyzers.ruleset` / `Settings.XamlStyler`[MAUI])は**全形態の superset**。実プロジェクトのテンプレで置換してよい。
 5. ソースを配置(詳細 `src/README.md` / `tests/README.md`):
-   - **Web**: `src/<App>/`(Blazor / minimal API)+ Aspire(`AppHost` / `ServiceDefaults`)。テスト `UnitTests` / `IntegrationTests`。OpenAPI 有効化。
+   - **Web**: `src/<App>/`(Blazor / minimal API)+ Aspire(`AppHost`)。テスト `UnitTests` / `IntegrationTests`。OpenAPI 有効化。
    - **MAUI**: `src/<App>/`(MVVM)。テスト `UnitTests`(+ 任意 `UITests`)。
    - **Desktop**: `src/<App>/`(WPF、MVVM)。テスト `UnitTests`(+ 任意 `UITests`)。
    - **Worker**: `src/<App>/`(Worker Service、常駐)。テスト `UnitTests`(+ 任意 `IntegrationTests`)。
