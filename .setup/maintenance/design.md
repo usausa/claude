@@ -101,4 +101,6 @@ template-aidd/
 
 ## 🔗 3. 関連資料(ローカル)
 
-- `D:\Incubator\dotnet-mcp-skills-カタログ.md` — .NET 向け MCP / skill のカタログ(Aaronontheweb/dotnet-skills の個別評価は 2.4 節)。保守者のローカル参考資料(リポジトリ外)。
+> リポジトリ外の資料。**実在パスは環境依存**なのでここには書かない(絶対パスは環境間移動で腐る)。在り処は保守者のローカル memory 側に持つ。
+
+- `dotnet-mcp-skills-カタログ.md` — .NET 向け MCP / skill のカタログ(Aaronontheweb/dotnet-skills の個別評価は 2.4 節)。

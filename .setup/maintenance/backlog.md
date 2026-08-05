@@ -15,7 +15,7 @@
 - **winui.md の執筆** — setup の採用リストに登録済み。ファイル追加のみで対応可
 - **二重管理刈り込みの残項目** — doc-sync agent の役割整理 / README の `CLAUDE_CODE_USE_POWERSHELL_TOOL` 検証
 - **Aaronontheweb/dotnet-skills の扱い** — 次に蒸留する skill の選定と時期(slopwatch / Aspire 系 / EF Core 系 ほか)
-- **template-drafts の取り込み** — `D:\Incubator\template-drafts\` の規約ドラフト(feature-level に改稿済み)のレビュー・本体取り込み。ADR サンプル 4 本(microorm / valuetask-ct / singleton-asynclocal / realdb-test)は**サンプル扱いのまま保留**(採否未決)。枠 doc(grpc / aws-lambda / cli / generator)の深掘りは別途(深掘り元 = `D:\Project\KDH2` / `Actswin` / `D:\GitHubTemplate\*`)
+- **template-drafts の取り込み** — 別リポジトリ `template-drafts` の規約ドラフト(feature-level に改稿済み)のレビュー・本体取り込み。**進捗の正は `template-drafts/README.md` の取り込み状況欄**。ADR サンプル 4 本(microorm / valuetask-ct / singleton-asynclocal / realdb-test)は**サンプル扱いのまま保留**(採否未決)。枠 doc(grpc / aws-lambda / cli / generator)の深掘りは別途(深掘り元 = 実プロジェクト KDH2 / Actswin / GitHubTemplate。**環境により有無が異なる**)
 - **検討事項の運用の Issues 化** — 複数人・複数 AI 体制になったら、この backlog の起票・クローズを GitHub Issues に移す選択肢
 - **その他** — CPM(`Directory.Packages.props`)採用可否 / 旧参考資料の削除可否 / 汎用プロンプト集 / nested AGENTS.md / org での AGENTS.md 必須化
 
@@ -72,7 +72,7 @@
 
 ## 検討: Aaronontheweb/dotnet-skills の扱い
 
-- **現状**: 個別評価(33 skill + 5 agent)はローカル資料 `D:\Incubator\dotnet-mcp-skills-カタログ.md` の 2.4 に記載(2026-07 調査)。`playwright-blazor` は `blazor-playwright` として蒸留採用済み。導入方針(plugin 一括導入はせず cherry-pick + 日本語蒸留)は確定。
+- **現状**: 個別評価(33 skill + 5 agent)はローカル資料 `dotnet-mcp-skills-カタログ.md` の 2.4 に記載(2026-07 調査)。`playwright-blazor` は `blazor-playwright` として蒸留採用済み。導入方針(plugin 一括導入はせず cherry-pick + 日本語蒸留)は確定。
 - **未決: 次に蒸留する skill の選定と時期**: `slopwatch`(ハード強制と連動・hook / CI 部品として評価)/ `aspire-service-defaults`・`aspire-integration-testing`(Aspire 実装開始時)/ `efcore-patterns` + `database-performance`(EF Core 採用時)/ `dotnet-devcert-trust` / `package-management`(CPM 検討の先行資料)。
 - **導入しないと確定**: `project-structure`(テンプレが構造の正)・`docfx-specialist` agent(リファレンスサイトを作らない方針と衝突)。`csharp-coding-standards` は差分を conventions へ蒸留する形のみ。
 
