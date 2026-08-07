@@ -1,7 +1,7 @@
 ###############################################################################
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
-* text=auto
+* text=auto eol=crlf
 
 ###############################################################################
 # Set default behavior for command prompt diff.
@@ -61,15 +61,3 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
-
-###############################################################################
-# .editorconfig charset=utf-8/eol=crlf
-###############################################################################
-*.cs           text eol=crlf
-*.csproj       text eol=crlf
-*.props        text eol=crlf
-*.targets      text eol=crlf
-*.xaml         text eol=crlf
-*.razor        text eol=crlf
-*.slnx         text eol=crlf
-.editorconfig  text eol=crlf
