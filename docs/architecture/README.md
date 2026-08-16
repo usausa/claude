@@ -16,7 +16,7 @@
 | **アーキ固有 (Web)** | [`blazor.md`](blazor.md) | Blazor Server コンポーネント、UI/UX、UI 側セキュリティ |
 | **アーキ固有 (Worker)** | [`worker.md`](worker.md) | Worker Service: 実行モデル、graceful shutdown、ホスティング |
 | **プロジェクト方針 (編集可)** | [`conventions.md`](conventions.md) | analyzer で機械化できない、このPJ固有のコーディング / 設計方針 |
-| **.NET 共通** | [`common/`](common/) | coding-principles / async / errors / logging / data / security(全形態共通) |
+| **.NET 共通** | [`common/`](common/) | coding-principles / async / errors / logging / data / security / http-client(全形態共通) |
 
 - **命名原則**: 系名 (web / desktop / mvvm) = 系の全般、技術名 (api / blazor / wpf / winui) = 技術固有。
 - **form 固有 doc は採用形態のものだけ残す**: `setup.ps1 -Form maui|web|desktop|worker` が非採用の doc を削除する。この表の未採用行も削ってよい。系内の doc は全部残る (未使用の技術 doc は削ってよい)。

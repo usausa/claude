@@ -23,4 +23,5 @@
 - **ServiceDefaults プロジェクトを作らない(2026-08)**: Aspire の ServiceDefaults 相当(OpenTelemetry / ヘルスチェック / resilience / service discovery)は独立プロジェクトにせず、**Web アプリ本体(共有インフラプロジェクトがあればそちら)の `Application/` に拡張メソッドとして取り込む**。`AppHost` は残す。プロジェクト数を増やさず、既存の「組み立ては `Application/` へ」の層方針に一致させるため。
 - **ホスティング API は `HostApplicationBuilder` 系に追随(2026-08)**: Worker のホスティングは `builder.Services.AddWindowsService()` / `AddSystemd()` を正とする(`UseWindowsService()` / `UseSystemd()` は旧 `IHostBuilder` 用)。
 - **設定の注入形は明示しない(2026-08)**: `IOptions<Setting>` と設定実体のどちらを注入するかは要件次第。architecture doc では「設定は注入で受ける(注入形は要件で選定)」に留め、既定を決めない。
+- **特定スタックを既定にしない(2026-08)**: architecture doc にはライブラリ非依存の規律だけを置き、特定ライブラリ(Smart 系等)前提の記述は本体に持ち込まない(選定は「プロジェクトで選定し `/adr`」の中立方針を維持)。特定スタック前提の方針(全 Singleton・Micro-ORM 標準・素の `T` 注入等)もテンプレ既定にしない。CancellationToken 伝播は現行既定(下位まで伝播)を維持し、非伝播はプロジェクト決定として `/adr` に残す。
 - **文体**: ASCII / 括弧は半角、`§` 不使用、冗長・自明な括弧補足は書かない。ドキュメント・コメントは日本語。
