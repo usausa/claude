@@ -204,7 +204,7 @@ paths は初期案。移行時に実コードのフォルダ規約 (csharp-layer
 | 2 | rules 化: `.setup/rules/` カタログ新設・現 docs/architecture 全 17 本を移設改稿・AGENTS.md 参照張り替え | `refactor(context)` **済** (#3 と統合) |
 | 3 | setup.ps1 / test-setup.ps1 改修 (コピー方式) + 回帰 ALL PASS | **済** (#2 に統合。各コミットで ALL PASS を保つため) |
 | 4 | 作業フォルダ運用変更: `docs/work/` への移動・.gitignore・寿命クラス表更新・work-init / work-close skill・git-commit skill 拡張 (途中プッシュ)・中間コマンド改修・workflow.md | `feat(sdd)` |
-| 5 | ADR / rules 分担: ルール作製スキル新設・/adr ドラフト支援化 (tags / related・index 生成)・/spec /plan /review への ADR 参照追記・review-checklist に ADR 準拠観点・_template.md | `feat(adr)` |
+| 5 | ADR / rules 分担: rule-create skill 新設・/adr ドラフト支援化 (tags / related・index 生成)・/spec /plan /review への ADR 参照追記・review-checklist に ADR 準拠観点・_template.md | `feat(adr)` **済** |
 | 6 | drafts 取り込み再開 (logging から。新マッピング) | バッチ毎 |
 
 ## 10. 未決事項 (承認時に確認)

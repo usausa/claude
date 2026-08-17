@@ -3,6 +3,7 @@ id: ADR-0001
 title: アーキテクチャ上の決定を ADR として記録する
 status: accepted
 date: 2026-07-06
+tags: [sdd]
 related: []
 superseded-by:
 ---

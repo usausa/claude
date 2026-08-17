@@ -9,5 +9,6 @@ allowed-tools: Read, Grep, Glob, Write
 $ARGUMENTS
 
 - 出力先: `docs/spec/SPEC-NNNN-<title>.md`(採番は既存の最大 +1。様式はサブエージェント定義のとおり)
+- 起案時に `docs/adr/index.md` を確認し、関連する既存決定と矛盾する場合は SPEC に明記して人に確認する
 - 完了後、作成された SPEC-ID と未決事項を人に提示し、レビューと修正指示を求める(**承認まで実装しない**)
 - 承認されたら `/plan` で実装プランを作る

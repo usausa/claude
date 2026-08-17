@@ -3,6 +3,7 @@ id: ADR-NNNN
 title: <決定の要約(動詞で)>
 status: proposed        # proposed | accepted | superseded
 date: YYYY-MM-DD
+tags: []                # 1〜3 個。語彙は .claude/rules/ のファイル名 → docs/glossary.md
 related: []             # 関連する SPEC / ADR の ID
 superseded-by:          # 覆された場合のみ、後継 ADR-ID
 ---
@@ -18,4 +19,6 @@ superseded-by:          # 覆された場合のみ、後継 ADR-ID
 - **案B**: … / 却下理由: …
 
 ## 結果(トレードオフ・影響)
-<この決定で得たもの・捨てたもの。将来への影響。後から読む人が「なぜ」を追える形で。>
+- **得たもの**: <この決定で得られる利益>
+- **捨てたもの**: <引き換えに失ったもの・負うコスト>
+- **将来への注意**: <再検討の条件・残るリスク・見直しの兆候>

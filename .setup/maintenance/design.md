@@ -31,7 +31,7 @@
 
 1. `/spec`(command)→ `spec`(subagent)が SPEC 草案(`docs/spec/SPEC-NNNN`。lite は `docs/work/` の一時 SPEC)→ 人が承認。
 2. `/plan`(command)→ 作業フォルダ(`docs/work/`)に PLAN チェックリスト(全レベルで一時物)→ 人が承認。
-3. 決定があれば `/adr`(command)が採番・追記、`adr-guide`(skill)が内容・粒度を導く。
+3. 決定があれば `/adr`(command)がドラフトの用意と index 再生成を支援(手動編集が基本)、`adr-guide`(skill)が内容・粒度を導く。日々守る制約になるなら `rule-create`(skill)で rules 化。
 4. `/impl`(command)→ `csharp-layered-feature`(skill 自動ロード)がレイヤ順を強制。編集のたびに hook(`source-normalize`=UTF-8/CRLF、`dotnet-verify`=format)が走る。
 5. `/verify`(command)→ `!dotnet build` / `!dotnet test` を実行して緑を確認。
 6. `/reference`(command)→ `docs/reference` を再生成。`reference/**` は permission deny で手編集不可。

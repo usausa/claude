@@ -20,12 +20,12 @@
 ### オンデマンド(トリガが立ったら随時)
 | コマンド | いつ | 生成物 | 委譲 / skill |
 |---|---|---|---|
-| `/adr <決定>` | 設計上の決定をした | `docs/adr/NNNN-*.md` | `adr-guide` |
+| `/adr <決定>` | 設計上の決定をした (ドラフト支援 + index 再生成) | `docs/adr/NNNN-*.md` | `adr-guide`, `rule-create` |
 | `/reference` | Web API / 型 / DB を変えた | `docs/reference/`(生成物) | `doc-sync` agent / `sync-docs-from-code` |
 
 ### エージェント / スキル(基層)
 - **agents**: `spec` / `reviewer` / `doc-sync`
-- **skills**: `work-init`(初期化・任意)/ `work-close`(完了 = 片付け)/ `adr-guide` / `csharp-layered-feature` / `sync-docs-from-code` / `git-commit`(全て形態非依存)
+- **skills**: `work-init`(初期化・任意)/ `work-close`(完了 = 片付け)/ `adr-guide` / `rule-create`(プロジェクト固有 rule の追加)/ `csharp-layered-feature` / `sync-docs-from-code` / `git-commit`(全て形態非依存)
 - **rules**: `.claude/rules/`(アーキ規範。setup が `.setup/rules/` カタログから共通 + 採用形態分をコピー。旧 blazor-playwright skill は `blazor-e2e` rule 化)
 - **一時領域**: `docs/work/`(git 管理・完了時に削除。SPEC / PLAN を外部化 → 別セッション・別マシン・worktree から現在地を復元できる。解決規則は `docs/work/README.md`)
 

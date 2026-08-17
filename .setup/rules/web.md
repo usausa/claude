@@ -33,7 +33,7 @@ Program.cs → Application (組み立て/DI/ルート定数)
 - Endpoints / Components は**採用するものだけ置く** (API のみ・Blazor のみの構成も可)。
 
 ## ログの具体 ([logging.md](logging.md) の実装)
-- Serilog: `AddSerilog(o => o.ReadFrom.Configuration(builder.Configuration))`。`LoggerMessage` source generator (`Log.cs`)。
+- Serilog: `AddSerilog(o => o.ReadFrom.Configuration(builder.Configuration))`。出力の書き方は [logging.md](logging.md) (LoggerMessage 全面採用・配置は適宜分割)。
 
 ## データの具体 ([data.md](data.md) の実装)
 - ORM / データアクセス方式は用途で選定 ([data.md](data.md))。接続文字列は `appsettings` / 環境変数 (`GetConnectionString()`)。
