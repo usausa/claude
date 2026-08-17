@@ -16,6 +16,10 @@ paths:
 - 上位層 (UI / エンドポイント) は薄く保ち、ロジックは下位層 (Service / Domain) へ委譲する。
 - 汎用処理はヘルパー / ユーティリティへ。ただしアプリ・ドメイン固有の共通処理は Domain へ。
 
+## DI 登録
+- 登録は機能単位の `AddXxx()` 拡張メソッドにまとめ、合成ルート (Program / Application) は 1 行呼ぶだけにする。機能専用の設定バインドも同じ拡張に同居させてよい (機能の自己完結)。
+- 同一インターフェースの実装群は列挙登録し、利用側は `IEnumerable<IXxx>` で受ける。
+
 ## ビルド / 品質
 - ビルド警告ゼロが完了条件。合わないルールは `Analyzers.ruleset` で緩める。
 - 局所抑制は `#pragma warning disable/restore` (範囲を最小に)、恒久は `GlobalSuppressions.cs`。適用前に人へ確認。

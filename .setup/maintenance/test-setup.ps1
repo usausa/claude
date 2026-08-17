@@ -46,7 +46,8 @@ function RulesCheck($dir, $label) {
 # --- T0: rules カタログの静的検証(原本)---
 Write-Host "== T0: .setup/rules カタログ =="
 $copyUnion = @('conventions.md', 'coding-principles.md', 'async.md', 'errors.md', 'logging.md', 'security.md', 'data.md', 'http-client.md',
-    'mvvm.md', 'maui.md', 'web.md', 'api.md', 'blazor.md', 'blazor-e2e.md', 'desktop.md', 'wpf.md', 'winui.md', 'worker.md')
+    'mvvm.md', 'maui.md', 'web.md', 'api.md', 'blazor.md', 'blazor-e2e.md', 'desktop.md', 'wpf.md', 'winui.md', 'worker.md',
+    'grpc.md', 'cli.md')
 $catalog = Get-ChildItem (Join-Path $src '.setup/rules') -Filter *.md
 Check ($catalog.Count -gt 0) 'T0 カタログあり'
 foreach ($f in $catalog) {
@@ -102,6 +103,8 @@ Check ((Get-Content -Raw "$t\.claude\skills\work-close\SKILL.md").Contains('蒸�
 Check (Test-Path "$t\.claude\commands\plan.md") 'T2 plan command'
 Check (Test-Path "$t\.claude\commands\impl.md") 'T2 impl command'
 Check ((Get-Content -Raw "$t\docs\work\README.md").Contains('SPEC-')) 'T2 docs/work/README=lite 版'
+Check (-not (Test-Path "$t\.claude\rules\grpc.md")) 'T2 rules: grpc.md なし (既定)'
+Check (-not (Test-Path "$t\.claude\rules\cli.md")) 'T2 rules: cli.md なし (既定)'
 Check (-not (Test-Path "$t\docs\spec")) 'T2 docs/spec 無し'
 Check (-not (Test-Path "$t\docs\traceability")) 'T2 traceability 無し'
 Check (-not (Test-Path "$t\.claude\commands\trace.md")) 'T2 trace command 無し'
@@ -149,6 +152,15 @@ Check (-not (Test-Path "$t\.claude\rules\mvvm.md")) 'T5 rules: mvvm.md なし'
 RulesCheck $t 'T5'
 Check (Test-Path "$t\docs\spec\_template.md") 'T5 docs/spec 追加 (full)'
 Check (-not (Test-Path "$t\docs\pm")) 'T5 PM 無し (full)'
+
+# --- T8: web + -Include grpc,cli(オプション rules)---
+Write-Host "== T8: -Form web -Include grpc,cli =="
+$t = Fresh 't8-web-include'
+& (Join-Path $t 'setup.ps1') -Form web -Sdd lite -Include grpc, cli | Out-Null
+Check (Test-Path "$t\.claude\rules\grpc.md") 'T8 rules: grpc.md (オプション)'
+Check (Test-Path "$t\.claude\rules\cli.md") 'T8 rules: cli.md (オプション)'
+Check ((LeftoverCount $t) -eq 0) 'T8 マーカー/保守ブロック残存 0'
+RulesCheck $t 'T8'
 
 # --- T6: 旧 -PM スイッチは存在しない ---
 Write-Host "== T6: -PM => パラメータエラー =="

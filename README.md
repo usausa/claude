@@ -10,9 +10,10 @@
 
 ## 🚀 始め方(セットアップ)
 1. clone / コピーし、ルート名・ソリューション名を自プロジェクトへ。
-2. **形態を確定**: `pwsh ./setup.ps1 -Form maui|web|desktop|worker [-Sdd lite|full|full-pm]`
+2. **形態を確定**: `pwsh ./setup.ps1 -Form maui|web|desktop|worker [-Sdd lite|full|full-pm] [-Include grpc,cli]`
    - `-Form` = アプリ形態の系(アーキ規範 rules の共通 + 採用系分を `.claude/rules/` へ配置)。web=API+Blazor、desktop=WPF(将来 WinUI)、worker=常駐サービス。未使用の rule は手で削ってよい。
    - `-Sdd` = SDD レベル(既定 `full`。**lite ⊂ full ⊂ full-pm の加算**)。`lite`=SPEC は `docs/work/` の一時物(完了時にクローズ蒸留して削除)/ `full`=SPEC を恒久化し蒸留(+`/trace`)/ `full-pm`=full + PM(feature 単位の計画・進捗)。
+   - `-Include` = オプション要素(`grpc` / `cli` の rules)。指定時のみ追加。
 3. `AGENTS.md` の「スタック」節を採用形態に記入。
 4. LINT / ビルド設定(`.editorconfig` / `Directory.Build.props` / `Analyzers.ruleset` / `Settings.XamlStyler`[MAUI])は**全形態の superset**。実プロジェクトのテンプレで置換してよい。
 5. ソースを配置(詳細 `src/README.md` / `tests/README.md`):

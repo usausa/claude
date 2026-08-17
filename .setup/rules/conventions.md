@@ -12,6 +12,7 @@ paths:
 ## コーディング
 - 定型 API の静的呼び出しは **BCL 型**で書く: `String.IsNullOrEmpty(x)` (`string.IsNullOrEmpty` としない)。
 - 空文字などの**値**はキーワードで書く: `string.Empty` (`String.Empty` としない)。
+- エラー・警告メッセージは**コード付きカタログ**に集約する (例: `AE-0201` = エラー / `AW-0901` = 警告)。文言の散在と重複を防ぎ、問い合わせ時にコードで特定できる。
 
 ## 追記のしかた
 - ここにプロジェクト固有の方針を追記していく ([`../../docs/review-checklist.md`](../../docs/review-checklist.md) の観点が本ファイルを参照するため、追記だけでレビュー対象になる)。

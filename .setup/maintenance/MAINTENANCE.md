@@ -19,7 +19,7 @@
 
 | 仕掛け | 場所 | 内容 |
 |---|---|---|
-| アーキ規範 rules | `setup.ps1` の `$commonRules` / `$formRules` | カタログ `.setup/rules/` から共通 + 採用系分を `.claude/rules/` へコピー(`paths:` で自動適用)。**winui.md は登録済み**(カタログに置くだけで採用される) |
+| アーキ規範 rules | `setup.ps1` の `$commonRules` / `$formRules` / `$optionRules` | カタログ `.setup/rules/` から共通 + 採用系分 (+ `-Include grpc,cli` のオプション) を `.claude/rules/` へコピー(`paths:` で自動適用)。**winui.md は登録済み**(カタログに置くだけで採用される) |
 | SDD ブロック | `<!-- sdd:xxx:start/end -->` × 9(AGENTS / docs/README / README / review-checklist / csharp-layered-feature) | **base は lite 本文をインライン保持**。lite=マーカー行のみ除去 / full=ブロックを `.setup/sdd/xxx-full.md` で置換 |
 | SDD full 加算 | `.setup/sdd/full/`(リポジトリのミラーツリー) | full / full-pm 時に配置。spec・work-close・done・workflow・docs/work は**上書き**、spec-close・trace・docs/spec・traceability は**追加** |
 | PM マーカー | `<!-- pm:xxx -->` × 4 | `-Sdd full-pm` で `.setup/pm/` から挿入、それ以外は除去 |

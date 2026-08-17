@@ -5,6 +5,7 @@
 #   pwsh ./setup.ps1 -Form maui -Sdd full-pm   # MAUI、full + PM
 #
 #  - Form: 系(maui / web / desktop / worker)。アーキ規範 rules(共通 + 採用系)を .setup/rules/ から .claude/rules/ へ配置。
+#  - Include: オプション要素(grpc / cli)。指定時のみ該当 rules を追加配置。例: -Include grpc,cli
 #  - Sdd:  SDD レベル(単一の排他選択。lite ⊂ full ⊂ full-pm の加算)。
 #          base(このリポジトリの素の状態)= lite。full は `.setup/sdd/full/` のファイル加算
 #          (恒久 SPEC・spec-close 残す版・/trace・traceability)と `<!-- sdd:xxx:start/end -->`
@@ -15,7 +16,9 @@ param(
     [ValidateSet('maui', 'web', 'desktop', 'worker')]
     [string]$Form,
     [ValidateSet('lite', 'full', 'full-pm')]
-    [string]$Sdd = 'full'
+    [string]$Sdd = 'full',
+    [ValidateSet('grpc', 'cli')]
+    [string[]]$Include = @()
 )
 
 $ErrorActionPreference = 'Stop'
@@ -33,8 +36,9 @@ $formRules = @{
     desktop = @('mvvm.md', 'desktop.md', 'wpf.md', 'winui.md')   # winui.md は将来追加(カタログに置くだけで採用される)
     worker  = @('worker.md')
 }
+$optionRules = @{ grpc = 'grpc.md'; cli = 'cli.md' }
 New-Item -ItemType Directory -Force -Path $rulesDir | Out-Null
-$adopted = @($commonRules) + @($formRules[$Form]) | Where-Object { Test-Path (Join-Path $rulesCatalog $_) }
+$adopted = @($commonRules) + @($formRules[$Form]) + @($Include | ForEach-Object { $optionRules[$_] }) | Where-Object { Test-Path (Join-Path $rulesCatalog $_) }
 foreach ($r in $adopted) { Copy-Item -Force (Join-Path $rulesCatalog $r) (Join-Path $rulesDir $r) }
 Write-Host "[form=$Form] アーキ規範 rules を配置: $($adopted -join ' / ')。対象ファイルを読むと paths で自動適用される。"
 

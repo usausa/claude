@@ -61,4 +61,5 @@ spec を「足場」から「恒久の軽量意図」に変える層。ループ
 ## 🎚️ setup オプション(排他選択)
 
 - `-Form maui|web|desktop|worker`(必須・直交軸)。
-- `-Sdd lite|full|full-pm`(単一排他・既定 `full`)。`lite ⊂ full ⊂ full-pm` の加算。値名/パラメータ名は TBD。
+- `-Sdd lite|full|full-pm`(単一排他・既定 `full`)。`lite ⊂ full ⊂ full-pm` の加算。
+- `-Include grpc,cli`(任意・複数可)。オプション rules を追加配置。

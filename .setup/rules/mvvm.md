@@ -29,6 +29,7 @@ View (xaml) → ViewModel → Usecase → Service → (DB / Web API)
 - バインディングで処理を書く。コードビハインドにロジックを書かない。
 - Behavior で振る舞いを共通化。Converter にロジックを書かず Domain へ委譲。Messenger で VM→View 要求。
 - DI (Smart.Resolver / Generic Host 等) で View/VM/Service を解決。
+- 非同期 UI: `async void` は**イベントハンドラ・起動処理のみ**に限定する (それ以外は `ValueTask`。規約は [async.md](async.md))。
 
 ## UI / UX 共通
 - Style はリソースに集約し、色・サイズ・マージンを要素へ個別指定しない (セマンティックなスタイル設計)。

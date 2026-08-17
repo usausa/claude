@@ -16,6 +16,8 @@
 - **二重管理刈り込みの残項目** — doc-sync agent の役割整理 / README の `CLAUDE_CODE_USE_POWERSHELL_TOOL` 検証
 - **Aaronontheweb/dotnet-skills の扱い** — 次に蒸留する skill の選定と時期(slopwatch / Aspire 系 / EF Core 系 ほか)
 - **template-drafts の取り込み** — 別リポジトリ `template-drafts` の規約ドラフト(feature-level に改稿済み)のレビュー・本体取り込み。**進捗の正は `template-drafts/README.md` の取り込み状況欄**。ADR サンプル 4 本(microorm / valuetask-ct / singleton-asynclocal / realdb-test)は**サンプル扱いのまま保留**(採否未決)。枠 doc(grpc / aws-lambda / cli / generator)の深掘りは別途(深掘り元 = 実プロジェクト KDH2 / Actswin / GitHubTemplate。**環境により有無が異なる**)
+- **generator 規約の執筆** — Source Generator の実装様式は骨子のみ確定済み (取り込みは見送り): IIncrementalGenerator 一択 / `ForAttributeWithMetadataName` で抽出 / パイプラインは equatable な record に正規化 (ISymbol を持ち回らない) / 検証エラーは throw せず Result 型でパイプラインに乗せ出力段冒頭で ReportDiagnostic / 診断は静的 DiagnosticDescriptor 集約 + ID 体系 / 生成名は `名前空間_クラス名.g.cs` / MSBuild プロパティは AnalyzerConfigOptionsProvider + CompilerVisibleProperty を対で配線 / 検証は EmitCompilerGeneratedFiles ハーネス + analyzer 適用テスト。採用プロジェクトが現れたら rule-create で `.setup/rules/` カタログに起こす
+- **aws-lambda 規約の執筆** — 未執筆 (規範のない枠 doc は置かない)。扱う予定: ハンドラの属性 + Source Generator 宣言 / 環境変数設定・プラットフォームロガー + LoggerMessage 共通様式 / ウォームアップ ping 早期リターン・コールドスタート対策 (R2R + arm64) / SAM デプロイ。書けた時にオプション rule として新設
 - **検討事項の運用の Issues 化** — 複数人・複数 AI 体制になったら、この backlog の起票・クローズを GitHub Issues に移す選択肢
 - **その他** — CPM(`Directory.Packages.props`)採用可否 / 旧参考資料の削除可否 / 汎用プロンプト集 / nested AGENTS.md / org での AGENTS.md 必須化
 
