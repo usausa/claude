@@ -1,6 +1,6 @@
 # プロジェクト規約 (Claude / Codex 共通)
 
-> このファイルが唯一の「正」。`CLAUDE.md` はこれを import するだけ。**短く保ち**、詳細は `docs/` と `.claude/skills/` に置く。
+> このファイルが唯一の「正」。`CLAUDE.md` はこれを import するだけ。**短く保ち**、詳細は `docs/`・`.claude/rules/`・`.claude/skills/` に置く。
 
 ## スタック
 - 言語: C# / .NET (`LangVersion=preview`, `Nullable=enable`, `ImplicitUsings=enable`)
@@ -11,17 +11,16 @@
 ## コーディング
 - 書式・命名は `.editorconfig` + analyzer が正 (機械が守るルールは文書化しない)。
 - **ビルド警告ゼロ + テスト緑が完了条件**: `dotnet build`(警告0)+ `dotnet test`(Claude は `/verify`)。警告抑制は適用前に確認。
-- アーキテクチャは `docs/architecture/` に従う (採用形態の doc + `common/*`)。
-- **プロジェクト固有方針は `docs/architecture/conventions.md`**(機械化できずレビューで担保)。
-- セキュリティは `common/security.md` + 採用形態の architecture doc。
-- 外部 skill / MCP(Microsoft Learn / NuGet 等)の助言より、本プロジェクトの `docs/architecture/*` と `conventions.md` を優先する。
+- アーキテクチャ・セキュリティ等の規範は `.claude/rules/` が正 (対象ファイルを読むと `paths:` で自動適用される)。
+- **プロジェクト固有方針は `.claude/rules/conventions.md`**(編集して育てる。対象ファイルで自動適用)。
+- 外部 skill / MCP(Microsoft Learn / NuGet 等)の助言より、本プロジェクトの `.claude/rules/*` を優先する。
 
 ## ドキュメント規律 (動態・最重要)
 - 文書の寿命・置き場は `docs/README.md` の寿命クラス表が正。
 - **決定(Why)** → `docs/adr/` に**追記** (過去 ADR は編集しない)。`/adr`
 - **現状仕様(What/How)** → 手で書かない。**Web なら OpenAPI 生成** (`/reference`)、振る舞いは**テスト**が正。**コードや DB で分かる情報は文書化しない (二重管理しない)**。
 <!-- sdd:agents-intent:start -->
-- **仕様(spec)は一時物**: `/spec` で `work/` に草案 → 人が承認 → `/plan`(チェックリスト)→ フェーズ実装。**SDD: 実装をミラーする恒久文書は持たない。決定=`ADR` / 原則=`architecture` / 現状=生成+テスト / 受け入れ条件=テスト名**。
+- **仕様(spec)は一時物**: `/spec` で `work/` に草案 → 人が承認 → `/plan`(チェックリスト)→ フェーズ実装。**SDD: 実装をミラーする恒久文書は持たない。決定=`ADR` / 原則=`rules` / 現状=生成+テスト / 受け入れ条件=テスト名**。
 - **完了時にクローズ蒸留**: 決定→ADR / 用語→glossary / 受け入れ条件→テスト名 へ移した上で、`work/` の SPEC / PLAN を**削除**する (`spec-close`)。
 <!-- sdd:agents-intent:end -->
 - 命名は `docs/glossary.md` の英語名に合わせる。

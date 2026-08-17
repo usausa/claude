@@ -1,6 +1,12 @@
-# HTTP クライアント 【.NET 共通】
+---
+paths:
+  - "**/*Client*.cs"
+  - "**/Clients/**"
+---
 
-> このファイルは .NET 共通。named client の登録・ハンドラ構成 (圧縮・接続寿命・認証) は起動の組み立て側が担保する。ここは **API 呼び出し機能を作るときの使い方**のみ。
+# HTTP クライアント
+
+> .NET 共通。named client の登録・ハンドラ構成 (圧縮・接続寿命・認証) は起動の組み立て側が担保する。ここは **API 呼び出し機能を作るときの使い方**のみ。
 
 - `new HttpClient()` を書かない。必ず `IHttpClientFactory` の named client を使う (ソケット枯渇・DNS 更新問題の回避)。
 - 認証・共通ヘッダを呼び出し側で操作しない。Bearer 付与などは登録済みの `DelegatingHandler` に任せる。

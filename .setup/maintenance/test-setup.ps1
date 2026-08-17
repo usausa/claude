@@ -26,8 +26,31 @@ function LeftoverCount($dir) {
 function OldNameCount($dir) {
     # 旧名称の残存(リファクタで全廃したもの)
     (Get-ChildItem $dir -Recurse -File -Include *.md, *.ps1 -Force |
-        Select-String -Pattern 'distill-req|write-adr|spec-sync|cross-review|/requirements|docs/requirements|REQ-' |
+        Select-String -Pattern 'distill-req|write-adr|spec-sync|cross-review|/requirements|docs/requirements|REQ-|docs/architecture|blazor-playwright' |
         Measure-Object).Count
+}
+function RulesCheck($dir, $label) {
+    # 配置された rules の品質: paths フロントマター + 相対 md リンクの整合
+    $rules = Get-ChildItem (Join-Path $dir '.claude/rules') -Filter *.md -ErrorAction SilentlyContinue
+    Check ($rules.Count -gt 0) "$label rules 配置あり"
+    foreach ($r in $rules) {
+        $raw = Get-Content -Raw $r.FullName
+        Check ($raw -match '(?s)^---\r?\npaths:') "$label $($r.Name) に paths フロントマター"
+        foreach ($m in [regex]::Matches($raw, '\]\((?!https?://)([^)#]+\.md)\)')) {
+            $target = Join-Path (Split-Path $r.FullName) $m.Groups[1].Value
+            Check (Test-Path $target) "$label $($r.Name) リンク: $($m.Groups[1].Value)"
+        }
+    }
+}
+
+# --- T0: rules カタログの静的検証(原本)---
+Write-Host "== T0: .setup/rules カタログ =="
+$copyUnion = @('conventions.md', 'coding-principles.md', 'async.md', 'errors.md', 'logging.md', 'security.md', 'data.md', 'http-client.md',
+    'mvvm.md', 'maui.md', 'web.md', 'api.md', 'blazor.md', 'blazor-e2e.md', 'desktop.md', 'wpf.md', 'winui.md', 'worker.md')
+$catalog = Get-ChildItem (Join-Path $src '.setup/rules') -Filter *.md
+Check ($catalog.Count -gt 0) 'T0 カタログあり'
+foreach ($f in $catalog) {
+    Check ($copyUnion -contains $f.Name) "T0 $($f.Name) がコピー表に載っている"
 }
 
 # --- T1: web + full-pm(全部載せ)---
@@ -36,7 +59,12 @@ $t = Fresh 't1-web-full-pm'
 & (Join-Path $t 'setup.ps1') -Form web -Sdd full-pm | Out-Null
 Check ((LeftoverCount $t) -eq 0) 'T1 マーカー/保守ブロック残存 0'
 Check ((OldNameCount $t) -eq 0) 'T1 旧名称残存 0'
-Check (Test-Path "$t\docs\architecture\web.md") 'T1 web.md 残存'
+Check (-not (Test-Path "$t\docs\architecture")) 'T1 docs/architecture なし'
+Check (Test-Path "$t\.claude\rules\web.md") 'T1 rules: web.md'
+Check (Test-Path "$t\.claude\rules\blazor-e2e.md") 'T1 rules: blazor-e2e.md'
+Check (Test-Path "$t\.claude\rules\conventions.md") 'T1 rules: 共通 (conventions.md)'
+Check (-not (Test-Path "$t\.claude\rules\mvvm.md")) 'T1 rules: mvvm.md なし'
+RulesCheck $t 'T1'
 Check ((Get-Content -Raw "$t\.claude\commands\spec.md").Contains('docs/spec/')) 'T1 spec command=恒久版'
 Check ((Get-Content -Raw "$t\.claude\skills\spec-close\SKILL.md").Contains('蒸留して残す')) 'T1 spec-close=残す版'
 Check (Test-Path "$t\.claude\commands\plan.md") 'T1 plan command'
@@ -84,10 +112,11 @@ $t = Fresh 't3-maui-default'
 & (Join-Path $t 'setup.ps1') -Form maui | Out-Null
 Check ((LeftoverCount $t) -eq 0) 'T3 マーカー/保守ブロック残存 0'
 Check ((OldNameCount $t) -eq 0) 'T3 旧名称残存 0'
-Check (Test-Path "$t\docs\architecture\mvvm.md") 'T3 mvvm.md 残存'
-Check (Test-Path "$t\docs\architecture\maui.md") 'T3 maui.md 残存'
-Check (-not (Test-Path "$t\docs\architecture\web.md")) 'T3 web.md 削除'
-Check (-not (Test-Path "$t\.claude\skills\blazor-playwright")) 'T3 blazor-playwright 削除'
+Check (Test-Path "$t\.claude\rules\mvvm.md") 'T3 rules: mvvm.md'
+Check (Test-Path "$t\.claude\rules\maui.md") 'T3 rules: maui.md'
+Check (-not (Test-Path "$t\.claude\rules\web.md")) 'T3 rules: web.md なし'
+Check (-not (Test-Path "$t\.claude\rules\blazor-e2e.md")) 'T3 rules: blazor-e2e.md なし'
+RulesCheck $t 'T3'
 Check (Test-Path "$t\docs\spec\_template.md") 'T3 既定=full (docs/spec あり)'
 Check (-not (Test-Path "$t\docs\pm")) 'T3 既定=full (PM なし)'
 
@@ -97,11 +126,12 @@ $t = Fresh 't4-desktop-lite'
 & (Join-Path $t 'setup.ps1') -Form desktop -Sdd lite | Out-Null
 Check ((LeftoverCount $t) -eq 0) 'T4 マーカー/保守ブロック残存 0'
 Check ((OldNameCount $t) -eq 0) 'T4 旧名称残存 0'
-Check (Test-Path "$t\docs\architecture\mvvm.md") 'T4 mvvm.md 残存'
-Check (Test-Path "$t\docs\architecture\wpf.md") 'T4 wpf.md 残存'
-Check (-not (Test-Path "$t\docs\architecture\maui.md")) 'T4 maui.md 削除'
+Check (Test-Path "$t\.claude\rules\mvvm.md") 'T4 rules: mvvm.md'
+Check (Test-Path "$t\.claude\rules\wpf.md") 'T4 rules: wpf.md'
+Check (Test-Path "$t\.claude\rules\desktop.md") 'T4 rules: desktop.md'
+Check (-not (Test-Path "$t\.claude\rules\maui.md")) 'T4 rules: maui.md なし'
 Check (-not (Test-Path "$t\docs\spec")) 'T4 docs/spec 無し (lite)'
-Check (-not (Test-Path "$t\.claude\skills\blazor-playwright")) 'T4 blazor-playwright 削除'
+RulesCheck $t 'T4'
 
 # --- T5: worker + full ---
 Write-Host "== T5: -Form worker -Sdd full =="
@@ -109,8 +139,9 @@ $t = Fresh 't5-worker-full'
 & (Join-Path $t 'setup.ps1') -Form worker -Sdd full | Out-Null
 Check ((LeftoverCount $t) -eq 0) 'T5 マーカー/保守ブロック残存 0'
 Check ((OldNameCount $t) -eq 0) 'T5 旧名称残存 0'
-Check (Test-Path "$t\docs\architecture\worker.md") 'T5 worker.md 残存'
-Check (-not (Test-Path "$t\docs\architecture\mvvm.md")) 'T5 mvvm.md 削除'
+Check (Test-Path "$t\.claude\rules\worker.md") 'T5 rules: worker.md'
+Check (-not (Test-Path "$t\.claude\rules\mvvm.md")) 'T5 rules: mvvm.md なし'
+RulesCheck $t 'T5'
 Check (Test-Path "$t\docs\spec\_template.md") 'T5 docs/spec 追加 (full)'
 Check (-not (Test-Path "$t\docs\pm")) 'T5 PM 無し (full)'
 

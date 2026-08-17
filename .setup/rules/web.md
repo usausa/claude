@@ -1,8 +1,13 @@
-# アーキテクチャ (Web 全般) 【Web 固有】
+---
+paths:
+  - "src/**"
+---
 
-> **ASP.NET Core (Web) の全般**(API / Blazor 共通)。API 固有は [`api.md`](api.md)、Blazor UI は [`blazor.md`](blazor.md)、.NET 共通は [`common/`](common/)、プロジェクト方針は [`conventions.md`](conventions.md) を参照。
+# アーキテクチャ (Web 全般)
 
-## 🧱 レイヤ (依存は上→下のみ)
+> **ASP.NET Core (Web) の全般** (API / Blazor 共通)。API 固有は [`api.md`](api.md)、Blazor UI は [`blazor.md`](blazor.md)。.NET 共通の規範 (async / errors / logging / data / security / http-client) は対象ファイルを読むと自動適用される。プロジェクト方針は [`conventions.md`](conventions.md)。
+
+## レイヤ (依存は上→下のみ)
 
 ```
 Program.cs → Application (組み立て/DI/ルート定数)
@@ -25,15 +30,15 @@ Program.cs → Application (組み立て/DI/ルート定数)
 | Services | DB/ファイル/外部通信のプリミティブ。DI 登録。設定は注入で受ける (注入形は要件で選定) |
 | Models / Domain | POCO / 純粋ロジック |
 
-- Endpoints / Components は**採用するものだけ置く**(API のみ・Blazor のみの構成も可)。
+- Endpoints / Components は**採用するものだけ置く** (API のみ・Blazor のみの構成も可)。
 
-## 🪵 ログの具体 ([common/logging.md](common/logging.md) の実装)
+## ログの具体 ([logging.md](logging.md) の実装)
 - Serilog: `AddSerilog(o => o.ReadFrom.Configuration(builder.Configuration))`。`LoggerMessage` source generator (`Log.cs`)。
 
-## 💾 データの具体 ([common/data.md](common/data.md) の実装)
-- ORM / データアクセス方式は用途で選定 ([common/data.md](common/data.md))。接続文字列は `appsettings` / 環境変数 (`GetConnectionString()`)。
+## データの具体 ([data.md](data.md) の実装)
+- ORM / データアクセス方式は用途で選定 ([data.md](data.md))。接続文字列は `appsettings` / 環境変数 (`GetConnectionString()`)。
 
-## 🔐 セキュリティの具体 ([common/security.md](common/security.md) の実装 / サーバ側)
+## セキュリティの具体 ([security.md](security.md) の実装 / サーバ側)
 - 認証・認可は ASP.NET Core Authentication/Authorization。エンドポイントに `RequireAuthorization()`。
 - HTTPS 必須 (`UseHttpsRedirection` / HSTS)。CORS は許可元を明示的に絞る。
 - 秘匿値の保護は DataProtection / ユーザーシークレット / Key Vault。

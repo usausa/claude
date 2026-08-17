@@ -4,7 +4,8 @@
 > AI 側の振る舞いは、`/`コマンド・skill・hook が呼ばれたときにそれぞれのファイルが駆動する。
 
 ## 📚 読む文書の使い分け
-- **AI が常時従う**: `CLAUDE.md`→`AGENTS.md` (規約) / `docs/architecture/*` (原則) / `docs/README.md`(寿命表)
+- **AI が常時従う**: `CLAUDE.md`→`AGENTS.md` (規約) / `docs/README.md`(寿命表)
+- **対象ファイルを読むと自動適用**: `.claude/rules/*` (アーキ規範。`paths:` で発火)
 - **AI は呼ばれた時だけ動く**: `.claude/commands`・`skills`・`agents`・`hooks`
 - **人が読む (この文書・`README`)**: どの順で何を打つか
 
@@ -65,7 +66,7 @@
 
 ### 7. レビュー
 - **打つもの**: `/review` (Claude) + 必要に応じて `/review-cross` (別ベンダー Codex で観点を共有してクロスレビュー)
-- **触るファイル**: 読込 `docs/review-checklist.md` (観点)・`docs/architecture/*`・SPEC・`docs/reference`
+- **触るファイル**: 読込 `docs/review-checklist.md` (観点)・SPEC・`docs/reference`
 - **ポイント**: 指摘ごとの次アクション (`/adr`・`/reference` 等) に従い、両者 (Claude / Codex) の Critical が消えるまで完了としない。
 
 ### 8. 完了ゲート + クローズ蒸留
@@ -98,7 +99,7 @@
 
 ## 🔁 途中参加・別セッションからの再開
 
-- 新しいチャットでも `CLAUDE.md` (→ `AGENTS.md`) は自動で効き、そこから `docs/architecture/*` 等の原則が参照されるので、規約・原則は引き継がれる。
+- 新しいチャットでも `CLAUDE.md` (→ `AGENTS.md`) は自動で効き、`.claude/rules/*` も対象ファイルを読んだ時点で自動適用されるので、規約・原則は引き継がれる。
 - まず現在地を掴む: `docs/README.md`(寿命表)・`work/`(PLAN)・`docs/traceability/index.md` (対応表) を見る。
 - 続きから: `/trace` で未整合・決定漏れを洗い出し、該当段階のコマンドを打つ。
 - このドキュメントフレームワークは**会話履歴を前提とした短い引き継ぎに依存しない**設計思想を採る。工程の状態は成果物ファイル (SPEC/PLAN/ADR/trace) に外部化されるため、履歴が無い新セッションでも現在地をファイルから復元できる。

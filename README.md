@@ -11,7 +11,7 @@
 ## 🚀 始め方(セットアップ)
 1. clone / コピーし、ルート名・ソリューション名を自プロジェクトへ。
 2. **形態を確定**: `pwsh ./setup.ps1 -Form maui|web|desktop|worker [-Sdd lite|full|full-pm]`
-   - `-Form` = アプリ形態の系(非採用系の `docs/architecture/*.md` と形態固有 skill を削除)。web=API+Blazor、desktop=WPF(将来 WinUI)、worker=常駐サービス。系内の未使用 doc は手で削ってよい。
+   - `-Form` = アプリ形態の系(アーキ規範 rules の共通 + 採用系分を `.claude/rules/` へ配置)。web=API+Blazor、desktop=WPF(将来 WinUI)、worker=常駐サービス。未使用の rule は手で削ってよい。
    - `-Sdd` = SDD レベル(既定 `full`。**lite ⊂ full ⊂ full-pm の加算**)。`lite`=SPEC は `work/` の一時物(完了時にクローズ蒸留して削除)/ `full`=SPEC を恒久化し蒸留(+`/trace`)/ `full-pm`=full + PM(feature 単位の計画・進捗)。
 3. `AGENTS.md` の「スタック」節を採用形態に記入。
 4. LINT / ビルド設定(`.editorconfig` / `Directory.Build.props` / `Analyzers.ruleset` / `Settings.XamlStyler`[MAUI])は**全形態の superset**。実プロジェクトのテンプレで置換してよい。
@@ -48,6 +48,7 @@
 | `hooks/done-check.ps1` | 自動(応答終了) | DoD リマインド |
 | `commands/*.md` | **人** `/...` | 開発ループの各段を起動 |
 | `agents/*.md` | 委譲 | サブエージェント定義 |
+| `rules/*.md` | 自動適用 | アーキ規範(`paths:` にマッチするファイルを読むと適用) |
 | `skills/*/SKILL.md` | 自動ロード | 作業手順(実装・ADR・生成・蒸留 等) |
 <!-- pm:guide-claude -->
 
@@ -55,7 +56,7 @@
 - **正の一覧(寿命クラス表)と退役・ID のルールは `docs/README.md`、AI 常時ルールは `AGENTS.md`**。
 
 ## 🧭 このドキュメント群の意図
-- **SDD(Spec Kit 風)**: 仕様(spec)を中心に AI が実装。**実装を 1:1 でミラーする恒久設計書は持たない**。意図=spec / 決定=ADR / 原則=architecture / 現状=生成+テスト。
+- **SDD(Spec Kit 風)**: 仕様(spec)を中心に AI が実装。**実装を 1:1 でミラーする恒久設計書は持たない**。意図=spec / 決定=ADR / 原則=rules / 現状=生成+テスト。
 - **腐らせない**: コード/DB で分かる情報は文書化しない(二重管理しない)。現状仕様は生成、意図は蒸留、一時物は破棄、不要は退役。
 - **担保**: `/verify` → `/review` → `/done` の機械チェック連鎖(ゲート)。バイパス不能にするなら同じ検査を Husky.Net / CI へ寄せる(任意)。
 - **コンテキスト**: 常時ロード(固定費)は `CLAUDE.md`(+ `AGENTS.md`)/ 各 skill の description / MCP ツール定義のみ。この README・`docs/**`・commands/skills 本文は**オンデマンド**。
@@ -76,5 +77,5 @@
 
 ## 🔗 リンク
 - 各段の具体プロンプト: `docs/guides/workflow.md`
-- アーキ原則: `docs/architecture/`(採用形態の doc + `common/*`)
+- アーキ規範: `.claude/rules/`(共通 + 採用形態。対象ファイルを読むと自動適用)
 - PM(`setup.ps1 -Sdd full-pm` で有効化)を使うと `/pm-plan`・`/pm-status` で feature の計画・進捗

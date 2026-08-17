@@ -25,7 +25,8 @@
 
 ### エージェント / スキル(基層)
 - **agents**: `spec` / `reviewer` / `doc-sync`
-- **skills**: `spec-close`(蒸留して削除する版)/ `adr-guide` / `csharp-layered-feature` / `sync-docs-from-code` / `git-commit` / `blazor-playwright`(web 形態のみ)
+- **skills**: `spec-close`(蒸留して削除する版)/ `adr-guide` / `csharp-layered-feature` / `sync-docs-from-code` / `git-commit`(全て形態非依存)
+- **rules**: `.claude/rules/`(アーキ規範。setup が `.setup/rules/` カタログから共通 + 採用形態分をコピー。旧 blazor-playwright skill は `blazor-e2e` rule 化)
 - **一時領域**: `work/`(gitignore。SPEC / PLAN を外部化 → 別セッションから現在地を復元できる)
 
 ## ➕ full 差分(-Sdd full)

@@ -11,7 +11,7 @@
 - **担保のハード強制** — `/done` ゲートを Husky.Net pre-commit / CI へ移設するか(slopwatch も部品候補)
 - **非 Windows 対応** — `.claude/hooks/*.ps1`(source-normalize / dotnet-verify / done-check)は PowerShell 前提。macOS/Linux で使うなら代替が要る
 - **ドキュメントの分離(AI / 人 / アセット)** — 人専用文書・画像が増えた場合の分離方針
-- **Blazor E2E の残項目** — `/verify` での E2E 実行方針 / MAUI・Desktop 対称の UI テスト skill / review-checklist 観点(任意)
+- **Blazor E2E の残項目** — `/verify` での E2E 実行方針 / MAUI・Desktop 対称の UI テスト rule / review-checklist 観点(任意)
 - **winui.md の執筆** — setup の採用リストに登録済み。ファイル追加のみで対応可
 - **二重管理刈り込みの残項目** — doc-sync agent の役割整理 / README の `CLAUDE_CODE_USE_POWERSHELL_TOOL` 検証
 - **Aaronontheweb/dotnet-skills の扱い** — 次に蒸留する skill の選定と時期(slopwatch / Aspire 系 / EF Core 系 ほか)
@@ -53,16 +53,16 @@
 ## 検討: ドキュメントの分離(AI / 人 / アセット)
 
 - **現状は妥当**(agents.md 標準と整合の「共存・二重消費」型): AI 指示は `.claude/` + root `AGENTS.md` / `CLAUDE.md`、エンジニアリング文書は `docs/`(人 + AI 共用)。
-- **将来分離を検討**(人専用文書・重いアセットが増えた場合): 画像・図 → `docs/assets/`、人専用文書 → `docs/manual/` 等に分離 or `settings.json` の deny で AI に読ませない。ADR / architecture / glossary / reference は `docs/` のまま。
+- **将来分離を検討**(人専用文書・重いアセットが増えた場合): 画像・図 → `docs/assets/`、人専用文書 → `docs/manual/` 等に分離 or `settings.json` の deny で AI に読ませない。ADR / glossary / reference は `docs/` のまま。
 - 参照: agents.md 標準、GitHub「how to write a great agents.md」(stale な docs は context を毒する)。
 
 ## 検討: Blazor E2E(blazor-playwright skill)の残項目
 
-`blazor-playwright` skill は同梱済み。setup.ps1 の form gate(web 以外で skill 削除)は実装済み。残項目:
+`blazor-e2e` rule(旧 blazor-playwright skill)は rules カタログに同梱済み。setup.ps1 の form gate(web のみコピー)は実装済み。残項目:
 
 - **未: /verify での E2E 実行方針**: 既定は全テスト実行(テスト=正、DoD=test 緑)。ブラウザ未導入環境や実行時間が問題化したら `[Trait("Category", "E2E")]` で分離(既定除外 + 明示実行)を検討。
-- **未: MAUI・Desktop 対称**: maui 形態向け(`maui-appium` 等)/ desktop 形態向け(`wpf-uitest`=FlaUI 等)の UI テスト skill を同じイディオム(同梱 + 非採用形態で削除)で用意するか。
-- **未: winui.md の執筆**: desktop 系の採用リスト(setup.ps1 の `$formDocs.desktop`)には登録済み。WinUI 対応時に `docs/architecture/winui.md` を追加するだけでよい。
+- **未: MAUI・Desktop 対称**: maui 形態向け(`maui-appium` 等)/ desktop 形態向け(`wpf-uitest`=FlaUI 等)の UI テスト rule を同じイディオム(カタログ同梱 + 採用形態のみコピー)で用意するか。
+- **未: winui.md の執筆**: desktop 系の採用リスト(setup.ps1 の `$formRules.desktop`)には登録済み。WinUI 対応時に `.setup/rules/winui.md` を追加するだけでよい。
 - **任意: review-checklist**: UI 変更時の観点(data-testid の破壊、クリティカルパスの E2E 要否)を足すか。
 
 ## 検討: 二重管理の刈り込みの残項目
@@ -72,7 +72,7 @@
 
 ## 検討: Aaronontheweb/dotnet-skills の扱い
 
-- **現状**: 個別評価(33 skill + 5 agent)はローカル資料 `dotnet-mcp-skills-カタログ.md` の 2.4 に記載(2026-07 調査)。`playwright-blazor` は `blazor-playwright` として蒸留採用済み。導入方針(plugin 一括導入はせず cherry-pick + 日本語蒸留)は確定。
+- **現状**: 個別評価(33 skill + 5 agent)はローカル資料 `dotnet-mcp-skills-カタログ.md` の 2.4 に記載(2026-07 調査)。`playwright-blazor` は `blazor-e2e` rule として蒸留採用済み。導入方針(plugin 一括導入はせず cherry-pick + 日本語蒸留)は確定。
 - **未決: 次に蒸留する skill の選定と時期**: `slopwatch`(ハード強制と連動・hook / CI 部品として評価)/ `aspire-service-defaults`・`aspire-integration-testing`(Aspire 実装開始時)/ `efcore-patterns` + `database-performance`(EF Core 採用時)/ `dotnet-devcert-trust` / `package-management`(CPM 検討の先行資料)。
 - **導入しないと確定**: `project-structure`(テンプレが構造の正)・`docfx-specialist` agent(リファレンスサイトを作らない方針と衝突)。`csharp-coding-standards` は差分を conventions へ蒸留する形のみ。
 

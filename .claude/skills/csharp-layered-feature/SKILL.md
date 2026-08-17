@@ -1,11 +1,11 @@
 ---
 name: csharp-layered-feature
-description: このプロジェクトの層構成(docs/architecture/ 参照)に沿って C# の機能を追加する手順。機能・画面・API・サービス追加のときに使う。
+description: このプロジェクトの層構成(.claude/rules/ の採用形態 rule 参照)に沿って C# の機能を追加する手順。機能・画面・API・サービス追加のときに使う。
 ---
 
 # C# レイヤ機能追加の手順(汎用)
 
-> レイヤの具体(名前・責務)は `docs/architecture/`(採用形態の doc + `common/*`)に従う。ここは順序と原則のみ。
+> レイヤの具体(名前・責務)は `.claude/rules/` の採用形態 rule に従う(対象ファイルを読むと自動適用)。ここは順序と原則のみ。
 
 <!-- sdd:skill-flow:start -->
 1. **仕様確認**: 対象の SPEC(`work/SPEC-*.md`)を確認(無ければ `/spec`)。承認済みの PLAN(`work/PLAN-*.md`)があればそれに従い、フェーズ完了ごとにチェックを更新する。
@@ -15,7 +15,7 @@ description: このプロジェクトの層構成(docs/architecture/ 参照)に�
 4. **XML doc コメント**: 公開 API に付ける。
 5. **仕上げ**: `/verify`(build + test 緑)→ 現状仕様が変わったら `/reference`(Web=OpenAPI)→ `/review` → `/done`。
 
-## アンチパターン(`docs/architecture` 準拠)
+## アンチパターン(`.claude/rules` 準拠)
 - 上位層(ViewModel / Endpoint / Component / Worker)にロジックを書く(→ 下位へ委譲)
 - アプリ層の異常系を例外で通知する(→ 戻り値 / `IResult` + ProblemDetails)
 - `Task.Wait()` / `Task.Result` / 不要な `Task.Run()`(→ `await`)

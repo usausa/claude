@@ -4,11 +4,10 @@
 > 変更のたびにこれらの観点で確認し、指摘は Critical / Major / Minor に分類する。
 
 ## 📐 1. アーキ・原則
-- `docs/architecture/` の原則に反していないか (レイヤ責務、上位層は薄く下位へ委譲、async 規約)。
-- .NET 共通原則 (`common/*`) に反していないか。
+- `.claude/rules/` の規範に反していないか (レイヤ責務、上位層は薄く下位へ委譲、async 規約)。
 
 ## 📏 2. プロジェクト方針
-- `docs/architecture/conventions.md` の方針に沿っているか (具体例はそちらが正)。
+- `.claude/rules/conventions.md` の方針に沿っているか (具体例はそちらが正)。
 
 <!-- sdd:review-intent:start -->
 ## 📌 3. 意図との整合
@@ -23,7 +22,7 @@
 - 公開 API / 型 / スキーマを変えたのに `docs/reference` (OpenAPI 等) が古い (→ `/reference`)。
 
 ## 🔐 6. セキュリティ
-- `common/security.md` とアーキ固有のセキュリティ観点 (秘匿情報・入力検証・認証認可・通信) を満たすか。
+- `.claude/rules/security.md` と採用形態のセキュリティ観点 (秘匿情報・入力検証・認証認可・通信) を満たすか。
 
 ## 🔤 7. 用語
 - 命名が `docs/glossary.md` の英語名と一致しているか。

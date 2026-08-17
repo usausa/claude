@@ -5,7 +5,7 @@
 - **軽量フロー(Spec Kit 風)**: spec = REQ / plan / tasks。**DES(独立した恒久設計書)は廃止**(実装ミラー / 二重管理になりやすいため)。**plan / tasks は一時物**(Claude の Plan モード + タスクリスト)で、実装完了後に破棄し恒久文書化しない。
 - **REQ = 軽量な spec(何を・なぜ)** として残す。決定は `ADR`、原則は `architecture`、現状仕様はコード + テスト + 生成物(OpenAPI 等)。
 - **REQ 蒸留の機械化**: 「コード / テスト / ADR / architecture から復元できる情報は REQ に残さない」を `distill-req` skill + ワークフローの「意図の更新・蒸留」段として組み込み。判定基準は確定(個別の線引きは実運用で精緻化)。
-- **skill の命名規約**: プラットフォーム固有の skill は `<platform>-xxx` 接頭辞(例: `blazor-playwright`。将来の MAUI 側は `maui-appium` 等)。
+- **skill の命名規約**: プラットフォーム固有の skill は `<platform>-xxx` 接頭辞(例: `blazor-playwright`。将来の MAUI 側は `maui-appium` 等)。(→ 2026-08「コンテキストは発火条件で配置する」で置換: 形態固有は skill でなく rules に置く)
 - **外部 skill / MCP の扱い**: 標準 skill のみ同梱。外部(dotnet-skills 等)はプラグイン導入 / 上流 vendor せず、必要な要点を**日本語で蒸留した自前 skill** にして出典をリンクする(例: `blazor-playwright` は Aaronontheweb/dotnet-skills の playwright-blazor (MIT) を蒸留)。本プロジェクトの docs / conventions が常に優先。
 - **二重管理の刈り込み(2026-07)**: `CLAUDE.md` は純 import shim(`@AGENTS.md` 1 行のみ)。全 md を「正 + 参照」に一本化 — コマンド早見表=workflow.md、レビュー観点=review-checklist、/trace 検出項目=trace command、DB 命名=data.md、警告抑制=coding-principles、PM 方針=docs/pm/README、ADR 手続き=/adr command(write-adr skill は内容・粒度のみ)、reference 生成の実行=/spec-sync(sync-docs-from-code skill は導入 + CI のみ)。README の commands / agents / skills 個名列挙は参照化(skill 追加時に列挙が腐った実績による)。機械強制済みのルール(SA1309 の `_` プレフィックス禁止等)は文書化しない。
 - **許容する重複の基準**: (1) 実行物の再掲 = done.md の DoD 検査手順・done-check.ps1 のリマインド文(AGENTS DoD の実装)、(2) common 原則 → 形態別 doc の「〜の具体」節(原則→実装の階層で情報が増える)、(3) README の入口要約(README は置換可・非依存と宣言済み)、(4) AGENTS の常時 1 行 ↔ 詳細 doc(外部 skill 優先 ↔ conventions、秘匿値 ↔ security.md)。
@@ -24,4 +24,5 @@
 - **ホスティング API は `HostApplicationBuilder` 系に追随(2026-08)**: Worker のホスティングは `builder.Services.AddWindowsService()` / `AddSystemd()` を正とする(`UseWindowsService()` / `UseSystemd()` は旧 `IHostBuilder` 用)。
 - **設定の注入形は明示しない(2026-08)**: `IOptions<Setting>` と設定実体のどちらを注入するかは要件次第。architecture doc では「設定は注入で受ける(注入形は要件で選定)」に留め、既定を決めない。
 - **特定スタックを既定にしない(2026-08)**: architecture doc にはライブラリ非依存の規律だけを置き、特定ライブラリ(Smart 系等)前提の記述は本体に持ち込まない(選定は「プロジェクトで選定し `/adr`」の中立方針を維持)。特定スタック前提の方針(全 Singleton・Micro-ORM 標準・素の `T` 注入等)もテンプレ既定にしない。CancellationToken 伝播は現行既定(下位まで伝播)を維持し、非伝播はプロジェクト決定として `/adr` に残す。
+- **コンテキストは発火条件で配置する(2026-08)**: アーキ規範は `.claude/rules/` の Path-Scoped Rules(`paths:` にマッチするファイルを読むと自動適用)。原本はカタログ `.setup/rules/` に全形態分を持ち、`setup.ps1` が共通 + 採用形態分をコピーする(コピー方式 = 原本保守中の誤発火防止と選定の一元化。旧 `docs/architecture/` は廃止)。skill はアプリ形態に依存しないフローのみ(.NET 依存は可。`blazor-playwright` skill は `blazor-e2e` rule 化)。`AGENTS.md` は参照だけを残して薄く保つ(Claude 専用に割り切る)。**paths を決められない規範は rule にしない**(発火しない rule = 参照されない文書。近縁の rule へ吸収)。新設場面(対象ファイルが未存在)の発火ギャップは上位の広い rule に 1 行のポインタで埋める。設計と経緯は [restructure-context.md](restructure-context.md)。
 - **文体**: ASCII / 括弧は半角、`§` 不使用、冗長・自明な括弧補足は書かない。ドキュメント・コメントは日本語。

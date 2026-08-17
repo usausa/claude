@@ -35,6 +35,6 @@ src/
 ```
 
 ## メモ
-- レイヤ構成は `docs/architecture/`(採用形態の doc)。上位層は薄く、組み立ては `Application/` / `Usecase/` へ。
+- レイヤ構成は `.claude/rules/`(採用形態の rule。対象ファイルを読むと自動適用)。上位層は薄く、組み立ては `Application/` / `Usecase/` へ。
 - 各 `csproj` は root の `Directory.Build.props` から analyzer・`Analyzers.ruleset`・Nullable 等を継承する(個別設定は不要)。
 - ソリューションは root の `.slnx`。

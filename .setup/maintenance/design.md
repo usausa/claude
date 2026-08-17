@@ -58,11 +58,11 @@ template-aidd/
 │  ├─ commands/           [人が /呼ぶ] ループ定常段 = spec/plan/impl/verify/review/review-cross/done、
 │  │                       オンデマンド = adr/reference (+ full: trace / full-pm: pm-plan・pm-status)
 │  ├─ agents/             [委譲] spec/reviewer/doc-sync (+ pm)
-│  └─ skills/             [自動ロード] csharp-layered-feature/blazor-playwright/
+│  ├─ rules/              [自動適用] アーキ規範(setup が .setup/rules から共通 + 採用系分をコピー。paths で発火)
+│  └─ skills/             [自動ロード] csharp-layered-feature/
 │                          adr-guide/sync-docs-from-code/git-commit/spec-close
 ├─ docs/
 │  ├─ README.md           [契約] 寿命・永続化の正
-│  ├─ architecture/       [原則] 系の全般 + 技術固有の 2 層(mvvm/maui/desktop/wpf | web/api/blazor | worker)+ common/*
 │  ├─ spec/               [意図] SPEC(full のみ。lite は work/ の一時 SPEC)
 │  ├─ adr/                [決定] 追記のみ・不変
 │  ├─ reference/          [現状仕様] 生成・手編集 deny
@@ -79,7 +79,7 @@ template-aidd/
 
 | GitHub Spec Kit | template-aidd | 備考 |
 |---|---|---|
-| `constitution.md`(不可侵の原則) | `docs/architecture/*` + `conventions.md` + `docs/adr/` | 原則=architecture、決定=ADR(追記式)、方針=conventions に分割 |
+| `constitution.md`(不可侵の原則) | `.claude/rules/*` + `docs/adr/` | 原則=rules(paths で自動適用)、決定=ADR(追記式)、方針=conventions(rules 内・編集可)に分割 |
 | `spec.md`(何を・なぜ) | `docs/spec/SPEC-*`(full)/ `work/SPEC-*`(lite) | ほぼ同じ役割 |
 | `/speckit.clarify`(曖昧さ解消) | `/spec` の「未決事項(質問)」 | 要求段階に内包 |
 | `plan.md`(技術プラン) | Plan モード(full)/ `work/PLAN-*`(lite) | **Spec Kit は永続ファイル / template-aidd は一時物** |
@@ -90,7 +90,7 @@ template-aidd/
 ### 主な違い(意図的な diverge)
 
 1. **plan / tasks を永続化しない**(最大の違い): Spec Kit はリポジトリにコミットする成果物、template-aidd は一時物(「ソースから復元できるものは残さない」)。lite は spec 自体も一時物にする。
-2. **原則の持ち方**: Spec Kit は `constitution.md` 一枚。template-aidd は architecture(原則)+ ADR(決定・不変)+ conventions(編集可)に分割し、決定の履歴を不変で残す。
+2. **原則の持ち方**: Spec Kit は `constitution.md` 一枚。template-aidd は rules(原則。対象ファイルで自動適用)+ ADR(決定・不変)+ conventions(編集可)に分割し、決定の履歴を不変で残す。
 3. **現状仕様とドリフト対策の機械化**: 生成(OpenAPI)+ テスト = 現状仕様、`/spec-sync`、reference 手編集禁止、`/trace`、逆フィードバック hook。Spec Kit はこの機械化が薄い。
 4. **.NET 特化** + **Claude ネイティブ配布**(CLI ブートストラップ無し)+ Codex クロスレビュー。
 

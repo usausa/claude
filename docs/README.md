@@ -6,7 +6,7 @@
 | 場所 | 種別 | 寿命 | 誰が維持 | 腐り対策 (延命方針) |
 |---|---|---|---|---|
 | `adr/` | **Why (決定理由)** | 不変 | 人 (AI 草案) | **追記のみ。過去 ADR は編集しない** |
-| `architecture/` + `conventions.md` | **原則・方針** | 長 | 人 | 変更時のみ。機械化できる分は `.editorconfig` / analyzer へ。`conventions.md` は編集可 |
+| `../.claude/rules/` | **原則・方針** | 長 | 人 | 対象ファイルを読むと `paths:` で自動適用。変更時のみ編集。機械化できる分は `.editorconfig` / analyzer へ。`conventions.md` は編集可 |
 <!-- sdd:lifespan-spec:start -->
 | `work/` (SPEC / PLAN) | **意図 + 実装プラン (一時物)** | 破棄 | 人 (AI 草案→承認) | 実装完了時に**クローズ蒸留** (決定→ADR / 用語→glossary / 受け入れ条件→テスト名) して**削除** |
 <!-- sdd:lifespan-spec:end -->
@@ -19,7 +19,7 @@
 ## 📌 原則
 - **Why は残す** (`adr/`)。**What/How は生成する** (`reference/`)。**書式は機械が守る** (analyzer)。→ 手で守る面積を最小化。
 - **コードや DB で分かる情報は文書化しない・二重管理しない**。
-- **SDD**: 実装をミラーする恒久設計書は持たない。意図=`spec` / 決定=`ADR` / 原則=`architecture` / 現状=生成+テスト。
+- **SDD**: 実装をミラーする恒久設計書は持たない。意図=`spec` / 決定=`ADR` / 原則=`rules` / 現状=生成+テスト。
 - **一時物は残さない**: 実装プラン / タスク等の一時文書は実装完了後に破棄。
 <!-- sdd:principle-retire:start -->
 - **退役**: 覆された決定は `ADR`=`superseded` で残す (恒久の機能文書は元々持たない)。

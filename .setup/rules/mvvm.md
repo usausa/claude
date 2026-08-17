@@ -1,8 +1,13 @@
-# MVVM アーキテクチャ 【XAML 系共通: MAUI / WPF / WinUI】
+---
+paths:
+  - "src/**"
+---
 
-> XAML 系形態 (MAUI / Desktop) の**共通原則**。プラットフォーム固有の実装は採用形態の doc ([`maui.md`](maui.md) / [`desktop.md`](desktop.md) + [`wpf.md`](wpf.md)) を、.NET 共通は [`common/`](common/) を参照。
+# MVVM アーキテクチャ (XAML 系共通: MAUI / WPF / WinUI)
 
-## 🧱 レイヤ (依存は上→下のみ)
+> XAML 系形態 (MAUI / Desktop) の**共通原則**。プラットフォーム固有の実装は採用形態の rule (maui / desktop + wpf) を参照。.NET 共通の規範は対象ファイルを読むと自動適用される。
+
+## レイヤ (依存は上→下のみ)
 
 ```
 View (xaml) → ViewModel → Usecase → Service → (DB / Web API)
@@ -20,16 +25,16 @@ View (xaml) → ViewModel → Usecase → Service → (DB / Web API)
 | State | アプリスコープの状態 (ログイン中ユーザ等)。オンメモリ + INotifyPropertyChanged |
 | Models | POCO。用途別サブフォルダ (Api/Entity/View) |
 
-## 📐 MVVM 原則
+## MVVM 原則
 - バインディングで処理を書く。コードビハインドにロジックを書かない。
 - Behavior で振る舞いを共通化。Converter にロジックを書かず Domain へ委譲。Messenger で VM→View 要求。
 - DI (Smart.Resolver / Generic Host 等) で View/VM/Service を解決。
 
-## 🎨 UI / UX 共通
+## UI / UX 共通
 - Style はリソースに集約し、色・サイズ・マージンを要素へ個別指定しない (セマンティックなスタイル設計)。
 - 表示変換は Converter、振る舞いは Behavior。ロジックは持ち込まない。
 - アクセシビリティと多言語 (Localization) を考慮。
 - ローディング / エラー / 空状態の表示を用意する。
 
-## 🛑 異常系の具体 ([common/errors.md](common/errors.md) の実装)
+## 異常系の具体 ([errors.md](errors.md) の実装)
 - アプリ層の異常系は**戻り値**で通知する (例外でなく)。エラーコードと値はタプル / 専用型。

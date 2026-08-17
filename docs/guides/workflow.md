@@ -5,7 +5,8 @@
 > 恒久に残すのは 決定=`ADR` / 用語=`glossary` / 受け入れ条件=**テスト名** / 現状仕様=生成+テスト。
 
 ## 📚 読む文書の使い分け
-- **AI が常時従う**: `CLAUDE.md`→`AGENTS.md` (規約) / `docs/architecture/*` (原則) / `docs/README.md`(寿命表)
+- **AI が常時従う**: `CLAUDE.md`→`AGENTS.md` (規約) / `docs/README.md`(寿命表)
+- **対象ファイルを読むと自動適用**: `.claude/rules/*` (アーキ規範。`paths:` で発火)
 - **AI は呼ばれた時だけ動く**: `.claude/commands`・`skills`・`agents`・`hooks`
 - **人が読む (この文書・`README`)**: どの順で何を打つか
 
@@ -88,6 +89,6 @@
 
 ## 🔁 途中参加・別セッションからの再開
 
-- 新しいチャットでも `CLAUDE.md` (→ `AGENTS.md`) は自動で効き、そこから `docs/architecture/*` 等の原則が参照されるので、規約・原則は引き継がれる。
+- 新しいチャットでも `CLAUDE.md` (→ `AGENTS.md`) は自動で効き、`.claude/rules/*` も対象ファイルを読んだ時点で自動適用されるので、規約・原則は引き継がれる。
 - まず現在地を掴む: `work/` の SPEC / PLAN (チェックリスト) を見る。工程の状態はファイルに外部化されるため、履歴が無い新セッションでも現在地を復元できる。
 - `work/` が空 = 仕掛かりなし。

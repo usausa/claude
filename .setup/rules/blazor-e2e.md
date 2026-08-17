@@ -1,11 +1,12 @@
 ---
-name: blazor-playwright
-description: Blazor の E2E (画面) テストを Playwright で書く手順と Blazor 固有の注意点。E2E テスト・画面テスト・ブラウザテストの追加、tests/<App>.E2ETests の新設のときに使う。
+paths:
+  - "tests/**/*E2ETests*/**"
+  - "**/playwright.config.*"
 ---
 
-# Blazor E2E テスト (Playwright) の手順
+# Blazor E2E テスト (Playwright)
 
-> 配置は `tests/README.md`、UI 原則は `docs/architecture/blazor.md` に従う。E2E はクリティカルパス (ログイン・主要フロー) に絞り、ロジックの網羅は下位層のユニットテストへ寄せる (`csharp-layered-feature` 参照)。
+> 配置は `tests/README.md`、UI 原則は [`blazor.md`](blazor.md) に従う。E2E はクリティカルパス (ログイン・主要フロー) に絞り、ロジックの網羅は下位層のユニットテストへ寄せる (`csharp-layered-feature` 参照)。
 
 ## 手順
 

@@ -4,7 +4,7 @@
 #   pwsh ./setup.ps1 -Form desktop -Sdd lite   # デスクトップ、lite(SPEC は work/ の一時物)
 #   pwsh ./setup.ps1 -Form maui -Sdd full-pm   # MAUI、full + PM
 #
-#  - Form: 系(maui / web / desktop / worker)。非採用系の docs/architecture/*.md と形態固有 skill を削除。
+#  - Form: 系(maui / web / desktop / worker)。アーキ規範 rules(共通 + 採用系)を .setup/rules/ から .claude/rules/ へ配置。
 #  - Sdd:  SDD レベル(単一の排他選択。lite ⊂ full ⊂ full-pm の加算)。
 #          base(このリポジトリの素の状態)= lite。full は `.setup/sdd/full/` のファイル加算
 #          (恒久 SPEC・spec-close 残す版・/trace・traceability)と `<!-- sdd:xxx:start/end -->`
@@ -20,27 +20,23 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $root = $PSScriptRoot
-$arch = Join-Path $root 'docs/architecture'
 $isFull = $Sdd -ne 'lite'
 $isPm = $Sdd -eq 'full-pm'
 
-# --- 1. アプリ形態: 非採用系の architecture doc と形態固有 skill を削除 ---
-$formDocs = @{
+# --- 1. アプリ形態: アーキ規範 rules をカタログ (.setup/rules) から .claude/rules へコピー ---
+$rulesCatalog = Join-Path $root '.setup/rules'
+$rulesDir = Join-Path $root '.claude/rules'
+$commonRules = @('conventions.md', 'coding-principles.md', 'async.md', 'errors.md', 'logging.md', 'security.md', 'data.md', 'http-client.md')
+$formRules = @{
     maui    = @('mvvm.md', 'maui.md')
-    web     = @('web.md', 'api.md', 'blazor.md')
-    desktop = @('mvvm.md', 'desktop.md', 'wpf.md', 'winui.md')   # winui.md は将来追加(ファイルを置くだけで採用される)
+    web     = @('web.md', 'api.md', 'blazor.md', 'blazor-e2e.md')
+    desktop = @('mvvm.md', 'desktop.md', 'wpf.md', 'winui.md')   # winui.md は将来追加(カタログに置くだけで採用される)
     worker  = @('worker.md')
 }
-$allFormDocs = $formDocs.Values | ForEach-Object { $_ } | Sort-Object -Unique
-foreach ($doc in ($allFormDocs | Where-Object { $_ -notin $formDocs[$Form] })) {
-    Remove-Item -Force -ErrorAction SilentlyContinue (Join-Path $arch $doc)
-}
-if ($Form -ne 'web') {
-    # Web 固有 skill は Web 系以外で削除
-    Remove-Item -Recurse -Force -ErrorAction SilentlyContinue (Join-Path $root '.claude/skills/blazor-playwright')
-}
-$adopted = $formDocs[$Form] | Where-Object { Test-Path (Join-Path $arch $_) }
-Write-Host "[form=$Form] 採用 doc: $($adopted -join ' / ')。非採用系の doc$(if ($Form -ne 'web') { ' と blazor-playwright skill' }) を削除。"
+New-Item -ItemType Directory -Force -Path $rulesDir | Out-Null
+$adopted = @($commonRules) + @($formRules[$Form]) | Where-Object { Test-Path (Join-Path $rulesCatalog $_) }
+foreach ($r in $adopted) { Copy-Item -Force (Join-Path $rulesCatalog $r) (Join-Path $rulesDir $r) }
+Write-Host "[form=$Form] アーキ規範 rules を配置: $($adopted -join ' / ')。対象ファイルを読むと paths で自動適用される。"
 
 # --- 2. SDD: base(lite)に full 層を加算、または lite のまま確定 ---
 $sddDir = Join-Path $root '.setup/sdd'
@@ -131,5 +127,5 @@ Write-Host ""
 Write-Host "次の手順:"
 Write-Host " 1. AGENTS.md の『スタック』節を $Form 用に記入。"
 Write-Host " 2. LINT/ビルド設定は superset(Settings.XamlStyler は XAML 系 = MAUI/Desktop 用)。実プロジェクトのテンプレで置換してよい。"
-Write-Host " 3. docs/architecture/README.md 等の未採用形態の記述は削ってよい。web で Blazor を使わない(API のみ)場合は docs/architecture/blazor.md と .claude/skills/blazor-playwright/ も削除。"
+Write-Host " 3. 使わない rules は .claude/rules/ から削ってよい。web で Blazor を使わない(API のみ)場合は blazor.md / blazor-e2e.md を削除。"
 Write-Host " 4. 始め方・使い方は README.md(入口。導入後は自プロジェクトの README に置換/削除可)。回し方の正は docs/guides/workflow.md、契約は docs/README.md。"
