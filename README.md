@@ -12,7 +12,7 @@
 1. clone / コピーし、ルート名・ソリューション名を自プロジェクトへ。
 2. **形態を確定**: `pwsh ./setup.ps1 -Form maui|web|desktop|worker [-Sdd lite|full|full-pm]`
    - `-Form` = アプリ形態の系(アーキ規範 rules の共通 + 採用系分を `.claude/rules/` へ配置)。web=API+Blazor、desktop=WPF(将来 WinUI)、worker=常駐サービス。未使用の rule は手で削ってよい。
-   - `-Sdd` = SDD レベル(既定 `full`。**lite ⊂ full ⊂ full-pm の加算**)。`lite`=SPEC は `work/` の一時物(完了時にクローズ蒸留して削除)/ `full`=SPEC を恒久化し蒸留(+`/trace`)/ `full-pm`=full + PM(feature 単位の計画・進捗)。
+   - `-Sdd` = SDD レベル(既定 `full`。**lite ⊂ full ⊂ full-pm の加算**)。`lite`=SPEC は `docs/work/` の一時物(完了時にクローズ蒸留して削除)/ `full`=SPEC を恒久化し蒸留(+`/trace`)/ `full-pm`=full + PM(feature 単位の計画・進捗)。
 3. `AGENTS.md` の「スタック」節を採用形態に記入。
 4. LINT / ビルド設定(`.editorconfig` / `Directory.Build.props` / `Analyzers.ruleset` / `Settings.XamlStyler`[MAUI])は**全形態の superset**。実プロジェクトのテンプレで置換してよい。
 5. ソースを配置(詳細 `src/README.md` / `tests/README.md`):
@@ -33,9 +33,9 @@
   → /impl(フェーズ実装 + チェック更新 + フェーズ末 /verify)
   → PostToolUse フックで dotnet format 検証(逆フィードバック)
   → /reference(Web=OpenAPI 再生成)→ /review + /review-cross(Codex)
-  → /done(DoD + クローズ蒸留 → work/ の SPEC / PLAN を削除)→ 人間が git commit
+  → /done(DoD + クローズ → docs/work/ の SPEC / PLAN を削除)→ 人間が git commit
 ```
-- 仕様とプランは **`work/` の一時物**(git 管理外)。恒久に残るのは 決定=ADR / 用語=glossary / 受け入れ条件=テスト名。
+- 仕様とプランは **`docs/work/` の一時物**(git 管理・完了時に削除)。恒久に残るのは 決定=ADR / 用語=glossary / 受け入れ条件=テスト名。
 <!-- sdd:readme-loop:end -->
 - **各段の具体プロンプト(コピペ可)とコマンド早見表**は `docs/guides/workflow.md`(正はそちら)。
 

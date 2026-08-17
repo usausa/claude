@@ -9,13 +9,13 @@
 ### ループ定常段(順に打つ)
 | コマンド | 役割 | 生成物 | 委譲 / skill | model |
 |---|---|---|---|---|
-| `/spec <箇条書き>` | 一時仕様の草案 | `work/SPEC-<topic>.md` | `spec` agent | 継承 |
-| `/plan` | 実装プラン(チェックリスト・フェーズ分割) | `work/PLAN-<topic>.md` | ― | 継承 |
+| `/spec <箇条書き>` | 一時仕様の草案 | `docs/work/`(作業フォルダ) | `spec` agent | 継承 |
+| `/plan` | 実装プラン(チェックリスト・フェーズ分割) | `docs/work/`(作業フォルダ) | ― | 継承 |
 | `/impl` | フェーズ実装 | `src/` | `csharp-layered-feature` | 継承(安価に切替可・opt-in) |
 | `/verify` | build(警告0)+ 静的解析 + test + 自己修正 | ― | ― | 継承 |
 | `/review` | 観点レビュー | ― | `reviewer` agent | 継承 |
 | `/review-cross` | 別ベンダー(Codex)クロスレビュー | ― | ― | ― |
-| `/done` | DoD ゲート + クローズ蒸留 + コミット提示 | `work/` 削除 | `spec-close`, `git-commit` | 継承 |
+| `/done` | DoD ゲート + クローズ (片付け) + コミット提示 | 作業フォルダ削除 | `work-close`, `git-commit` | 継承 |
 
 ### オンデマンド(トリガが立ったら随時)
 | コマンド | いつ | 生成物 | 委譲 / skill |
@@ -25,9 +25,9 @@
 
 ### エージェント / スキル(基層)
 - **agents**: `spec` / `reviewer` / `doc-sync`
-- **skills**: `spec-close`(蒸留して削除する版)/ `adr-guide` / `csharp-layered-feature` / `sync-docs-from-code` / `git-commit`(全て形態非依存)
+- **skills**: `work-init`(初期化・任意)/ `work-close`(完了 = 片付け)/ `adr-guide` / `csharp-layered-feature` / `sync-docs-from-code` / `git-commit`(全て形態非依存)
 - **rules**: `.claude/rules/`(アーキ規範。setup が `.setup/rules/` カタログから共通 + 採用形態分をコピー。旧 blazor-playwright skill は `blazor-e2e` rule 化)
-- **一時領域**: `work/`(gitignore。SPEC / PLAN を外部化 → 別セッションから現在地を復元できる)
+- **一時領域**: `docs/work/`(git 管理・完了時に削除。SPEC / PLAN を外部化 → 別セッション・別マシン・worktree から現在地を復元できる。解決規則は `docs/work/README.md`)
 
 ## ➕ full 差分(-Sdd full)
 
@@ -35,8 +35,8 @@ spec を「足場」から「恒久の軽量意図」に変える層。ループ
 
 | 変わる/増える | 内容 |
 |---|---|
-| `/spec` の出力 | `work/SPEC-<topic>.md` → **`docs/spec/SPEC-NNNN-<title>.md`**(恒久・採番)。`spec` agent は恒久版で上書き |
-| `/done` の close | `spec-close` が **蒸留して残す**(distill-in-place)+ `status` 更新に変わる(同名・挙動差分) |
+| `/spec` の出力 | `docs/work/` の一時 SPEC → **`docs/spec/SPEC-NNNN-<title>.md`**(恒久・採番)。`spec` agent は恒久版で上書き |
+| `/done` の close | `spec-close`(SPEC を蒸留して残す。full で追加)+ `work-close` は full 版(PLAN 片付け)に上書き |
 | 追加コマンド | **`/trace`**(SPEC↔ADR↔test↔code の整合検査 → `docs/traceability/index.md`) |
 | 追加成果物 | `docs/spec/`(+ `_template.md`)/ `docs/traceability/` |
 | 不変 | `/plan`・`/impl`・`/verify`・`/review`・`/reference`・`/adr`。PLAN は full でも一時物 |
@@ -54,7 +54,7 @@ spec を「足場」から「恒久の軽量意図」に変える層。ループ
 
 ## 🔤 命名原則
 
-- **接頭辞グルーピング**: コマンド + 補助 skill/agent は共通接頭辞 — `spec-*`(spec, spec-close)/ `adr-*`(adr, adr-guide)/ `review-*`(review, review-cross)。横断 skill(`git-commit` 等)は対象外。
+- **接頭辞グルーピング**: コマンド + 補助 skill/agent は共通接頭辞 — `spec-*`(spec, spec-close)/ `work-*`(work-init, work-close)/ `adr-*`(adr, adr-guide)/ `review-*`(review, review-cross)。横断 skill(`git-commit` 等)は対象外。
 - **taxonomy**: 「ループ定常段」と「オンデマンド」の 2 分類。オンデマンドは機能開発中に随時起動する(`/adr` を全体方針限定としない)。
 - **`/plan`(機能の中の実装計画) ≠ `/pm-plan`(機能をまたぐ計画)**。
 

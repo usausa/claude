@@ -1,7 +1,7 @@
 # template-aidd セットアップ: アプリ形態と SDD レベルを選び、テンプレを確定する。
 # 使い方:
 #   pwsh ./setup.ps1 -Form web                 # Web、SDD full(既定)
-#   pwsh ./setup.ps1 -Form desktop -Sdd lite   # デスクトップ、lite(SPEC は work/ の一時物)
+#   pwsh ./setup.ps1 -Form desktop -Sdd lite   # デスクトップ、lite(SPEC は docs/work/ の一時物)
 #   pwsh ./setup.ps1 -Form maui -Sdd full-pm   # MAUI、full + PM
 #
 #  - Form: 系(maui / web / desktop / worker)。アーキ規範 rules(共通 + 採用系)を .setup/rules/ から .claude/rules/ へ配置。
@@ -58,7 +58,7 @@ if ($isFull) {
         Set-Content -NoNewline -Path $file -Value $text
     }
 
-    # full 層のファイルを加算(spec / spec-close / done / workflow / work は上書き、trace / docs/spec / traceability は追加)
+    # full 層のファイルを加算(spec / work-close / done / workflow / docs/work は上書き、spec-close / trace / docs/spec / traceability は追加)
     $fullDir = Join-Path $sddDir 'full'
     Get-ChildItem -Path $fullDir -Recurse -File -Force | ForEach-Object {
         $rel = $_.FullName.Substring($fullDir.Length + 1)
@@ -77,7 +77,7 @@ else {
         $new = $text -replace '(?m)^[ \t]*<!-- sdd:[a-z-]+:(start|end) -->\r?\n?', ''
         if ($new -ne $text) { Set-Content -NoNewline -Path $file -Value $new }
     }
-    Write-Host "[sdd=lite] 基層のまま確定: SPEC は work/ の一時物(クローズ蒸留して削除)。"
+    Write-Host "[sdd=lite] 基層のまま確定: SPEC は docs/work/ の一時物(完了時に work-close で片付け)。"
 }
 
 # --- 3. PM 層(full-pm のみ): マーカーへ差分を挿入 / 除去 ---

@@ -19,7 +19,7 @@ description: 実装完了した SPEC をクローズ蒸留する手順。コー�
 2. 「移す」行を該当先へ反映し、SPEC 側は ID 参照に置き換える(重複を残さない)。
 3. 「落とす」行を削除する。残すのは非復元の意図のみ。
 4. frontmatter を更新する: `status: accepted` / `related`(ADR 等)。
-5. `work/PLAN-*.md` を削除する(チェックリストが全て `- [x]` であること。PLAN は full でも一時物)。
+5. 作業フォルダ(`docs/work/`)の PLAN の削除と最終プッシュは `work-close` の手順で行う(チェックリストが全て `- [x]` であること。PLAN は full でも一時物)。
 6. `/trace` で参照整合を確認する。
 
 ## 判断基準(1 行)

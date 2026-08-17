@@ -10,7 +10,7 @@ allowed-tools: Bash(dotnet:*), Read, Grep, Glob
 3. **設計上の決定**をしたか。したなら該当 ADR が追記されているか (要なら `/adr`)
 4. SPEC の**受け入れ条件がテスト名に反映**されているか (SPEC 削除後はテストが恒久の受け皿)
 5. **レビュー観点** (`docs/review-checklist.md`) を満たすか (`/review`、必要なら Codex で `/review-cross`)
-6. **クローズ蒸留**: 対象機能の `work/` の SPEC / PLAN を `spec-close` の手順で移して**削除**したか (`work/` に仕掛かりが残っていないか)
+6. **クローズ (片付け)**: `work-close` の手順で、作業フォルダ (`docs/work/`) の SPEC / PLAN を蒸留漏れ確認の上**削除**したか (自ブランチの作業フォルダが残っていないか)
 
 最後に:
 - 「今回の変更で影響を受ける docs」チェックリスト

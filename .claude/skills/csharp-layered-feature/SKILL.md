@@ -8,7 +8,7 @@ description: このプロジェクトの層構成(.claude/rules/ の採用形態
 > レイヤの具体(名前・責務)は `.claude/rules/` の採用形態 rule に従う(対象ファイルを読むと自動適用)。ここは順序と原則のみ。
 
 <!-- sdd:skill-flow:start -->
-1. **仕様確認**: 対象の SPEC(`work/SPEC-*.md`)を確認(無ければ `/spec`)。承認済みの PLAN(`work/PLAN-*.md`)があればそれに従い、フェーズ完了ごとにチェックを更新する。
+1. **仕様確認**: 対象の SPEC(作業フォルダ `docs/work/`。解決規則は同 README)を確認(無ければ `/spec`)。承認済みの PLAN があればそれに従い、フェーズ完了ごとにチェックを更新する。
 <!-- sdd:skill-flow:end -->
 2. **下位から上位へ**: Domain(純粋ロジック・IO を持たない)→ Service(DB/通信のプリミティブ)→ Usecase/Application(一連の流れ)→ 上位(ViewModel / Endpoint / Component / Worker)。**上位は薄く、下位へ委譲**。
 3. **テスト**(`tests/`): 受け入れ条件を xUnit で。**テスト名を仕様として書く**(例: `ログイン_失敗5回でロックされる`)。

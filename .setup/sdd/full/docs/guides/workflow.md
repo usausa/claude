@@ -19,12 +19,12 @@
     ▼
 1. /spec <機能の一言>  ──▶ docs/spec/SPEC-NNNN-*.md 草案(採番)
 2. 人がレビュー & AI に修正指示 ──▶ OK なら承認
-3. /plan  ──▶ work/PLAN-*.md (チェックリスト。大きければフェーズ分割) → 人が承認
+3. /plan  ──▶ 作業フォルダ (docs/work) に PLAN (チェックリスト。大きければフェーズ分割) → 人が承認
 4. /impl でフェーズ単位に実装 + チェック更新 + フェーズ末 /verify
 5. /reference (Web API・型・DB を変えたら reference 再生成)
 6. SPEC の意図が変わったなら同じ変更内で更新
 7. /review (+ /review-cross) で観点チェック
-8. /done ──▶ DoD ゲート + クローズ蒸留 (spec-close: SPEC を蒸留して残す・PLAN を削除)
+8. /done ──▶ DoD ゲート + クローズ (spec-close: SPEC を蒸留して残す / work-close: PLAN 削除・最終プッシュ・ブランチ削除)
 9. 人間が git commit (AI はコマンド提示のみ)
 ```
 
@@ -47,7 +47,7 @@
 
 ### 3. 実装プランを作る (PLAN)
 - **打つもの**: `/plan`
-- **触るファイル**: `work/PLAN-*.md`(チェックリスト。git 管理外の一時物)
+- **触るファイル**: 作業フォルダ (`docs/work/`) の PLAN(チェックリスト。git 管理の一時物・完了時に削除)
 - **ポイント**: 人がレビューして承認。フェーズ = 独立して `/verify` が緑になる単位。小さな変更はプランを省略してよい。
 
 ### 4. フェーズ単位で実装する
@@ -72,7 +72,7 @@
 ### 8. 完了ゲート + クローズ蒸留
 - **打つもの**: `/done`
 - **やること**: build + test 緑(`/verify`) / `docs` 更新 / ADR 有無 / `/trace` 整合(退役漏れ)を一括判定 →
-  `spec-close` の手順で SPEC を**蒸留して残し**(status 更新)、`work/` の PLAN を削除する。最後に AI が git コマンドを提示。
+  `spec-close` の手順で SPEC を**蒸留して残し**(status 更新)、`work-close` の手順で作業フォルダの PLAN を削除する。最後に AI が git コマンド (最終プッシュ・ブランチ削除) を提示。
 
 ### 9. コミット (人が実行)
 - AI が提示した git コマンドを人が実行。commit / push は必ず人。
@@ -100,6 +100,6 @@
 ## 🔁 途中参加・別セッションからの再開
 
 - 新しいチャットでも `CLAUDE.md` (→ `AGENTS.md`) は自動で効き、`.claude/rules/*` も対象ファイルを読んだ時点で自動適用されるので、規約・原則は引き継がれる。
-- まず現在地を掴む: `docs/README.md`(寿命表)・`work/`(PLAN)・`docs/traceability/index.md` (対応表) を見る。
+- まず現在地を掴む: `docs/README.md`(寿命表)・`docs/work/`(PLAN)・`docs/traceability/index.md` (対応表) を見る。
 - 続きから: `/trace` で未整合・決定漏れを洗い出し、該当段階のコマンドを打つ。
 - このドキュメントフレームワークは**会話履歴を前提とした短い引き継ぎに依存しない**設計思想を採る。工程の状態は成果物ファイル (SPEC/PLAN/ADR/trace) に外部化されるため、履歴が無い新セッションでも現在地をファイルから復元できる。

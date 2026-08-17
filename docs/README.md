@@ -8,7 +8,7 @@
 | `adr/` | **Why (決定理由)** | 不変 | 人 (AI 草案) | **追記のみ。過去 ADR は編集しない** |
 | `../.claude/rules/` | **原則・方針** | 長 | 人 | 対象ファイルを読むと `paths:` で自動適用。変更時のみ編集。機械化できる分は `.editorconfig` / analyzer へ。`conventions.md` は編集可 |
 <!-- sdd:lifespan-spec:start -->
-| `work/` (SPEC / PLAN) | **意図 + 実装プラン (一時物)** | 破棄 | 人 (AI 草案→承認) | 実装完了時に**クローズ蒸留** (決定→ADR / 用語→glossary / 受け入れ条件→テスト名) して**削除** |
+| `work/` (SPEC / PLAN) | **意図 + 実装プラン (一時物)** | 破棄 | 人 (AI 草案→承認) | 実装完了時に**クローズ蒸留** (決定→ADR / 用語→glossary / 受け入れ条件→テスト名) して**削除** (git 管理のため履歴には残る)。置き場の解決規則は `work/README.md` |
 <!-- sdd:lifespan-spec:end -->
 | `reference/` | **What/How (現状仕様)** | 短 (生成) | **生成** | **手書き禁止**。Web=OpenAPI、振る舞い=テストが正 |
 | `glossary.md` | **語彙** | 長 | 人 | 語彙・意味・英語名のみ。コード/DB で分かる情報は書かない |
@@ -27,7 +27,7 @@
 
 ## 📌 ID 体系
 <!-- sdd:principle-id:start -->
-- `ADR-NNNN` (決定)。手書き文書は frontmatter (`id` / `status` / `related`)。一時 spec は `work/SPEC-<topic>.md` (連番 ID は使わない)。
+- `ADR-NNNN` (決定)。手書き文書は frontmatter (`id` / `status` / `related`)。一時 spec は `work/` 配下 (ブランチフォルダの `SPEC.md` または直下の `SPEC-<topic>.md`。連番 ID は使わない)。
 <!-- sdd:principle-id:end -->
 
 ## 🔄 進め方

@@ -1,7 +1,7 @@
 # 開発ワークフロー (人が読む運用手順書)
 
 > この文書は**人向けの運用手順書**。**機能を 1 つ作る/直すたびに開き**、各段階で下の「打つもの」を実行する。
-> SDD lite 方針: **仕様 (SPEC) と実装プラン (PLAN) は `work/` の一時物**。実装完了時にクローズ蒸留して削除し、
+> SDD lite 方針: **仕様 (SPEC) と実装プラン (PLAN) は作業フォルダ `docs/work/` の一時物** (git 管理・完了時に削除)。
 > 恒久に残すのは 決定=`ADR` / 用語=`glossary` / 受け入れ条件=**テスト名** / 現状仕様=生成+テスト。
 
 ## 📚 読む文書の使い分け
@@ -15,17 +15,18 @@
 ## 🔄 全体像 (ループ)
 
 ```
+0. (任意) work-init ──▶ 作業ブランチ + docs/work/<branch-slug>/ を用意
 決定が要る？ ──yes──▶ /adr (Why を残す・過去 ADR は編集しない)
     │no
     ▼
-1. /spec <アイディアの箇条書き>  ──▶ work/SPEC-*.md 草案
+1. /spec <アイディアの箇条書き>  ──▶ 作業フォルダに SPEC 草案
 2. 人がレビュー & AI に修正指示 ──▶ OK なら承認
-3. /plan  ──▶ work/PLAN-*.md (チェックリスト。大きければフェーズ分割) → 人が承認
+3. /plan  ──▶ 作業フォルダに PLAN (チェックリスト。大きければフェーズ分割) → 人が承認
 4. /impl でフェーズ単位に実装 + チェック更新 + フェーズ末 /verify
 5. /reference (Web API・型・DB を変えたら reference 再生成)
-6. /review (+ /review-cross) で観点チェック
-7. /done  ──▶ DoD + クローズ蒸留 (spec-close) → work/ の SPEC / PLAN を削除
-8. 人間が git commit (AI はコマンド提示のみ)
+6. /review (+ /review-cross) で観点チェック。途中で他者レビューを受けるならコミット + push (git-commit skill)
+7. /done  ──▶ DoD + クローズ (work-close) → SPEC / PLAN 削除・最終プッシュ・ブランチ削除の提示
+8. 人間が git commit / push (AI はコマンド提示のみ)
 ```
 
 ---
@@ -37,7 +38,7 @@
 ### 1. 仕様を作る (SPEC)
 - **打つもの**: `/spec <アイディアの箇条書き>`
 - **例**: `/spec ファイルにタグを付けられる。タグで絞り込み検索。タグは複数付与可`
-- **触るファイル**: `work/SPEC-<topic>.md` (草案)
+- **触るファイル**: 作業フォルダの SPEC (`docs/work/<branch-slug>/SPEC.md` または `docs/work/SPEC-<topic>.md`。解決規則は `docs/work/README.md`)
 - **ポイント**: 出てきた「未決事項」に答える。
 
 ### 2. レビュー & 修正指示
@@ -45,7 +46,7 @@
 
 ### 3. 実装プランを作る (PLAN)
 - **打つもの**: `/plan`
-- **触るファイル**: `work/PLAN-<topic>.md` (チェックリスト。大きければフェーズ分割)
+- **触るファイル**: 作業フォルダの PLAN (チェックリスト。大きければフェーズ分割)
 - **ポイント**: 人がレビューして承認。フェーズ = 独立して `/verify` が緑になる単位。
 
 ### 4. フェーズ単位で実装する
@@ -62,10 +63,10 @@
 - **打つもの**: `/review` (Claude) + 必要に応じて `/review-cross` (Codex)
 - **ポイント**: 指摘ごとの次アクション (`/adr`・`/reference` 等) に従い、両者 (Claude / Codex) の Critical が消えるまで完了としない。
 
-### 7. 完了ゲート + クローズ蒸留
+### 7. 完了ゲート + クローズ (片付け)
 - **打つもの**: `/done`
 - **やること**: build + test 緑 / reference / ADR / テスト名への受け入れ条件反映 を一括判定 →
-  `spec-close` の手順で「決定→ADR / 用語→glossary」へ移し、`work/` の SPEC / PLAN を**削除**する。
+  `work-close` の手順で蒸留漏れ (決定→ADR / 用語→glossary) を確認し、作業フォルダの SPEC / PLAN を**削除** → 最終プッシュ・ブランチ削除を提示する。
 
 ### 8. コミット (人が実行)
 - AI が提示した git コマンドを人が実行。commit / push は必ず人。
@@ -83,12 +84,12 @@
 | `/verify` | build + test 実行(自己修正) | 人 / AI |
 | `/reference` | Web API/型/DB を変えた | 人 |
 | `/review` / `/review-cross` | レビュー(Claude / Codex) | 人 |
-| `/done` | DoD ゲート + クローズ蒸留 | 人 |
+| `/done` | DoD ゲート + クローズ (work-close) | 人 |
 
 ---
 
 ## 🔁 途中参加・別セッションからの再開
 
 - 新しいチャットでも `CLAUDE.md` (→ `AGENTS.md`) は自動で効き、`.claude/rules/*` も対象ファイルを読んだ時点で自動適用されるので、規約・原則は引き継がれる。
-- まず現在地を掴む: `work/` の SPEC / PLAN (チェックリスト) を見る。工程の状態はファイルに外部化されるため、履歴が無い新セッションでも現在地を復元できる。
-- `work/` が空 = 仕掛かりなし。
+- まず現在地を掴む: `docs/work/` の SPEC / PLAN (チェックリスト) を見る。工程の状態は git 管理のファイルに外部化されるため、新セッション・別マシン・worktree でも clone すれば現在地を復元できる。
+- `docs/work/` に SPEC / PLAN が無い = 仕掛かりなし。

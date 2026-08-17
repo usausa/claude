@@ -29,14 +29,14 @@
 
 ### 「1機能を追加する」ときに何が発火するか(SDD full の例)
 
-1. `/spec`(command)→ `spec`(subagent)が SPEC 草案(`docs/spec/SPEC-NNNN`。lite は `work/SPEC-*`)→ 人が承認。
-2. `/plan`(command)→ `work/PLAN-*.md` にチェックリスト(全レベルで一時物)→ 人が承認。
+1. `/spec`(command)→ `spec`(subagent)が SPEC 草案(`docs/spec/SPEC-NNNN`。lite は `docs/work/` の一時 SPEC)→ 人が承認。
+2. `/plan`(command)→ 作業フォルダ(`docs/work/`)に PLAN チェックリスト(全レベルで一時物)→ 人が承認。
 3. 決定があれば `/adr`(command)が採番・追記、`adr-guide`(skill)が内容・粒度を導く。
 4. `/impl`(command)→ `csharp-layered-feature`(skill 自動ロード)がレイヤ順を強制。編集のたびに hook(`source-normalize`=UTF-8/CRLF、`dotnet-verify`=format)が走る。
 5. `/verify`(command)→ `!dotnet build` / `!dotnet test` を実行して緑を確認。
 6. `/reference`(command)→ `docs/reference` を再生成。`reference/**` は permission deny で手編集不可。
 7. `/review` + `/review-cross` → `reviewer`(subagent)/ Codex が `review-checklist` で審査。
-8. `/done`(command)→ DoD ゲート + `spec-close`(skill。full=蒸留して残す / lite=蒸留して削除)。応答終了で hook(`done-check`)がリマインド。
+8. `/done`(command)→ DoD ゲート + `work-close`(skill。片付け = 作業フォルダ削除・最終プッシュ・ブランチ削除の提示。full は `spec-close` で SPEC を蒸留して残す)。応答終了で hook(`done-check`)がリマインド。
 9. commit は `git-commit`(skill)の規約で AI が提示、`git push` は permission ask で人が実行。
 
 ### リポジトリ構造(注釈つき)
@@ -48,7 +48,6 @@ template-aidd/
 ├─ README.md              [人向け・非依存] 入口。導入後は置換/削除可
 ├─ setup.ps1              [セットアップ] -Form maui|web|desktop|worker [-Sdd lite|full|full-pm]
 ├─ .setup/                [原本専用] sdd full ステージ + pm 差分 + maintenance/(保守メモリ)。setup 後に削除
-├─ work/                  [一時] SPEC(lite)と PLAN(全レベル)の置き場。README 以外は gitignore
 ├─ .mcp.json              [MCP] microsoft-learn(http)+ nuget(dnx)
 ├─ .editorconfig / Directory.Build.{props,targets} / Analyzers.ruleset /
 │  Settings.XamlStyler / App.slnx                          [LINT/ビルド superset]
@@ -63,7 +62,8 @@ template-aidd/
 │                          adr-guide/sync-docs-from-code/git-commit/spec-close
 ├─ docs/
 │  ├─ README.md           [契約] 寿命・永続化の正
-│  ├─ spec/               [意図] SPEC(full のみ。lite は work/ の一時 SPEC)
+│  ├─ work/               [一時] SPEC(lite)と PLAN(全レベル)。git 管理・完了時に削除
+│  ├─ spec/               [意図] SPEC(full のみ。lite は docs/work/ の一時 SPEC)
 │  ├─ adr/                [決定] 追記のみ・不変
 │  ├─ reference/          [現状仕様] 生成・手編集 deny
 │  ├─ glossary.md / review-checklist.md / traceability/(full のみ)
@@ -80,9 +80,9 @@ template-aidd/
 | GitHub Spec Kit | template-aidd | 備考 |
 |---|---|---|
 | `constitution.md`(不可侵の原則) | `.claude/rules/*` + `docs/adr/` | 原則=rules(paths で自動適用)、決定=ADR(追記式)、方針=conventions(rules 内・編集可)に分割 |
-| `spec.md`(何を・なぜ) | `docs/spec/SPEC-*`(full)/ `work/SPEC-*`(lite) | ほぼ同じ役割 |
+| `spec.md`(何を・なぜ) | `docs/spec/SPEC-*`(full)/ `docs/work/` の一時 SPEC(lite) | ほぼ同じ役割 |
 | `/speckit.clarify`(曖昧さ解消) | `/spec` の「未決事項(質問)」 | 要求段階に内包 |
-| `plan.md`(技術プラン) | Plan モード(full)/ `work/PLAN-*`(lite) | **Spec Kit は永続ファイル / template-aidd は一時物** |
+| `plan.md`(技術プラン) | `docs/work/` の PLAN(全レベルで一時物) | **Spec Kit は永続ファイル / template-aidd は一時物**(git 履歴には残る) |
 | `tasks.md`(タスク分解) | タスクリスト / PLAN のチェックリスト | 同上: 永続 vs 一時(実装後に破棄) |
 | `/speckit.implement` | 実装(`csharp-layered-feature` skill) | フェーズ実装 + 段階レビュー |
 | `specify` CLI / `.specify/` | クローンする .NET テンプレ + `.claude/` | 配布形態が違う |

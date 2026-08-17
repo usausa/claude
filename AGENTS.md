@@ -20,8 +20,8 @@
 - **決定(Why)** → `docs/adr/` に**追記** (過去 ADR は編集しない)。`/adr`
 - **現状仕様(What/How)** → 手で書かない。**Web なら OpenAPI 生成** (`/reference`)、振る舞いは**テスト**が正。**コードや DB で分かる情報は文書化しない (二重管理しない)**。
 <!-- sdd:agents-intent:start -->
-- **仕様(spec)は一時物**: `/spec` で `work/` に草案 → 人が承認 → `/plan`(チェックリスト)→ フェーズ実装。**SDD: 実装をミラーする恒久文書は持たない。決定=`ADR` / 原則=`rules` / 現状=生成+テスト / 受け入れ条件=テスト名**。
-- **完了時にクローズ蒸留**: 決定→ADR / 用語→glossary / 受け入れ条件→テスト名 へ移した上で、`work/` の SPEC / PLAN を**削除**する (`spec-close`)。
+- **仕様(spec)は一時物**: `/spec` で作業フォルダ(`docs/work/`。解決規則は同 README)に草案 → 人が承認 → `/plan`(チェックリスト)→ フェーズ実装。**SDD: 実装をミラーする恒久文書は持たない。決定=`ADR` / 原則=`rules` / 現状=生成+テスト / 受け入れ条件=テスト名**。
+- **完了時にクローズ (片付け)**: 蒸留漏れ(決定→ADR / 用語→glossary / 受け入れ条件→テスト名)を確認した上で、作業フォルダの SPEC / PLAN を**削除**し、最終プッシュ・ブランチ削除を提示する (`work-close`)。
 <!-- sdd:agents-intent:end -->
 - 命名は `docs/glossary.md` の英語名に合わせる。
 - `docs/reference/**` は生成物。**手編集しない**。
@@ -32,7 +32,7 @@
 
 ## 完了条件 (DoD)
 <!-- sdd:agents-dod:start -->
-- **build + test 緑**(`dotnet build` + `dotnet test`。Claude は `/verify`)/ 影響 docs 更新 / 決定は ADR / **`work/` が空**(クローズ蒸留済み)/ レビュー観点を満たす。
+- **build + test 緑**(`dotnet build` + `dotnet test`。Claude は `/verify`)/ 影響 docs 更新 / 決定は ADR / **自分の作業フォルダが片付いている**(`docs/work/` にクローズ済み = SPEC / PLAN 削除済み)/ レビュー観点を満たす。
 <!-- sdd:agents-dod:end -->
 - Claude は完了前に `/done` で上記を一括点検する。
 - Git 操作 (commit / push) は**人間が実行** (AI はコマンドを提示するのみ)。提示するコミット文 / ブランチ名は `git-commit` skill(Conventional Commits)に従う。

@@ -438,7 +438,3 @@ CLAUDE.local.md
 # Custom
 desktop.ini
 __*
-
-# SDD: 一時 spec / plan 置き場(クローズ時に削除)
-work/*
-!work/README.md

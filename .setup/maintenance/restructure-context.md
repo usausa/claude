@@ -87,8 +87,8 @@ paths は初期案。移行時に実コードのフォルダ規約 (csharp-layer
 | 現在 | 新 | 扱い |
 |---|---|---|
 | /spec, /plan, /impl, /review, /verify, /done, /reference | 中間フロー | 維持。**作業フォルダ解決規則** (6.3) を組み込み、置き場非依存に改修。**/spec /plan /review には docs/adr の参照・準拠確認ステップを追加** (7.) |
-| spec-close skill | **完了 skill** | 改組。最終プッシュ・ブランチ削除・作業フォルダ削除がメイン。蒸留は例外時のみ (6.4) |
-| (新規) | **初期化 skill** | ブランチ確認・作成 + `work/<branch-slug>/` 作成 |
+| spec-close skill (lite) | **work-close skill (完了)** | 置換。最終プッシュ・ブランチ削除・作業フォルダ削除がメイン。蒸留は例外時のみ (6.4)。full の spec-close (SPEC 蒸留) は存続し work-close から参照 |
+| (新規) | **work-init skill (初期化)** | ブランチ確認・作成 + `docs/work/<branch-slug>/` 作成 |
 | (新規) | **ルール作製スキル** | プロジェクト固有 rule の追加・既存 rule への追記 (7.) |
 | /adr + adr-guide skill | /adr (ドラフト支援) | 改修。ADR は手動編集が基本・タイミング任意という位置づけに変更。採番・index 追記・枠 / ドラフトの用意は支援として維持 |
 | git-commit skill | **コミット・プッシュ skill** | 改組・拡張。規約 (Conventional Commits・ブランチ名・ステージング単位) を核に、**途中プッシュ (他者レビュー用) のフロー**を追加。完了 skill の最終プッシュもこれに委譲し、git 操作の型を一元化する |
@@ -201,9 +201,9 @@ paths は初期案。移行時に実コードのフォルダ規約 (csharp-layer
 |---|---|---|
 | 0 | Batch 1 (http-client) コミット | 済 (2b1f60d) |
 | 1 | 本方針書の承認 | 済 (2026-08-17) |
-| 2 | rules 化: `.setup/rules/` カタログ新設・現 docs/architecture 全 17 本を移設改稿・AGENTS.md 参照張り替え | `refactor(context)` |
-| 3 | setup.ps1 / test-setup.ps1 改修 (コピー方式) + 回帰 ALL PASS | `refactor(setup)` |
-| 4 | 作業フォルダ運用変更: `docs/work/` への移動・.gitignore・寿命クラス表更新・初期化 / 完了 skill・コミット・プッシュ skill (git-commit 改組)・中間コマンド改修・workflow.md | `feat(sdd)` |
+| 2 | rules 化: `.setup/rules/` カタログ新設・現 docs/architecture 全 17 本を移設改稿・AGENTS.md 参照張り替え | `refactor(context)` **済** (#3 と統合) |
+| 3 | setup.ps1 / test-setup.ps1 改修 (コピー方式) + 回帰 ALL PASS | **済** (#2 に統合。各コミットで ALL PASS を保つため) |
+| 4 | 作業フォルダ運用変更: `docs/work/` への移動・.gitignore・寿命クラス表更新・work-init / work-close skill・git-commit skill 拡張 (途中プッシュ)・中間コマンド改修・workflow.md | `feat(sdd)` |
 | 5 | ADR / rules 分担: ルール作製スキル新設・/adr ドラフト支援化 (tags / related・index 生成)・/spec /plan /review への ADR 参照追記・review-checklist に ADR 準拠観点・_template.md | `feat(adr)` |
 | 6 | drafts 取り込み再開 (logging から。新マッピング) | バッチ毎 |
 

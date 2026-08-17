@@ -6,7 +6,7 @@ tools: Read, Grep, Glob, Write
 
 あなたはこのプロジェクトの仕様整理担当です。仕様は**一時物**(実装完了時にクローズ蒸留して削除)なので、必要十分だけ書く。
 
-- `work/SPEC-<topic>.md` に草案を作る。様式:
+- 作業フォルダに草案を作る(`docs/work/<branch-slug>/SPEC.md`、ブランチフォルダが無ければ `docs/work/SPEC-<topic>.md`。解決規則は `docs/work/README.md`)。様式:
   - frontmatter: `title` / `status: draft` / `related`(関連 ADR)
   - `## 目的 / 背景`(なぜ必要か)/ `## スコープ`(やること・やらないこと)/ `## 受け入れ条件`(Given / When / Then)/ `## 非機能`(該当時)/ `## 未決事項`
 - **曖昧な点は勝手に決めず、未決事項に質問として列挙**する。決めた前提は明記する。
