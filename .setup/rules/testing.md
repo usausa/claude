@@ -5,16 +5,17 @@ paths:
 
 # テストの書き方
 
-> テストプロジェクトの構成は `tests/README.md`。ここは**テストを書くときの書き方**のみ。
+> テストプロジェクトの構成は `tests/README.md` (UnitTests + IntegrationTests 構成)。ここは**テストを書くときの書き方**のみ。
 
-- テスト名は**日本語で仕様を表す** (受け入れ条件をそのまま): `Order_最短営業日取得_締め時刻前は1営業日後`。
+- テストフレームワークは **xunit.v3 + Microsoft.Testing.Platform** を標準とする。
+- テスト名は**英語 PascalCase の 3 部構成** `対象_条件_期待` で受け入れ条件を表す: `FindOrderBusinessDate_BeforeCloseTime_ReturnsNextBusinessDay`。
 - 本文は **AAA パターン**で書き、`// Arrange` `// Act` `// Assert` のコメントで区切る。
 - **ロジックは下位層 (Domain の Logic / Usecase の共通部品 = Subcase) に寄せて**ユニットテスト可能にするのが前提。純粋関数 (Logic) は総当たり検証を使ってよい。
 
 ## Mock の用意のしかた
 
-- インターフェースのモックはライブラリ (NSubstitute が既定候補) か手書き (未使用メンバは `NotSupportedException`) のどちらかに**プロジェクトで統一**し、`/adr` に残す。
-- **モックの組み立ては Mock Builder に共通化**し、テスト本文を仕様の記述 (AAA) に集中させる。
+- インターフェースのモックは **NSubstitute** を標準とする (依存を増やせない場合は手書きモック = 未使用メンバは `NotSupportedException`、でもよい)。
+- **モックの組み立ては `Mocks` 名前空間の Mock Builder に共通化**し、テスト本文を仕様の記述 (AAA) に集中させる。
 
 ## 時刻の扱い
 

@@ -18,7 +18,8 @@ Program.cs → Application (組み立て/DI/ルート定数)
  (minimal API)  (Blazor)
      └─────┬─────┘
            ▼
-        Services → (DB / 外部通信)      Models=POCO, Domain=純粋ロジック
+        Usecase → Services → (DB / 外部通信)      Models=POCO, Domain=純粋ロジック
+        (必要時)
 ```
 
 | レイヤ | 責務 |
@@ -27,10 +28,17 @@ Program.cs → Application (組み立て/DI/ルート定数)
 | Application | 起動の組み立てを Program から切り出す拡張群、ルート定数 (`ApiRoutes`)、共通ヘルパー |
 | Endpoints | minimal API (採用時。詳細は [`api.md`](api.md)) |
 | Components | Blazor UI (採用時。詳細は [`blazor.md`](blazor.md)) |
+| Usecase | 一連の業務フロー・外部 SDK・複数 Service を束ねる層 (必要時)。`Services` と同階層の独立名前空間。戻り値は SDK 型を漏らさず record に詰め替える |
 | Services | DB/ファイル/外部通信のプリミティブ。DI 登録。設定は注入で受ける (注入形は要件で選定) |
 | Models / Domain | POCO / 純粋ロジック |
 
 - Endpoints / Components は**採用するものだけ置く** (API のみ・Blazor のみの構成も可)。
+- Aspire AppHost (オーケストレーション専用の極薄プロジェクト、業務ロジックゼロ、`WithHttpHealthCheck`) を標準構成に含める。**ServiceDefaults プロジェクトは作らない** (相当機能はアプリ側 / 基盤層に実装する)。
+
+## 名前空間・モデル命名の標準語彙
+- サーバ側の置き場: `Endpoints` / `Services` / `Usecase` / `Accessors` (データアクセス) / `Models` / `Domain` (純粋ロジック) / `Settings` (設定クラス) / `Application` (アプリ固有の共通部品) / `Infrastructure` (アプリ非依存の基盤部品)。
+- モデルサフィックス: `*Entity` (テーブル) / `*View` (SQL 結果) / `*Parameter` (SQL 引数) / `*Request`・`*Response` (API 境界) / `*Setting` (アプリ設定) / `*Options` (コンポーネント設定) / `*Entry` (ネスト設定)。
+- 設定クラスは `Settings/` 配下・`sealed`。`Configure<T>(GetSection)` + `IOptions<T>.Value` の Singleton 登録で **IOptions を業務コードへ漏らさない**。
 
 ## ログの具体 ([logging.md](logging.md) の実装)
 - Serilog: `AddSerilog(o => o.ReadFrom.Configuration(builder.Configuration))`。出力の書き方は [logging.md](logging.md) (LoggerMessage 全面採用・配置は適宜分割)。

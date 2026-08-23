@@ -10,7 +10,7 @@ paths:
 
 ## セットアップ
 - Generic Host (`Microsoft.Extensions.Hosting`) で DI / 設定 / ログを構成し、`App.xaml.cs` は起動の合成に徹する (薄く保つ)。
-- MVVM 基盤 (CommunityToolkit.Mvvm / Smart 系 等) と画面遷移方式 (ViewModel-first の NavigationService / `ContentControl` + `DataTemplate` 等) はプロジェクトで選定し、`/adr` に残す。
+- MVVM 基盤・画面遷移は [`mvvm.md`](mvvm.md) の標準 (Smart.Mvvm + Smart.Navigation) に従う。ツール的に子ウィンドウを管理するケースに限り `WindowManager` 方式 (`Views/IWindowManager`) を使ってよい。
 
 ## XAML / UI
 - スタイルはリソースディクショナリへ分離し `App.xaml` で統合。色・サイズはセマンティックなリソース名で参照する。

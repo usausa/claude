@@ -11,7 +11,7 @@ description: このプロジェクトの層構成(.claude/rules/ の採用形態
 1. **仕様確認**: 対象の SPEC(作業フォルダ `docs/work/`。解決規則は同 README)を確認(無ければ `/spec`)。承認済みの PLAN があればそれに従い、フェーズ完了ごとにチェックを更新する。
 <!-- sdd:skill-flow:end -->
 2. **下位から上位へ**: Domain(純粋ロジック・IO を持たない)→ Service(DB/通信のプリミティブ)→ Usecase/Application(一連の流れ)→ 上位(ViewModel / Endpoint / Component / Worker)。**上位は薄く、下位へ委譲**。
-3. **テスト**(`tests/`): 受け入れ条件を xUnit で。**テスト名を仕様として書く**(例: `ログイン_失敗5回でロックされる`)。
+3. **テスト**(`tests/`): 受け入れ条件を xUnit で。**テスト名を仕様として書く**(英語 PascalCase 3 部構成。例: `Login_FailedFiveTimes_LocksAccount`)。
 4. **XML doc コメント**: 公開 API に付ける。
 5. **仕上げ**: `/verify`(build + test 緑)→ 現状仕様が変わったら `/reference`(Web=OpenAPI)→ `/review` → `/done`。
 

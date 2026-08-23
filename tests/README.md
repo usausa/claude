@@ -37,7 +37,7 @@ tests/
 ```
 
 ## メモ
-- 受け入れ条件 (spec の Given/When/Then) をテスト名に込める。例: `アップロード_サイズ超過で400を返す`。
+- 受け入れ条件 (spec の Given/When/Then) をテスト名に込める。英語 PascalCase の 3 部構成 `対象_条件_期待`。例: `UploadFile_SizeOverLimit_Returns400`。
 - 結合は Web=`Microsoft.AspNetCore.Mvc.Testing` の `WebApplicationFactory<Program>`。UI / E2E (Playwright / Appium / FlaUI) は端末・ブラウザ依存なので、ロジックは下位層に寄せてユニットテスト可能にする。
 - Blazor の E2E (Playwright) の手順・固有の注意点は `blazor-e2e` rule (`.claude/rules/blazor-e2e.md`) に従う (E2E テストのファイルを触ると自動適用)。
 - テストプロジェクトも root の `Directory.Build.props` を継承する。
