@@ -43,5 +43,6 @@
 - [test-setup.ps1](test-setup.ps1) — `setup.ps1` の回帰テスト
 - [refactor-lite-base.md](refactor-lite-base.md) — lite 基層化リファクタの方針書(実装済み・経緯記録)
 - [command-map.md](command-map.md) — lite 基層化後のコマンド/エージェント/スキル最終形リファレンス
-- [restructure-context.md](restructure-context.md) — コンテキスト構造再設計(発火条件ベース)の方針書(実施中)
+- [restructure-context.md](restructure-context.md) — コンテキスト構造再設計(発火条件ベース)の方針書(実装済み・経緯記録)
 - [drivenplatform-handover.md](drivenplatform-handover.md) — その入力(DrivenPlatform 検討からの申し送り・調査結果)
+- [handover-2026-08.md](handover-2026-08.md) — 環境間引き継ぎ(現在地・残作業プラン・新環境の初回手順。完了後に削除してよい)

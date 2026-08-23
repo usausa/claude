@@ -15,7 +15,7 @@
 - **winui.md の執筆** — setup の採用リストに登録済み。ファイル追加のみで対応可
 - **二重管理刈り込みの残項目** — doc-sync agent の役割整理 / README の `CLAUDE_CODE_USE_POWERSHELL_TOOL` 検証
 - **Aaronontheweb/dotnet-skills の扱い** — 次に蒸留する skill の選定と時期(slopwatch / Aspire 系 / EF Core 系 ほか)
-- **template-drafts の取り込み** — 別リポジトリ `template-drafts` の規約ドラフト(feature-level に改稿済み)のレビュー・本体取り込み。**進捗の正は `template-drafts/README.md` の取り込み状況欄**。ADR サンプル 4 本(microorm / valuetask-ct / singleton-asynclocal / realdb-test)は**サンプル扱いのまま保留**(採否未決)。枠 doc(grpc / aws-lambda / cli / generator)の深掘りは別途(深掘り元 = 実プロジェクト KDH2 / Actswin / GitHubTemplate。**環境により有無が異なる**)
+- **template-drafts 取り込みの実運用検証** — 取り込み自体は完了(2026-08-18。decisions.md 参照)。残りは実運用での検証: rules の paths が実プロジェクト構成で発火するか / setup.ps1 の実行結果 / docs/work フローの一巡(詳細は [handover-2026-08.md](handover-2026-08.md) の残作業プラン)。各環境に残る `template-drafts` フォルダ(git 外の一時物)は削除する
 - **PreToolUse フック (作業フォルダの誤書き込み拒否)** — 現ブランチ以外の `docs/work/<slug>/` への書き込みを拒否する機械強制 (DrivenPlatform 申し送りの論点。`docs/work/` 直下は許容して両方式と両立する設計まで確定済み)。実装は見送り中 — hooks の非 Windows 対応と合わせて検討
 - **generator 規約の執筆** — Source Generator の実装様式は骨子のみ確定済み (取り込みは見送り): IIncrementalGenerator 一択 / `ForAttributeWithMetadataName` で抽出 / パイプラインは equatable な record に正規化 (ISymbol を持ち回らない) / 検証エラーは throw せず Result 型でパイプラインに乗せ出力段冒頭で ReportDiagnostic / 診断は静的 DiagnosticDescriptor 集約 + ID 体系 / 生成名は `名前空間_クラス名.g.cs` / MSBuild プロパティは AnalyzerConfigOptionsProvider + CompilerVisibleProperty を対で配線 / 検証は EmitCompilerGeneratedFiles ハーネス + analyzer 適用テスト。採用プロジェクトが現れたら rule-create で `.setup/rules/` カタログに起こす
 - **aws-lambda 規約の執筆** — 未執筆 (規範のない枠 doc は置かない)。扱う予定: ハンドラの属性 + Source Generator 宣言 / 環境変数設定・プラットフォームロガー + LoggerMessage 共通様式 / ウォームアップ ping 早期リターン・コールドスタート対策 (R2R + arm64) / SAM デプロイ。書けた時にオプション rule として新設
