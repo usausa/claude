@@ -12,6 +12,6 @@ description: 機能作業の完了(片付け)。SPEC の蒸留(spec-close)確認
 1. **蒸留の確認**: 意図が変わった仕様は `spec-close` の手順で蒸留して残す(status 更新)。
 2. PLAN のチェックリストが全て `- [x]` であることを確認する(残があれば未完了 = 閉じない)。
 3. 作業フォルダ(解決規則は `docs/work/README.md`)の PLAN(ブランチフォルダ方式ならフォルダごと)を削除する。
-4. **最終コミット・プッシュ**: `git-commit` skill の規約でコマンド列を提示する(実行は人)。
-5. **ブランチ削除**: マージ完了後のブランチ削除コマンドを提示する(`git branch -d <branch>`、リモートは `git push origin --delete <branch>`)。
+4. **最終コミット・プッシュ**: `git-commit` skill の規約で、最終コミット → push を行う(このスキルとして依頼された場合は AI が実行してよい。push 等は permission の確認が入る)。
+5. **ブランチ削除**: マージ完了後にブランチを削除する(`git branch -d <branch>`、リモートは `git push origin --delete <branch>`。マージ前は実行しない)。
 6. **孤児検出**: マージ済みブランチの `docs/work/*/` が残っていれば報告する。

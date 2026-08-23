@@ -65,8 +65,10 @@ paths は初期案。移行時に実コードのフォルダ規約 (csharp-layer
 | desktop.md | desktop.md | `src/**` | desktop |
 | worker.md | worker.md | `**/*Worker*.cs` `**/*Job*.cs` `**/Workers/**` | worker |
 | (skill: blazor-playwright) | blazor-e2e.md | `tests/**/*E2ETests*/**` `**/playwright.config.*` | web (Blazor 採用時) |
-| (drafts: grpc.md) | grpc.md | `**/*.proto` `**/Grpc/**` | オプション (`-Include grpc`) |
+| (drafts: grpc.md) | grpc.md | `**/*.proto` `**/Protos/**` `**/*Handler.cs` | オプション (`-Include grpc`) |
 | (drafts: cli.md) | cli.md | `**/Commands/**` (Commands フォルダ前提) | オプション (`-Include cli`) |
+| (drafts: domain.md) | domain.md | `**/Domain/**` | 常時 |
+| (drafts: testing.md) | testing.md | `tests/**` | 常時 |
 
 ### 4.3 rules の記述規律
 
@@ -131,7 +133,7 @@ paths は初期案。移行時に実コードのフォルダ規約 (csharp-layer
 
 1. 蒸留チェック (例外処理): SPEC / PLAN に恒久化すべき内容 (決定・用語) が残っていないか確認。あれば**削除前に人へ確認を出し、ADR の枠を用意**する。通常は実装中に ADR / rules へ落ちている想定で、空振りが正常。
 2. 作業フォルダ (6.3 で解決した場所) を削除。
-3. 最終コミット・push は**コミット・プッシュ skill に委譲**し、(マージ後の) ブランチ削除まで導く (Git 操作は人間実行の現規約を維持し、コマンド列を提示。実行まで任せるかは 10.)。
+3. 最終コミット・push は**コミット・プッシュ skill に委譲**し、(マージ後の) ブランチ削除まで導く (skill として明示的に依頼された場合は AI が実行してよい。AGENTS.md の一般規約 = 提示のみ、は変更しない)。
 4. 孤児検出: マージ済みブランチに対応する `docs/work/*/` の残存を警告 (git 管理化により機械検出が可能になる)。初期化 skill 実行時にも同じ検査を行う。
 
 ### 6.5 付随修正
@@ -209,10 +211,4 @@ paths は初期案。移行時に実コードのフォルダ規約 (csharp-layer
 
 ## 10. 未決事項 (承認時に確認)
 
-解決済み: /adr の位置づけ (→ 7.) / ADR サンプルの置き場 3 択 (→ 8. adr-guide references 案) / telemetry の paths (→ 4.4 の吸収原則) / blazor-playwright の扱い (→ 5. rules 化で確定) / 枠 doc の配布方式 (→ 4.1・8. grpc / cli は setup オプション指定時のみコピー、cli は Commands フォルダ前提、generator は標準から外し backlog へ)。
-
-1. **/review-cross の削除可否** (Claude 専用化に伴う)
-2. **常時発火 rules の合算ロード量** — 計測済み (2026-08-17): 常時 (`**/*.cs`) 6 本 = 108 行 / 7.0 KB、形態別 `src/**` 追加分 = worker 44 行〜web 92 行。公式の CLAUDE.md 目安 (200 行) の半分程度で、かつ対象ファイルを読む時だけのロード。**問題なしと判断** (異議があれば削減する)
-3. **バッチ順への telemetry の挿入位置** (logging 直後を提案)
-4. **PreToolUse フックの採否** (現ブランチ以外の `docs/work/<slug>/` への書き込み拒否。4.4)
-5. **コミット・プッシュ / 完了 skill の git 操作の実行主体** — 提示のみ (現規約維持) か、skill 内で実行まで任せるか
+**全て解決済み (2026-08-18)**: /adr の位置づけ (→ 7.) / ADR サンプル = adr-guide references に 4 本同梱 / telemetry = logging・web・worker へ吸収 / blazor-playwright = rules 化 / 枠 doc = setup `-Include` オプション (generator・aws-lambda は見送り・backlog 退避) / **/review-cross = 存続** (Claude 専用化はコンテキスト機構に限る) / 常時発火 rules のロード量 = 計測して問題なし / **PreToolUse フック = 見送り** (backlog) / **git 操作 = skill (work-close / git-commit) として依頼されたときは AI 実行可、AGENTS.md の一般規約は変更なし**。drafts 取り込みの個別決定 (D6 / D7 保留 / D8・blazor・domain・testing 等) は decisions.md を参照。

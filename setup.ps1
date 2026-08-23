@@ -29,7 +29,7 @@ $isPm = $Sdd -eq 'full-pm'
 # --- 1. アプリ形態: アーキ規範 rules をカタログ (.setup/rules) から .claude/rules へコピー ---
 $rulesCatalog = Join-Path $root '.setup/rules'
 $rulesDir = Join-Path $root '.claude/rules'
-$commonRules = @('conventions.md', 'coding-principles.md', 'async.md', 'errors.md', 'logging.md', 'security.md', 'data.md', 'http-client.md')
+$commonRules = @('conventions.md', 'coding-principles.md', 'async.md', 'errors.md', 'logging.md', 'security.md', 'data.md', 'http-client.md', 'domain.md', 'testing.md')
 $formRules = @{
     maui    = @('mvvm.md', 'maui.md')
     web     = @('web.md', 'api.md', 'blazor.md', 'blazor-e2e.md')

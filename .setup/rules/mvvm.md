@@ -27,9 +27,15 @@ View (xaml) → ViewModel → Usecase → Service → (DB / Web API)
 
 ## MVVM 原則
 - バインディングで処理を書く。コードビハインドにロジックを書かない。
-- Behavior で振る舞いを共通化。Converter にロジックを書かず Domain へ委譲。Messenger で VM→View 要求。
+- Behavior で振る舞いを共通化。Converter にロジックを書かず Domain へ委譲。
+- **VM→View の単発要求 = Messenger / イベントの継続的な購読・合成 = Rx** (購読は `Disposables` に登録し VM の寿命で破棄する)。
 - DI (Smart.Resolver / Generic Host 等) で View/VM/Service を解決。
 - 非同期 UI: `async void` は**イベントハンドラ・起動処理のみ**に限定する (それ以外は `ValueTask`。規約は [async.md](async.md))。
+
+## 実装の型 (MVVM 基盤はプロジェクトで選定し `/adr` に残す)
+- ViewModel の解決は DI から行う (XAML の添付プロパティ等)。コードビハインドでの VM 生成・ServiceLocator パターンを使わない。
+- 非同期 Command は**実行中の多重実行を封じる** (canExecute にビジー状態を渡す)。ビジー表現は単一の状態を真実とし、開始・終了は `using` できるスコープで対にする。
+- 画面遷移は単一コンテナ + View 差し替え方式を既定とし、**画面の追加は「enum に値を足し、View に属性を付ける」だけ**で登録が完結する形 (ソース生成等) に寄せる (登録コードを手で書かない)。
 
 ## UI / UX 共通
 - Style はリソースに集約し、色・サイズ・マージンを要素へ個別指定しない (セマンティックなスタイル設計)。

@@ -46,6 +46,7 @@ function RulesCheck($dir, $label) {
 # --- T0: rules カタログの静的検証(原本)---
 Write-Host "== T0: .setup/rules カタログ =="
 $copyUnion = @('conventions.md', 'coding-principles.md', 'async.md', 'errors.md', 'logging.md', 'security.md', 'data.md', 'http-client.md',
+    'domain.md', 'testing.md',
     'mvvm.md', 'maui.md', 'web.md', 'api.md', 'blazor.md', 'blazor-e2e.md', 'desktop.md', 'wpf.md', 'winui.md', 'worker.md',
     'grpc.md', 'cli.md')
 $catalog = Get-ChildItem (Join-Path $src '.setup/rules') -Filter *.md
@@ -64,6 +65,8 @@ Check (-not (Test-Path "$t\docs\architecture")) 'T1 docs/architecture なし'
 Check (Test-Path "$t\.claude\rules\web.md") 'T1 rules: web.md'
 Check (Test-Path "$t\.claude\rules\blazor-e2e.md") 'T1 rules: blazor-e2e.md'
 Check (Test-Path "$t\.claude\rules\conventions.md") 'T1 rules: 共通 (conventions.md)'
+Check (Test-Path "$t\.claude\rules\domain.md") 'T1 rules: 共通 (domain.md)'
+Check (Test-Path "$t\.claude\rules\testing.md") 'T1 rules: 共通 (testing.md)'
 Check (-not (Test-Path "$t\.claude\rules\mvvm.md")) 'T1 rules: mvvm.md なし'
 RulesCheck $t 'T1'
 Check ((Get-Content -Raw "$t\.claude\commands\spec.md").Contains('docs/spec/')) 'T1 spec command=恒久版'

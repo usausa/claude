@@ -16,3 +16,12 @@ description: Architecture Decision Record(ADR)に何をどう書くか(内容・
 - ADR と `.claude/rules/` は**独立して保管**する(相互リンクを持たない)。決定から日々守る書き方の制約が生じたなら `rule-create` で rules 化する。決定を覆した(supersede)ときは、関連するタグの rules の見直しも検討する。
 
 作成後、関連する SPEC の `related` に ADR-ID を追記する。
+
+## 見本 ([references/](references/))
+
+性格の違う 4 本のサンプルを同梱。書き出しに迷ったら近い性格のものを参照する (利用時は採番・実日付にして `docs/adr/` へ):
+
+- [sample-01](references/sample-01-microorm-2way-sql.md) — 技術選定 (Micro-ORM + 2-way SQL)
+- [sample-02](references/sample-02-valuetask-no-ct.md) — **一般則からの意図的逸脱** (CancellationToken 非伝播。async rule の「非伝播は /adr」の実例)
+- [sample-03](references/sample-03-singleton-asynclocal.md) — プロジェクト方針 (DI 全 Singleton + AsyncLocal)
+- [sample-04](references/sample-04-realdb-scenario-test.md) — テスト戦略 (実 DB シナリオテスト opt-in)
