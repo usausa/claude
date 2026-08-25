@@ -15,7 +15,7 @@
 - **winui.md の執筆** — setup の採用リストに登録済み。ファイル追加のみで対応可
 - **二重管理刈り込みの残項目** — doc-sync agent の役割整理 / README の `CLAUDE_CODE_USE_POWERSHELL_TOOL` 検証
 - **Aaronontheweb/dotnet-skills の扱い** — 次に蒸留する skill の選定と時期(slopwatch / Aspire 系 / EF Core 系 ほか)
-- **template-drafts 取り込みの実運用検証** — 取り込み自体は完了(2026-08-18。decisions.md 参照)。残りは実運用での検証: rules の paths が実プロジェクト構成で発火するか / setup.ps1 の実行結果 / docs/work フローの一巡(詳細は [handover-2026-08.md](handover-2026-08.md) の残作業プラン)。各環境に残る `template-drafts` フォルダ(git 外の一時物)は削除する
+- **template-drafts 取り込みの実運用検証** — 取り込み自体は完了(2026-08-18。decisions.md 参照)。残りは実運用での検証: rules の paths が実プロジェクト構成で発火するか / setup.ps1 の実行結果 / docs/work フローの一巡(残作業はローカルメモで管理)
 - **PreToolUse フック (作業フォルダの誤書き込み拒否)** — 現ブランチ以外の `docs/work/<slug>/` への書き込みを拒否する機械強制 (DrivenPlatform 申し送りの論点。`docs/work/` 直下は許容して両方式と両立する設計まで確定済み)。実装は見送り中 — hooks の非 Windows 対応と合わせて検討
 - **generator 規約の執筆** — Source Generator の実装様式は骨子のみ確定済み (取り込みは見送り): IIncrementalGenerator 一択 / `ForAttributeWithMetadataName` で抽出 / パイプラインは equatable な record に正規化 (ISymbol を持ち回らない) / 検証エラーは throw せず Result 型でパイプラインに乗せ出力段冒頭で ReportDiagnostic / 診断は静的 DiagnosticDescriptor 集約 + ID 体系 / 生成名は `名前空間_クラス名.g.cs` / MSBuild プロパティは AnalyzerConfigOptionsProvider + CompilerVisibleProperty を対で配線 / 検証は EmitCompilerGeneratedFiles ハーネス + analyzer 適用テスト。採用プロジェクトが現れたら rule-create で `.setup/rules/` カタログに起こす
 - **aws-lambda 規約の執筆** — 未執筆 (規範のない枠 doc は置かない)。扱う予定: ハンドラの属性 + Source Generator 宣言 / 環境変数設定・プラットフォームロガー + LoggerMessage 共通様式 / ウォームアップ ping 早期リターン・コールドスタート対策 (R2R + arm64) / SAM デプロイ。書けた時にオプション rule として新設
@@ -75,7 +75,7 @@
 
 ## 検討: Aaronontheweb/dotnet-skills の扱い
 
-- **現状**: 個別評価(33 skill + 5 agent)はローカル資料 `dotnet-mcp-skills-カタログ.md` の 2.4 に記載(2026-07 調査)。`playwright-blazor` は `blazor-e2e` rule として蒸留採用済み。導入方針(plugin 一括導入はせず cherry-pick + 日本語蒸留)は確定。
+- **現状**: 個別評価(33 skill + 5 agent。2026-07 調査)は実施済みで、結論は本項に集約している。`playwright-blazor` は `blazor-e2e` rule として蒸留採用済み。導入方針(plugin 一括導入はせず cherry-pick + 日本語蒸留)は確定。
 - **未決: 次に蒸留する skill の選定と時期**: `slopwatch`(ハード強制と連動・hook / CI 部品として評価)/ `aspire-service-defaults`・`aspire-integration-testing`(Aspire 実装開始時)/ `efcore-patterns` + `database-performance`(EF Core 採用時)/ `dotnet-devcert-trust` / `package-management`(CPM 検討の先行資料)。
 - **導入しないと確定**: `project-structure`(テンプレが構造の正)・`docfx-specialist` agent(リファレンスサイトを作らない方針と衝突)。`csharp-coding-standards` は差分を conventions へ蒸留する形のみ。
 
