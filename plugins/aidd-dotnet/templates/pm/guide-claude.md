@@ -1,0 +1,1 @@
+| `commands/pm-*.md`・`agents/pm.md` | **人** `/pm-plan`・`/pm-status` | feature 単位の計画・進捗(PM オプション。`pm` に委譲) |

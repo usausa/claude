@@ -1,0 +1,7 @@
+{
+  // ドキュメント LINT(markdownlint)
+  "default": true,
+  "MD013": false,  // 行長制限なし(表・URL のため)
+  "MD033": false,  // インライン HTML を許可
+  "MD041": false   // 先頭 h1 必須を外す(frontmatter 付き文書のため)
+}

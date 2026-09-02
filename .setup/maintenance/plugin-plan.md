@@ -65,7 +65,7 @@
 - [x] commands 11 本 → skills へ移行(description 移植・argument-hint は本文冒頭の「引数:」行へ・`$ARGUMENTS` 維持)。既存 skills 7 本(adr-guide の references 込み)も移設し、`.claude/rules/` 参照は二義に応じて字句修正(自動適用の規範 → 「アーキ規範 skill」/ conventions・rule-create の出力先 → プロジェクトの `.claude/rules/` のまま)
 - [x] agents 4 本 / hooks の移設(hooks.json 化、ps1 は `${CLAUDE_PLUGIN_ROOT}/hooks/` 参照へ)。settings.json の permissions / deny はプラグインで配布できないため init の templates で配る(残バッチ)
 - [x] MCP: Learn / NuGet を `mcp-servers.json` として同梱(ルートの .mcp.json はリポジトリ自身の作業用に残置、退役は Phase 2 完了時に判断)
-- [ ] init skill + `templates/`(staging/templates-neutral から再構成。form / SDD の確定ロジック = 旧マーカー解決をスクリプトへ移植)
+- [x] init skill + `templates/`(2026-09-02)。構成 = `templates/root/`(骨格。**-Form は廃止** — 旧 Form の実効は rules 選別のみでプラグインでは paths 発火が代替。`.mcp.json` は配らず = プラグイン mcpServers が担う。settings.json は permissions のみ = hooks はプラグイン提供)+ `templates/sdd/`(full 素材を git 履歴から復元)+ `templates/pm/`(挿入素材 + docs-pm)。`scripts/init.ps1` に旧 setup.ps1 のマーカー解決を移植(-Sdd lite|full|full-pm、既存ファイルはスキップ)。配布版 AGENTS / README はプラグイン前提へ書き換え(規範 = プラグイン skill・序列・`/aidd-dotnet:init` 手順)。csharp-layered-feature skill の sdd マーカーは lite/full 両対応文へ畳んで解消。**実動テスト合格**(一時ディレクトリで lite / full-pm を実行: マーカー解決 0 残・full 資産/docs/pm の有無・conventions/settings 配置・.mcp.json 非配布をすべて確認)
 - [ ] 検証: paths 発火が rules と同等か / ロード量(description 固定費)/ `/名前:skill` の使用感
 - [ ] プラグイン README(導入手順: marketplace add → install → init)
 

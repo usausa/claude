@@ -1,0 +1,22 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitattributes" />
+    <File Path=".gitignore" />
+    <File Path="AGENTS.md" />
+    <File Path="Analyzers.ruleset" />
+    <File Path="App.sln.DotSettings" />
+    <File Path="CLAUDE.md" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Build.targets" />
+    <File Path="README.md" />
+  </Folder>
+  <!--
+    App は実際のアプリ名に置換する。App.slnx / App.sln.DotSettings はベース名 (App) を一致させること。
+    プロジェクト配置後に以下のように登録する:
+    <Project Path="src/App/App.csproj" />
+    <Project Path="src/App.AppHost/App.AppHost.csproj" />
+    <Project Path="tests/App.UnitTests/App.UnitTests.csproj" />
+    <Project Path="tests/App.IntegrationTests/App.IntegrationTests.csproj" />
+  -->
+</Solution>
