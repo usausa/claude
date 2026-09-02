@@ -1,64 +1,100 @@
-# プラグイン化・2段スタック構成の方針書(検討中・未決定)
+# プラグイン化 2 段スタック構成 — 作業プラン(フェーズ・チェックリスト)
 
-> 本テンプレを Claude Code プラグインへ再編する構想の設計たたき台。**決定したら decisions.md へ移記し、本書は経緯記録に降格する**(refactor-lite-base.md / restructure-context.md と同じライフサイクル)。
-> 前提調査(2026-08): プラグインは skills / agents / hooks / MCP / LSP / bin を配布できる。rules は配布不可だが **skill の `paths:` frontmatter で同等の自動発火**が可能。スキャフォールドは `${CLAUDE_PLUGIN_ROOT}` のスクリプト実行方式。CLAUDE.md / settings.json への直接改変は不可。
+> 方針は決定済み(2026-08-25)、名称ほか一部未決。本書が実行プランの正。フェーズ完了ごとにチェックを付け、全完了後に decisions.md へ経緯を移して本書は経緯記録に降格する。
+> 機構の前提調査(プラグインで配布できるもの・rules 非対応と `paths:` skill での代替・スキャフォールドはスクリプト方式・私有 marketplace)は 2026-08 に実施済み。
 
-## 1. 全体像(2段スタック構成)
+## 決定済み方針
 
-```
-[利用プロジェクト]
-  .claude/rules/conventions.md ほかプロジェクト固有 rule     ← 最優先(不変)
-      ▲ 上書き・具体化
-[第2段] stack プラグイン(スタック標準アドオン)              ← template-architecture から生成
-  分類単位の paths 付き skill(スタック規範の要約)+ references/(詳細 docs)
-  dependencies: [core]
-      ▲ 上書き・具体化
-[第1段] core プラグイン(中立コア)                           ← 本テンプレから生成
-  SDD フロー(commands→skills / agents / hooks)+ 中立規律 skill(現 rules 21 本)
-  + MCP(Learn / NuGet)+ init(スキャフォールド)
-```
+- **私有配布**(private GitHub + `/plugin marketplace add`。public には出さない)
+- **本リポジトリを 2 プラグインのモノレポへ転換**し、template-architecture の内容(docs 93 本・TOPICS.md・正典実物)も**本リポジトリへ統合**する(従来の「統合しない・上流維持」決定は置換する)
+- **2 段構成**: 第 1 段 = dotnet 全般(ライブラリ中立)/ 第 2 段 = Smart アーキテクチャ(スタック標準の断定 + 詳細リファレンス)。序列 =「プロジェクト rule > 第 2 段 > 第 1 段 > 外部 skill / MCP」
+- ルート直置きのプロジェクト骨格(src / tests / App.slnx / Analyzers.ruleset / App.sln.DotSettings / Directory.Build.* / Settings.XamlStyler)は**廃止**し、雛形は各プラグインの `templates/` へ移す
+- 進め方: architecture の内容を **staging ディレクトリへコピーし、以降の改稿は本リポジトリ側で行う**(元リポジトリは凍結)
 
-- **リポジトリの正は変えない**: 中立の正 = 本テンプレ、スタックの正 = template-architecture(decisions.md「template-architecture とは統合しない」は維持)。プラグインは両リポジトリからの**生成・梱包の形**であり、正の統合ではない。
-- 序列は「プロジェクト rule > stack > core > 外部 skill / MCP」。AGENTS.md の既存原則(conventions 優先)の自然な拡張。
+## 名称(確定 2026-08-25)
 
-## 2. 責務分界
+| 対象 | 名称 |
+|---|---|
+| 第 1 段プラグイン | `aidd-dotnet`(displayName: AIDD for .NET) |
+| 第 2 段プラグイン | `aidd-smart`(displayName: AIDD Smart Architecture) |
+| marketplace | `aidd` |
+| リポジトリ | `template-spec` のまま(改名は保留) |
 
-| 関心 | 第1段 core(中立) | 第2段 stack(標準断定) |
-|---|---|---|
-| プロセス(SDD / ADR / work / verify) | ✓ | — |
-| 中立規律(async / errors / logging 原則 / domain / testing 等) | ✓ | — |
-| ライブラリ選定を伴う規範 | 「選定は `/adr`」とだけ言う | **標準を断定**(Serilog・NSwag・Smart.Data 等)し具体形を示す |
-| 詳細実装パターン(コード例・バリエーション) | — | references/(93 docs をオンデマンド参照) |
-| 骨格ファイル(init) | 中立版一式 | 正典実物(ruleset / .editorconfig)での上書き(残差の扱いは backlog の個別再確認と連動) |
-| MCP | Learn / NuGet | スタック固有に必要なら追加 |
+## 参考リポジトリ(2026-08 実在確認済み)
 
-- **中立例外の再編(Phase 4)**: 現在 rules に入れた「Smart.Mvvm + Smart.Navigation 標準」は中立方針の例外(decisions.md)。2段化の際は**例外を第2段へ移し、core の mvvm を純中立に戻す**再編ができる(decisions の当該項を置換する決定が必要)。
+| リポジトリ | 何の手本か |
+|---|---|
+| anthropics/claude-plugins-official | 公式 marketplace。marketplace.json / plugin.json スキーマと version 管理の正典 |
+| jmanhype/claude-code-plugin-marketplace | **モノレポの最有力参考**(19 プラグイン・`source: "./plugins/<name>"` の相対パス・共有コードの置き方) |
+| dotnet/skills | **本構成と同型**: `.claude-plugin/` + `plugins/` 配下に 15+ サブプラグイン(公式 .NET) |
+| davidortinau/maui-skills | 1 プラグイン + 41 skills の集約(第 2 段の「分類 skill 束ね」の手本) |
+| Aaronontheweb/dotnet-skills | flat skills 30 + agents 5(カテゴリ接頭辞での整理) |
+| cooco119/claude-plugin-private-marketplace-helper | private marketplace の認証まわりのヘルパー実例 |
 
-## 3. stack プラグインの設計(template-architecture 側)
+- 私有配布の認証: SSH(`git@github.com:...`)または `gh auth login` による git credentials が前提。**`GITHUB_TOKEN` 環境変数からの自動認証は無い**(CI では `gh auth setup-git`)。
 
-- **束ね方 = 分類単位**(1 分類 = 1 skill、約 20 個)。1 doc = 1 skill は description 固定費が過大で採らない。
-- skill 本文 = その分類の規範**要約**(core の同名 rule のスタック具体版。rules 並みの薄さに保つ)。詳細は references/ の docs を必要時に読む導線を本文に書く。
-- `paths:` は core の対応 rule と同型(同時発火は「原則(core)+ 具体(stack)」の役割分担として併存)。
-- リポジトリへの追加物は `.claude-plugin/plugin.json` + skills/ のみ(docs/ / TOPICS.md は不変)。**新たな管理点 = docs 更新時の skill 本文への同期**(要約に留めて同期面積を最小化する)。
+## 注意点(方針レビューで確認済み)
 
-## 4. 配布
+1. **決定の置換**: 「template-architecture とは統合しない」(decisions.md・未コミット)は本方針と矛盾するため、**コミットせずに書き換える**(未コミットのため取り消し注記は不要)。MAINTENANCE.md 原則 6・architecture 側 README の役割行・関連する未コミット変更も同時に整合させる(Phase 0)
+2. **テンプレ機能の空白期間**: 骨格削除で setup.ps1 / test-setup.ps1 は成立しなくなる。**削除前に templates/ 素材として退避**し(原本消失を防ぐ)、setup.ps1 方式は Phase 1 で退役と割り切る(以後の新規プロジェクトは init skill が動く Phase 2 完了まで既存 clone を使う)
+3. **テンプレ群 21 リポジトリの正典参照先**: Analyzers.ruleset / .editorconfig の正典実物は第 2 段の `templates/` が新しい置き場になる(architecture 直下参照からの付け替え)
+4. **骨格の 2 系統**: 第 1 段 templates = 中立 safety 版(現 spec 同梱の ruleset = 正典 +3 ルール)、第 2 段 templates = 正典版。進行中の .editorconfig / DotSettings 調整(人の仕掛かり)を**どちらの版に載せるか**は取り込み時に判断
+5. **commands → skills 移行で起動方法が変わる**(`/spec` 等の使用感)。Phase 2 の検証項目に含める
 
-- marketplace は 1 つ(専用リポジトリ or 本テンプレ同居)。plugin source は GitHub 参照(core = 本テンプレ repo / stack = template-architecture repo)。
-- バージョンは更新毎にバンプ必須。stack は docs 改稿のたびに上がる想定でリリース粒度を決める。
+## Phase 0: 準備・整地
 
-## 5. 段階(Phase)
+- [x] 名称の確定(2026-08-25: aidd-dotnet / aidd-smart / marketplace `aidd`)
+- [x] decisions.md の「template-architecture とは統合しない」を新決定(私有 2 プラグインのモノレポへ統合・2 段構成・序列)に書き換え。MAINTENANCE.md 原則 6 と architecture README の役割行も整合(いずれも未コミットのまま修正)
+- [x] template-architecture リポジトリを凍結(以後の改稿は本リポジトリの staging 側で行う。README に凍結を明記)
+- [x] `staging/architecture/` へコピー: docs/** / README.md(索引)/ TOPICS.md / Analyzers.ruleset / .editorconfig / Directory.Build.props / Directory.Build.targets(architecture 側の未コミット変更 = 逆輸入 4 件を含む状態で)
+- [ ] 保留中のコミット(spec / architecture / テンプレ群 15 件)の扱いを確定し実行(人)
 
-| Phase | 内容 | 出口条件 |
-|---|---|---|
-| 0(現行) | setup.ps1 テンプレート方式 | — (維持) |
-| 1 | core 試作: rules→paths 付き skill 変換の検証(発火の同等性・ロード量)、commands の skills 寄せ | 変換した skill が rules と同等に発火する |
-| 2 | init 取り込み: マーカー解決を init skill + スクリプトへ移植、templates/ 同梱 | setup.ps1 なしで新規プロジェクトを確定できる |
-| 3 | stack 試作: 分類 skill 化 + references 同梱 + 序列検証。**テンプレ群 21 リポジトリへ導入してドッグフーディング**(arch 規範が AI に自動で効くようになる) | テンプレ群での実発火・干渉なしを確認 |
-| 4 | 中立例外(Smart 標準)の第2段への移管、core の純中立化 | decisions.md 更新 + ALL PASS |
+## Phase 1: リポジトリ転換(テンプレ方式の退役)
 
-## 6. 未決・リスク
+- [ ] ルート骨格を `staging/templates-neutral/` へ退避(src / tests / App.slnx / Analyzers.ruleset / App.sln.DotSettings / Directory.Build.* / Settings.XamlStyler / .mcp.json / docs の配布物一式)
+- [ ] 退避後、ルートから骨格を削除
+- [ ] setup.ps1 / .setup/sdd / test-setup.ps1 を退役(削除。復元は git 履歴から可能)
+- [ ] README / AGENTS.md を「プラグイン開発リポジトリ」として書き換え(利用者向けの始め方は各プラグインの README / init へ移す前提の骨組みだけ先に)
+- [ ] .setup/maintenance/ の各文書から setup.ps1 前提の記述を洗い出し、更新 or 退役
+- [ ] 検証方式の再定義: test-setup.ps1 に代わるプラグイン検証(スモーク)の枠を決める
 
-- **公開可否**: stack(日本語・組織スタック色)を public marketplace に載せるか、私有配布に留めるか。
-- **二重管理の面積**: stack skill 本文 ↔ arch docs の同期(要約徹底で最小化。検証は Phase 3 で)。
-- **ロード量**: skill description ×約 20 の固定費と発火時本文。Phase 1 / 3 で実測して判断(重ければ束ねを粗くする)。
-- 実運用検証(backlog「template-drafts 取り込みの実運用検証」)が先。プラグイン化は検証で現行形を固めてから着手する。
+## Phase 2: 第 1 段プラグイン(dotnet 全般)
+
+- [ ] `plugins/<第1段>/.claude-plugin/plugin.json` 骨格(name / version / description / mcpServers)
+- [ ] rules 21 本 → `paths:` frontmatter 付き skill へ変換(中立のみ。mvvm の Smart 標準断定は第 2 段へ移し、第 1 段 mvvm は中立原則に戻す)
+- [ ] commands 11 本 → skills へ移行(レガシー commands は持たない)
+- [ ] agents / hooks の移設(hooks.json 化、`${CLAUDE_PLUGIN_ROOT}` パスへ)
+- [ ] MCP: .mcp.json の Learn / NuGet を plugin.json `mcpServers` へ
+- [ ] init skill + `templates/`(staging/templates-neutral から再構成。form / SDD の確定ロジック = 旧マーカー解決をスクリプトへ移植)
+- [ ] 検証: paths 発火が rules と同等か / ロード量(description 固定費)/ `/名前:skill` の使用感
+- [ ] プラグイン README(導入手順: marketplace add → install → init)
+
+## Phase 3: 第 2 段プラグイン(Smart アーキテクチャ)
+
+- [ ] `plugins/<第2段>/` 骨格 + `dependencies: [<第1段>]`
+- [ ] staging/architecture の docs を**分類単位の skill(約 20 個)**へ再編: 本文 = スタック規範の要約(第 1 段の同名 skill の具体版・薄く保つ)、`references/` = docs 本体(オンデマンド参照)
+- [ ] 正典実物(Analyzers.ruleset / .editorconfig / Directory.Build.props)を第 2 段 `templates/` へ(テンプレ群の新正典)
+- [ ] TOPICS.md を保守文書として移設(.setup/maintenance/ 配下)
+- [ ] 序列検証: 第 1・2 段の同時発火で干渉なし / conventions 優先が保たれる
+- [ ] スタック固有 MCP の要否判断(必要になったときに追加でよい)
+
+## Phase 4: marketplace・配布・検証
+
+- [ ] `.claude-plugin/marketplace.json`(2 プラグイン・相対パス source)
+- [ ] 私有配布の導入手順を文書化(private repo + marketplace add。認証は SSH or `gh auth login` — `GITHUB_TOKEN` 直接は非対応)
+- [ ] バージョン運用の決定(更新毎バンプ。stack は docs 改稿とリリース粒度の関係を決める)
+- [ ] ドッグフーディング: テンプレ群 21 リポジトリへ導入し実発火を検証(旧「実運用検証」をこの形で実施)
+- [ ] 実プロジェクトでの一巡(init → /spec 相当 → 実装 → done のフロー確認)
+
+## Phase 5: 片付け
+
+- [ ] staging/ の削除(全内容が第 2 段へ再編済みであることを確認してから)
+- [ ] template-architecture リポジトリのアーカイブ化(README に移設先を明記)— 人の判断
+- [ ] decisions.md へ完了の経緯を記録し、本書を経緯記録へ降格
+- [ ] ローカルメモ・memory の更新(資産地図の正典参照先ほか)
+
+## 未決
+
+- リポジトリ改名の要否(GitHub: usausa/template-spec のまま使うか)
+- docs 配布物(adr 雛形 / glossary / guides / work README)を第 1 段 templates にどこまで含めるか(Phase 1 の退避時に棚卸し)
+- 検証方式(Phase 1 で枠決め): プラグインのスモークテストをスクリプト化するか、ドッグフーディングで代替するか

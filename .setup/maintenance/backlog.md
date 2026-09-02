@@ -74,10 +74,10 @@
 - **未: doc-sync agent の役割整理**: /reference command が手順を直接持ち、doc-sync agent はどこからも呼ばれていない。command から agent へ委譲に一本化するか、agent を廃止するか。
 - **未: README のセットアップ記述の検証**: 「PowerShell フックに `CLAUDE_CODE_USE_POWERSHELL_TOOL=1`」(README 始め方 6) — hooks は powershell.exe を直接起動するため不要の可能性。実機で要否を確認し修正 or 削除。
 
-## 検討: プラグイン / Kit 化(2段スタック構成)
+## 実行中: プラグイン化(2 段スタック構成)
 
-- **設計たたき台は [plugin-plan.md](plugin-plan.md) が正**(全体像・責務分界・Phase・未決)。骨子: 第1段 core(本テンプレ = 中立規律 + SDD フロー)+ 第2段 stack(template-architecture = スタック標準の paths 付き skill + references)。rules はプラグイン配布不可のため `paths:` 付き skill へ変換、スキャフォールドは init skill + スクリプト、MCP は `mcpServers` で同梱(形態別は `dependencies` / `userConfig` で選択制)。
-- 着手は実運用検証(上記)で現行形を固めてから。
+- **方針決定済み(2026-08-25)・作業プランは [plugin-plan.md](plugin-plan.md) が正**(フェーズ・チェックリスト)。骨子: 私有配布 / 本リポジトリを 2 プラグイン(dotnet 全般 + Smart アーキテクチャ)のモノレポへ転換し template-architecture の内容も統合 / rules は `paths:` 付き skill へ変換 / スキャフォールドは init skill + templates。
+- 実運用検証はプラン Phase 4 のドッグフーディングとして実施する。
 
 ## 検討: Aaronontheweb/dotnet-skills の扱い
 

@@ -14,7 +14,7 @@
 3. **superset + 確定時削除**: オプション(form / SDD / PM)は原本に全部置き、`setup.ps1` が非採用分の削除とマーカー解決で確定する。原本に「利用者向けでない情報」を置くときは、setup で消える場所(この `.setup/` か `template-dev` ブロック)に置く。
 4. **命名原則**: 系名(web / desktop / mvvm)= 系の全般、技術名(api / blazor / wpf / winui)= 技術固有。skill はアプリ形態に依存しないフローのみとし、形態固有の規範・手順は rules に置く(`<platform>-xxx`、例: `blazor-e2e`)。
 5. **文体**: 日本語。ASCII 記号・括弧は半角(中黒 `・` は全角のまま)、`§` 不使用、冗長・自明な括弧補足を書かない。h2 絵文字は docs 系のみ(`.claude/` と AGENTS / CLAUDE には付けない)。
-6. **上流からの蒸留**: アーキ規範の上流 = template-architecture(組織スタックの詳細正典・テンプレ群の規約正典)。上流の決定の追加・変更は**ライブラリ中立の規律だけを粒度変換して rules へ反映**する(統合はしない。詳細・特定スタック前提・コード例は上流に残し、相互リンクも持たない。[decisions.md](decisions.md) の該当決定を参照)。
+6. **2 段プラグイン構成**: アーキ規範は 2 段で持つ — 第 1 段 `aidd-dotnet`(ライブラリ中立)/ 第 2 段 `aidd-smart`(Smart スタック標準の断定 + 詳細リファレンス)。序列は「プロジェクト rule > 第 2 段 > 第 1 段 > 外部」。旧上流 template-architecture の内容は本リポジトリへ統合する(移行中は `staging/` が原本の写し。作業プランは [plugin-plan.md](plugin-plan.md))。
 
 ## 🗺️ リポジトリの仕掛け(どこを触ると何が起きるか)
 
@@ -42,7 +42,7 @@
 - [backlog.md](backlog.md) — 未決の検討事項(TODO)
 - [design.md](design.md) — 設計解説(構造と Claude 機構・GitHub Spec Kit 比較)
 - [test-setup.ps1](test-setup.ps1) — `setup.ps1` の回帰テスト
-- [plugin-plan.md](plugin-plan.md) — プラグイン化・2段スタック構成の方針書(検討中・未決定)
+- [plugin-plan.md](plugin-plan.md) — プラグイン化 2 段スタック構成の作業プラン(フェーズ・チェックリスト。方針決定済み・実行中)
 - [refactor-lite-base.md](refactor-lite-base.md) — lite 基層化リファクタの方針書(実装済み・経緯記録)
 - [command-map.md](command-map.md) — lite 基層化後のコマンド/エージェント/スキル最終形リファレンス
 - [restructure-context.md](restructure-context.md) — コンテキスト構造再設計(発火条件ベース)の方針書(実装済み・経緯記録)
