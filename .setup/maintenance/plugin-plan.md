@@ -81,10 +81,17 @@
 
 ## Phase 4: marketplace・配布・検証
 
-- [ ] `.claude-plugin/marketplace.json`(2 プラグイン・相対パス source)
-- [ ] 私有配布の導入手順を文書化(private repo + marketplace add。認証は SSH or `gh auth login` — `GITHUB_TOKEN` 直接は非対応)
-- [ ] バージョン運用の決定(更新毎バンプ。stack は docs 改稿とリリース粒度の関係を決める)
-- [ ] ドッグフーディング: テンプレ群 21 リポジトリへ導入し実発火を検証(旧「実運用検証」をこの形で実施)
+- [x] `.claude-plugin/marketplace.json`(2 プラグイン・相対パス source。test-plugins が source 存在を検査)
+- [x] 私有配布の導入手順を文書化 → ルート README.md(認証前提・add・install 2 パターン・init・update)
+- [x] バージョン運用の決定 → decisions.md「バージョン運用は『内容を変えたら必ずバンプ』」(パッチ = 改稿 / マイナー = 構成増減 / 独立バンプ / marketplace に version を持たない)。運用開始は初回導入後 — それまでは 0.1.0 固定
+- [ ] ドッグフーディング: テンプレ群リポジトリへ導入し実発火を検証(導入操作は人・検証は AI と協働)。観点:
+  - [ ] `/plugin marketplace add usausa/template-spec` → install が私有認証込みで通る
+  - [ ] `paths:` 発火: 対象ファイル(*.xaml.cs / Log.cs / *.razor 等)を編集する作業で対応 skill が自動適用される
+  - [ ] 同名 7 skill(blazor / data / maui / mvvm / web / worker / wpf)の同時発火で矛盾なし・第 2 段の断定が優先される
+  - [ ] `/aidd-dotnet:init lite` が新規ディレクトリで実動する(プラグイン経由の ${CLAUDE_PLUGIN_ROOT} 解決)
+  - [ ] hooks(編集後 format / CRLF 正規化・DoD リマインド)がプラグイン経由で発火する
+  - [ ] MCP(microsoft-learn / nuget)が接続できる
+  - [ ] references をモデルが必要時に読みに行く(aidd-smart の本文 → references 誘導が機能する)
 - [ ] 実プロジェクトでの一巡(init → /spec 相当 → 実装 → done のフロー確認)
 
 ## Phase 5: 片付け

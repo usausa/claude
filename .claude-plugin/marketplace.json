@@ -1,0 +1,21 @@
+{
+  "name": "aidd",
+  "owner": {
+    "name": "usausa"
+  },
+  "metadata": {
+    "description": "C# / .NET の AI 駆動開発を支援する私有プラグイン集 (2 段スタック構成)"
+  },
+  "plugins": [
+    {
+      "name": "aidd-dotnet",
+      "source": "./plugins/aidd-dotnet",
+      "description": "C# / .NET の AI 駆動開発基盤 (ライブラリ中立の規律 + SDD フロー + プロジェクト初期化)"
+    },
+    {
+      "name": "aidd-smart",
+      "source": "./plugins/aidd-smart",
+      "description": "Smart 系スタック標準の断定 + 詳細リファレンス (aidd-dotnet の規律を具体化するアドオン)"
+    }
+  ]
+}
