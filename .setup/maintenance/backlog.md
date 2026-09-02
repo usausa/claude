@@ -19,6 +19,7 @@
 - **PreToolUse フック (作業フォルダの誤書き込み拒否)** — 現ブランチ以外の `docs/work/<slug>/` への書き込みを拒否する機械強制 (DrivenPlatform 申し送りの論点。`docs/work/` 直下は許容して両方式と両立する設計まで確定済み)。実装は見送り中 — hooks の非 Windows 対応と合わせて検討
 - **generator 規約の執筆** — Source Generator の実装様式は骨子のみ確定済み (取り込みは見送り): IIncrementalGenerator 一択 / `ForAttributeWithMetadataName` で抽出 / パイプラインは equatable な record に正規化 (ISymbol を持ち回らない) / 検証エラーは throw せず Result 型でパイプラインに乗せ出力段冒頭で ReportDiagnostic / 診断は静的 DiagnosticDescriptor 集約 + ID 体系 / 生成名は `名前空間_クラス名.g.cs` / MSBuild プロパティは AnalyzerConfigOptionsProvider + CompilerVisibleProperty を対で配線 / 検証は EmitCompilerGeneratedFiles ハーネス + analyzer 適用テスト。採用プロジェクトが現れたら rule-create で `.setup/rules/` カタログに起こす
 - **aws-lambda 規約の執筆** — 未執筆 (規範のない枠 doc は置かない)。扱う予定: ハンドラの属性 + Source Generator 宣言 / 環境変数設定・プラットフォームロガー + LoggerMessage 共通様式 / ウォームアップ ping 早期リターン・コールドスタート対策 (R2R + arm64) / SAM デプロイ。書けた時にオプション rule として新設
+- **プラグイン / Kit 化** — 本テンプレを Claude Code プラグイン + スキャフォールドに再編する構想(Phase 1: AI 機構のプラグイン化 / Phase 2: init の取り込み)
 - **検討事項の運用の Issues 化** — 複数人・複数 AI 体制になったら、この backlog の起票・クローズを GitHub Issues に移す選択肢
 - **その他** — CPM(`Directory.Packages.props`)採用可否 / 旧参考資料の削除可否 / 汎用プロンプト集 / nested AGENTS.md / org での AGENTS.md 必須化
 
@@ -72,6 +73,11 @@
 
 - **未: doc-sync agent の役割整理**: /reference command が手順を直接持ち、doc-sync agent はどこからも呼ばれていない。command から agent へ委譲に一本化するか、agent を廃止するか。
 - **未: README のセットアップ記述の検証**: 「PowerShell フックに `CLAUDE_CODE_USE_POWERSHELL_TOOL=1`」(README 始め方 6) — hooks は powershell.exe を直接起動するため不要の可能性。実機で要否を確認し修正 or 削除。
+
+## 検討: プラグイン / Kit 化(2段スタック構成)
+
+- **設計たたき台は [plugin-plan.md](plugin-plan.md) が正**(全体像・責務分界・Phase・未決)。骨子: 第1段 core(本テンプレ = 中立規律 + SDD フロー)+ 第2段 stack(template-architecture = スタック標準の paths 付き skill + references)。rules はプラグイン配布不可のため `paths:` 付き skill へ変換、スキャフォールドは init skill + スクリプト、MCP は `mcpServers` で同梱(形態別は `dependencies` / `userConfig` で選択制)。
+- 着手は実運用検証(上記)で現行形を固めてから。
 
 ## 検討: Aaronontheweb/dotnet-skills の扱い
 

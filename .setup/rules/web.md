@@ -39,6 +39,7 @@ Program.cs → Application (組み立て/DI/ルート定数)
 - サーバ側の置き場: `Endpoints` / `Services` / `Usecase` / `Accessors` (データアクセス) / `Models` / `Domain` (純粋ロジック) / `Settings` (設定クラス) / `Application` (アプリ固有の共通部品) / `Infrastructure` (アプリ非依存の基盤部品)。
 - モデルサフィックス: `*Entity` (テーブル) / `*View` (SQL 結果) / `*Parameter` (SQL 引数) / `*Request`・`*Response` (API 境界) / `*Setting` (アプリ設定) / `*Options` (コンポーネント設定) / `*Entry` (ネスト設定)。
 - 設定クラスは `Settings/` 配下・`sealed`。`Configure<T>(GetSection)` + `IOptions<T>.Value` の Singleton 登録で **IOptions を業務コードへ漏らさない**。
+- ネスト設定は親クラスにネスト定義した `*Entry` とし、利用側には**必要な子だけを分解登録して渡す** (親設定ごと渡さない)。起動の組み立てで使う値は `GetSection().Get<T>()` で即時取得しローカル変数に留める。
 
 ## ログの具体 ([logging.md](logging.md) の実装)
 - Serilog: `AddSerilog(o => o.ReadFrom.Configuration(builder.Configuration))`。出力の書き方は [logging.md](logging.md) (LoggerMessage 全面採用・配置は適宜分割)。

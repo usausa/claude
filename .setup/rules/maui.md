@@ -7,6 +7,11 @@ paths:
 
 > **MAUI 固有**。MVVM レイヤ・UI 原則は [`mvvm.md`](mvvm.md)、プロジェクト方針は [`conventions.md`](conventions.md) を参照。
 
+## 起動の組み立て
+- `CreateMauiApp()` は `ConfigureXxx()` / `UseXxx()` の**チェーン 1 本**に保ち、実体は private static 拡張メソッドへ切り出す (`#if` のプラットフォーム分岐は実体側に閉じ込める)。
+- DI 登録は 1 箇所に集約し、登録順はレイヤ順 (Components → Messenger → Navigator → State → Service → Usecase → Startup)。
+- 起動後処理 (プロバイダ設定・設定既定値の投入・購読開始) は `IMauiInitializeService` 実装に隔離し、`App` は Window 生成と初期遷移だけに保つ。
+
 ## UI / UX
 - Style は `App.xaml` (`Resources/Styles`) に定義する (mvvm.md のスタイル原則の実装)。
 - サイズは dpi を考慮した推奨値 (3, 6, 9, 12, 18, 24, 36, 48, 72 等) で統一。

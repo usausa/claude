@@ -10,6 +10,7 @@ paths:
 - テストフレームワークは **xunit.v3 + Microsoft.Testing.Platform** を標準とする。
 - テスト名は**英語 PascalCase の 3 部構成** `対象_条件_期待` で受け入れ条件を表す: `FindOrderBusinessDate_BeforeCloseTime_ReturnsNextBusinessDay`。
 - 本文は **AAA パターン**で書き、`// Arrange` `// Act` `// Assert` のコメントで区切る。
+- AAA コメントは**固定文言の区切り行**として使う (シナリオ説明を書き足さない。処理内容の補足は対象行の直前に別コメントで書く)。例外検証で Act と Assert が 1 式に融合する場合は `// Act & Assert` の 1 コメントに畳んでよい。
 - **ロジックは下位層 (Domain の Logic / Usecase の共通部品 = Subcase) に寄せて**ユニットテスト可能にするのが前提。純粋関数 (Logic) は総当たり検証を使ってよい。
 
 ## Mock の用意のしかた

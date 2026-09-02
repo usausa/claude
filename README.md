@@ -64,6 +64,7 @@
 
 ## 🧩 MCP と skill(拡張)
 - **MCP(同梱)**: `.mcp.json` に Microsoft Learn(docs grounding)+ NuGet(パッケージ・脆弱性)。ツール定義は固定費なので **Learn / NuGet に絞る**(可視ツール ~50 上限)。
+- **MCP の追加**: `.mcp.json` にサーバー定義を追記する(`claude mcp add <name> --scope project ...` でも可)。リモートは `{ "type": "http", "url": "..." }`、ローカル実行は `{ "type": "stdio", "command": "...", "args": [...] }`。追加後はセッション再起動と初回承認が必要。ツール定義は固定費のため、常用するものだけ残し使わなくなったら削除する。
 - **skill**: 同梱分は `.claude/skills/` を見る(個名は列挙しない=腐らせない)。追加は MAUI=`davidortinau/maui-skills`、Web=公式 `dotnet/skills` 等を**選別**(plugin か vendor-copy)。**`conventions.md` が常に優先**。description は固定費なので入れすぎない。
 
 <!-- template-dev:start -->
