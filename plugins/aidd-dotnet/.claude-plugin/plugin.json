@@ -6,5 +6,6 @@
   "author": {
     "name": "usausa"
   },
-  "mcpServers": "./mcp-servers.json"
+  "mcpServers": "./mcp-servers.json",
+  "hooks": "./hooks/hooks.json"
 }

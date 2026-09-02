@@ -62,8 +62,8 @@
 
 - [x] `plugins/aidd-dotnet/.claude-plugin/plugin.json` 骨格(name / version 0.1.0 / description / mcpServers)
 - [x] rules → `paths:` frontmatter 付き skill へ変換(20 本。conventions はプロジェクト側ファイルのため templates 行き)。frontmatter に name / description を付与、skill 間参照は `xxx` skill 表記へ変換。**中立化 = mvvm(Smart.Mvvm / Smart.Navigation / Modules 断定 → 基盤選定は `/adr`)/ wpf(WindowManager 方式 → マネージャ抽象へ一般化)/ web・worker(Serilog 断定 → ロガー選定は `/adr`)** — 外した断定は第 2 段が上書き提供する(Phase 3 で確認)
-- [ ] commands 11 本 → skills へ移行(レガシー commands は持たない)
-- [ ] agents / hooks の移設(hooks.json 化、`${CLAUDE_PLUGIN_ROOT}` パスへ)
+- [x] commands 11 本 → skills へ移行(description 移植・argument-hint は本文冒頭の「引数:」行へ・`$ARGUMENTS` 維持)。既存 skills 7 本(adr-guide の references 込み)も移設し、`.claude/rules/` 参照は二義に応じて字句修正(自動適用の規範 → 「アーキ規範 skill」/ conventions・rule-create の出力先 → プロジェクトの `.claude/rules/` のまま)
+- [x] agents 4 本 / hooks の移設(hooks.json 化、ps1 は `${CLAUDE_PLUGIN_ROOT}/hooks/` 参照へ)。settings.json の permissions / deny はプラグインで配布できないため init の templates で配る(残バッチ)
 - [x] MCP: Learn / NuGet を `mcp-servers.json` として同梱(ルートの .mcp.json はリポジトリ自身の作業用に残置、退役は Phase 2 完了時に判断)
 - [ ] init skill + `templates/`(staging/templates-neutral から再構成。form / SDD の確定ロジック = 旧マーカー解決をスクリプトへ移植)
 - [ ] 検証: paths 発火が rules と同等か / ロード量(description 固定費)/ `/名前:skill` の使用感
