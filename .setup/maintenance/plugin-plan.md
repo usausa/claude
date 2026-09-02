@@ -60,11 +60,11 @@
 
 ## Phase 2: 第 1 段プラグイン(dotnet 全般)
 
-- [ ] `plugins/<第1段>/.claude-plugin/plugin.json` 骨格(name / version / description / mcpServers)
-- [ ] rules 21 本 → `paths:` frontmatter 付き skill へ変換(中立のみ。mvvm の Smart 標準断定は第 2 段へ移し、第 1 段 mvvm は中立原則に戻す)
+- [x] `plugins/aidd-dotnet/.claude-plugin/plugin.json` 骨格(name / version 0.1.0 / description / mcpServers)
+- [x] rules → `paths:` frontmatter 付き skill へ変換(20 本。conventions はプロジェクト側ファイルのため templates 行き)。frontmatter に name / description を付与、skill 間参照は `xxx` skill 表記へ変換。**中立化 = mvvm(Smart.Mvvm / Smart.Navigation / Modules 断定 → 基盤選定は `/adr`)/ wpf(WindowManager 方式 → マネージャ抽象へ一般化)/ web・worker(Serilog 断定 → ロガー選定は `/adr`)** — 外した断定は第 2 段が上書き提供する(Phase 3 で確認)
 - [ ] commands 11 本 → skills へ移行(レガシー commands は持たない)
 - [ ] agents / hooks の移設(hooks.json 化、`${CLAUDE_PLUGIN_ROOT}` パスへ)
-- [ ] MCP: .mcp.json の Learn / NuGet を plugin.json `mcpServers` へ
+- [x] MCP: Learn / NuGet を `mcp-servers.json` として同梱(ルートの .mcp.json はリポジトリ自身の作業用に残置、退役は Phase 2 完了時に判断)
 - [ ] init skill + `templates/`(staging/templates-neutral から再構成。form / SDD の確定ロジック = 旧マーカー解決をスクリプトへ移植)
 - [ ] 検証: paths 発火が rules と同等か / ロード量(description 固定費)/ `/名前:skill` の使用感
 - [ ] プラグイン README(導入手順: marketplace add → install → init)
@@ -75,6 +75,7 @@
 - [ ] staging/architecture の docs を**分類単位の skill(約 20 個)**へ再編: 本文 = スタック規範の要約(第 1 段の同名 skill の具体版・薄く保つ)、`references/` = docs 本体(オンデマンド参照)
 - [ ] 正典実物(Analyzers.ruleset / .editorconfig / Directory.Build.props)を第 2 段 `templates/` へ(テンプレ群の新正典)
 - [ ] TOPICS.md を保守文書として移設(.setup/maintenance/ 配下)
+- [ ] 第 1 段の中立化で外した断定(Smart.Mvvm / Smart.Navigation / Modules / WindowManager / Serilog 構成)を第 2 段の対応 skill が上書き提供していることを確認
 - [ ] 序列検証: 第 1・2 段の同時発火で干渉なし / conventions 優先が保たれる
 - [ ] スタック固有 MCP の要否判断(必要になったときに追加でよい)
 

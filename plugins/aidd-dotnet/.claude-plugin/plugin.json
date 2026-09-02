@@ -1,0 +1,10 @@
+{
+  "name": "aidd-dotnet",
+  "displayName": "AIDD for .NET",
+  "version": "0.1.0",
+  "description": "C# / .NET の AI 駆動開発基盤 (ライブラリ中立の規律 + SDD フロー + プロジェクト初期化)",
+  "author": {
+    "name": "usausa"
+  },
+  "mcpServers": "./mcp-servers.json"
+}
