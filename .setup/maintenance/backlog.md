@@ -1,6 +1,7 @@
 # 検討事項(未決 TODO)
 
 > 設計上まだ確定していない・今後見直す論点。**確定したら本体へ反映して [decisions.md](decisions.md) に記録を移し、ここから消す**。
+> 注: プラグイン化(2 段スタック構成)以前に書かれた項は旧 setup.ps1 方式の語彙を含む。読み替え(rules → paths 付き skill / setup の採用リスト → プラグインのカタログ)は [plugin-plan.md](plugin-plan.md) を参照。
 
 ## 🚧 一覧
 
@@ -19,7 +20,7 @@
 - **PreToolUse フック (作業フォルダの誤書き込み拒否)** — 現ブランチ以外の `docs/work/<slug>/` への書き込みを拒否する機械強制 (DrivenPlatform 申し送りの論点。`docs/work/` 直下は許容して両方式と両立する設計まで確定済み)。実装は見送り中 — hooks の非 Windows 対応と合わせて検討
 - **generator 規約の執筆** — Source Generator の実装様式は骨子のみ確定済み (取り込みは見送り): IIncrementalGenerator 一択 / `ForAttributeWithMetadataName` で抽出 / パイプラインは equatable な record に正規化 (ISymbol を持ち回らない) / 検証エラーは throw せず Result 型でパイプラインに乗せ出力段冒頭で ReportDiagnostic / 診断は静的 DiagnosticDescriptor 集約 + ID 体系 / 生成名は `名前空間_クラス名.g.cs` / MSBuild プロパティは AnalyzerConfigOptionsProvider + CompilerVisibleProperty を対で配線 / 検証は EmitCompilerGeneratedFiles ハーネス + analyzer 適用テスト。採用プロジェクトが現れたら rule-create で `.setup/rules/` カタログに起こす
 - **aws-lambda 規約の執筆** — 未執筆 (規範のない枠 doc は置かない)。扱う予定: ハンドラの属性 + Source Generator 宣言 / 環境変数設定・プラットフォームロガー + LoggerMessage 共通様式 / ウォームアップ ping 早期リターン・コールドスタート対策 (R2R + arm64) / SAM デプロイ。書けた時にオプション rule として新設
-- **プラグイン / Kit 化** — 本テンプレを Claude Code プラグイン + スキャフォールドに再編する構想(Phase 1: AI 機構のプラグイン化 / Phase 2: init の取り込み)
+- **プラグイン化(2 段スタック構成)** — 実行中。私有配布の 2 プラグイン(aidd-dotnet + aidd-smart)モノレポへ転換し template-architecture を統合する。作業プランは [plugin-plan.md](plugin-plan.md) が正
 - **検討事項の運用の Issues 化** — 複数人・複数 AI 体制になったら、この backlog の起票・クローズを GitHub Issues に移す選択肢
 - **その他** — CPM(`Directory.Packages.props`)採用可否 / 旧参考資料の削除可否 / 汎用プロンプト集 / nested AGENTS.md / org での AGENTS.md 必須化
 
@@ -76,7 +77,7 @@
 
 ## 実行中: プラグイン化(2 段スタック構成)
 
-- **方針決定済み(2026-08-25)・作業プランは [plugin-plan.md](plugin-plan.md) が正**(フェーズ・チェックリスト)。骨子: 私有配布 / 本リポジトリを 2 プラグイン(dotnet 全般 + Smart アーキテクチャ)のモノレポへ転換し template-architecture の内容も統合 / rules は `paths:` 付き skill へ変換 / スキャフォールドは init skill + templates。
+- **方針決定済み(2026-09-02)・作業プランは [plugin-plan.md](plugin-plan.md) が正**(フェーズ・チェックリスト)。骨子: 私有配布 / 本リポジトリを 2 プラグイン(dotnet 全般 + Smart アーキテクチャ)のモノレポへ転換し template-architecture の内容も統合 / rules は `paths:` 付き skill へ変換 / スキャフォールドは init skill + templates。
 - 実運用検証はプラン Phase 4 のドッグフーディングとして実施する。
 
 ## 検討: Aaronontheweb/dotnet-skills の扱い
