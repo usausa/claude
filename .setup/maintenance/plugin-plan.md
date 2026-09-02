@@ -58,7 +58,7 @@
 - [x] .setup/maintenance/ の洗い出し: MAINTENANCE.md を新構成へ全面更新(原則 3 = プラグイン加算方式・構成表・暫定検証)。decisions / design / refactor-lite-base / restructure-context / drivenplatform-handover は歴史記録として不変更、backlog は冒頭に読み替え注記を追加
 - [x] 検証方式の再定義: 移行中の暫定 = リンク・参照の整合確認。機械検証は Phase 2 で `test-plugins.ps1`(plugin.json / marketplace.json の妥当性・skill frontmatter 検査)として整備(MAINTENANCE.md フローに記載)
 
-## Phase 2: 第 1 段プラグイン(dotnet 全般)
+## Phase 2: 第 1 段プラグイン(dotnet 全般)— 完了 2026-09-02
 
 - [x] `plugins/aidd-dotnet/.claude-plugin/plugin.json` 骨格(name / version 0.1.0 / description / mcpServers)
 - [x] rules → `paths:` frontmatter 付き skill へ変換(20 本。conventions はプロジェクト側ファイルのため templates 行き)。frontmatter に name / description を付与、skill 間参照は `xxx` skill 表記へ変換。**中立化 = mvvm(Smart.Mvvm / Smart.Navigation / Modules 断定 → 基盤選定は `/adr`)/ wpf(WindowManager 方式 → マネージャ抽象へ一般化)/ web・worker(Serilog 断定 → ロガー選定は `/adr`)** — 外した断定は第 2 段が上書き提供する(Phase 3 で確認)
@@ -66,18 +66,18 @@
 - [x] agents 4 本 / hooks の移設(hooks.json 化、ps1 は `${CLAUDE_PLUGIN_ROOT}/hooks/` 参照へ)。settings.json の permissions / deny はプラグインで配布できないため init の templates で配る(残バッチ)
 - [x] MCP: Learn / NuGet を `mcp-servers.json` として同梱(ルートの .mcp.json はリポジトリ自身の作業用に残置、退役は Phase 2 完了時に判断)
 - [x] init skill + `templates/`(2026-09-02)。構成 = `templates/root/`(骨格。**-Form は廃止** — 旧 Form の実効は rules 選別のみでプラグインでは paths 発火が代替。`.mcp.json` は配らず = プラグイン mcpServers が担う。settings.json は permissions のみ = hooks はプラグイン提供)+ `templates/sdd/`(full 素材を git 履歴から復元)+ `templates/pm/`(挿入素材 + docs-pm)。`scripts/init.ps1` に旧 setup.ps1 のマーカー解決を移植(-Sdd lite|full|full-pm、既存ファイルはスキップ)。配布版 AGENTS / README はプラグイン前提へ書き換え(規範 = プラグイン skill・序列・`/aidd-dotnet:init` 手順)。csharp-layered-feature skill の sdd マーカーは lite/full 両対応文へ畳んで解消。**実動テスト合格**(一時ディレクトリで lite / full-pm を実行: マーカー解決 0 残・full 資産/docs/pm の有無・conventions/settings 配置・.mcp.json 非配布をすべて確認)
-- [ ] 検証: paths 発火が rules と同等か / ロード量(description 固定費)/ `/名前:skill` の使用感
-- [ ] プラグイン README(導入手順: marketplace add → install → init)
+- [x] 構造検証の自動化: `.setup/maintenance/test-plugins.ps1`(plugin.json・参照 JSON・全 skill の frontmatter / name 一致 / paths 非空・hooks の ps1 存在・marketplace 妥当性 + **init の実動スモーク**。ALL PASS が完了条件)。paths 発火の同等性・ロード量・`/名前:skill` の使用感は実機事項のため Phase 4 のドッグフーディングで実測
+- [x] プラグイン README(提供物一覧・導入手順 = marketplace add → install → init・私有認証の注意・序列)
 
 ## Phase 3: 第 2 段プラグイン(Smart アーキテクチャ)
 
-- [ ] `plugins/<第2段>/` 骨格 + `dependencies: [<第1段>]`
-- [ ] staging/architecture の docs を**分類単位の skill(約 20 個)**へ再編: 本文 = スタック規範の要約(第 1 段の同名 skill の具体版・薄く保つ)、`references/` = docs 本体(オンデマンド参照)
-- [ ] 正典実物(Analyzers.ruleset / .editorconfig / Directory.Build.props)を第 2 段 `templates/` へ(テンプレ群の新正典)
-- [ ] TOPICS.md を保守文書として移設(.setup/maintenance/ 配下)
-- [ ] 第 1 段の中立化で外した断定(Smart.Mvvm / Smart.Navigation / Modules / WindowManager / Serilog 構成)を第 2 段の対応 skill が上書き提供していることを確認
-- [ ] 序列検証: 第 1・2 段の同時発火で干渉なし / conventions 優先が保たれる
-- [ ] スタック固有 MCP の要否判断(必要になったときに追加でよい)
+- [x] `plugins/aidd-smart/` 骨格 + `dependencies: ["aidd-dotnet"]`
+- [x] staging/architecture の docs を**分類単位の skill(20 個)**へ再編: 本文 = スタック規範の要約 + `paths:` 自動適用、`references/` = docs 93 本(オンデマンド参照)。本文の references 言及と実ファイルの同期は test-plugins.ps1 が機械検査
+- [x] 正典実物(Analyzers.ruleset / .editorconfig / Directory.Build.props / .targets)を第 2 段 `templates/` へ(テンプレ群の新正典)
+- [x] TOPICS.md を保守文書として移設 → `.setup/maintenance/architecture-topics.md`(経緯記録の注記付き)
+- [x] 第 1 段の中立化で外した断定の上書き確認: Smart.Mvvm / Smart.Navigation / Modules = `mvvm` skill、WindowManager = `wpf` skill、Serilog = `log` skill(paths が Log*.cs / appsettings を捕捉)。第 1 段の同名 skill に断定の残りがないことも grep 検証済み
+- [x] 序列検証(静的): 同名 7 skill(blazor / data / maui / mvvm / web / worker / wpf)は意図的な上書き対応。第 1 段 = 中立 + 「選定は /adr」、第 2 段 = 断定のため矛盾なし。実運用の同時発火・conventions 優先は Phase 4 のドッグフーディングで確認
+- [x] スタック固有 MCP の要否判断 → 当面追加しない(必要になったときに aidd-smart の mcpServers へ追加)
 
 ## Phase 4: marketplace・配布・検証
 

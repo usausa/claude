@@ -32,7 +32,7 @@
 ## 🔄 保守のフロー
 
 1. 変更する(上の原則と [plugin-plan.md](plugin-plan.md) のフェーズに従う)。**決定を伴うなら [decisions.md](decisions.md) に追記**(覆すときは新項 + 旧項に取り消し注記)、保留・未決は [backlog.md](backlog.md) へ。
-2. **検証**: 移行中の暫定 = 変更箇所のリンク・参照の整合確認(旧 test-setup.ps1 は退役)。プラグイン構造の機械検証(plugin.json / marketplace.json の妥当性・skill frontmatter の検査)は Phase 2 で `test-plugins.ps1` として整備する。
+2. **検証**: `pwsh .setup/maintenance/test-plugins.ps1` — プラグイン構造(plugin.json・参照 JSON・skill frontmatter・hooks)と init の実動スモークを検証する。**ALL PASS が完了条件**。
 3. コミットは Conventional Commits。commit / push は人が実行。
 
 ## 📁 このディレクトリの構成
@@ -41,6 +41,8 @@
 - [decisions.md](decisions.md) — 確定した設計方針(開発の決定記録・追記式)
 - [backlog.md](backlog.md) — 未決の検討事項(TODO)
 - [plugin-plan.md](plugin-plan.md) — プラグイン化 2 段スタック構成の作業プラン(フェーズ・チェックリスト。実行中)
+- [test-plugins.ps1](test-plugins.ps1) — プラグイン構造 + init 実動スモークの回帰テスト(ALL PASS が完了条件)
+- [architecture-topics.md](architecture-topics.md) — アーキ規範 93 本のトピックカタログと蒸留時の決定事項(第 2 段 20 分類の対応表・経緯記録)
 - [design.md](design.md) — 設計解説(構造と Claude 機構・GitHub Spec Kit 比較。テンプレ時代の記述を含む)
 - [command-map.md](command-map.md) — lite 基層化後のコマンド/エージェント/スキル最終形リファレンス(テンプレ時代の経緯記録)
 - [refactor-lite-base.md](refactor-lite-base.md) — lite 基層化リファクタの方針書(実装済み・経緯記録)

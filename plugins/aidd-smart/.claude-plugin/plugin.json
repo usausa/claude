@@ -1,0 +1,12 @@
+{
+  "name": "aidd-smart",
+  "displayName": "AIDD Smart Architecture",
+  "version": "0.1.0",
+  "description": "Smart 系スタック標準の断定 + 詳細リファレンス (aidd-dotnet の規律を具体化するアドオン)",
+  "author": {
+    "name": "usausa"
+  },
+  "dependencies": [
+    "aidd-dotnet"
+  ]
+}
