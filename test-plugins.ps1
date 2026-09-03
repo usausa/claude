@@ -1,7 +1,7 @@
 # プラグイン構造の回帰テスト: 構成・frontmatter・JSON・init の実動スモークを検証する。
-# 使い方: pwsh .setup/maintenance/test-plugins.ps1   (ALL PASS が完了条件)
+# 使い方: pwsh ./test-plugins.ps1   (ALL PASS が完了条件)
 $ErrorActionPreference = 'Stop'
-$root = Resolve-Path (Join-Path $PSScriptRoot '../..')
+$root = Resolve-Path $PSScriptRoot
 $failures = @()
 
 function Assert([bool]$cond, [string]$name) {

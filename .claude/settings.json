@@ -15,10 +15,6 @@
     ],
     "ask": [
       "Bash(git push:*)"
-    ],
-    "deny": [
-      "Edit(docs/reference/**)",
-      "Write(docs/reference/**)"
     ]
   },
   "hooks": {
