@@ -1,24 +1,42 @@
-# aidd-smart — AIDD Smart Architecture
+# aidd-smart - Smart アーキテクチャルール
 
-Smart 系スタック標準のアドオンプラグイン。`aidd-dotnet` の中立規律を**上書き具体化**し、ライブラリの断定 (Smart.Mvvm / Smart.Navigation / Smart.Data.Accessor / Serilog / NSwag ほか) と詳細リファレンス (69 ドキュメント) を提供する。
+Smart ライブラリを使用したアプリケーションテンプレートで使用する。
+`dotnet-*` の中立規律を上書き具体化し、ライブラリを断定する(Smart.Mvvm / Smart.Navigation / Smart.Data.Accessor / Serilog / NSwag ほか)。
+
+## 🚀 導入
+
+```
+/plugin install aidd-smart@aidd   # 依存で aidd-dotnet も入る
+/aidd-smart:init                  # rules 19 本を .claude/rules/ へ展開 (managed。プラグイン更新後は再実行)
+```
+
+## 🧠 rules
+
+| rule | 内容 |
+|---|---|
+| [smart-structure](.claude/rules/smart-structure.md) | プロジェクト構造(警告抑止三層・定型ファイル・メンバ順序) |
+| [smart-solution](.claude/rules/smart-solution.md) | ソリューション分割 |
+| [smart-namespace](.claude/rules/smart-namespace.md) | 名前空間辞書 |
+| [smart-host](.claude/rules/smart-host.md) | DI 登録(登録順・切り出し・スコープ) |
+| [smart-config](.claude/rules/smart-config.md) | 設定クラス |
+| [smart-log](.claude/rules/smart-log.md) | ログ(LoggerMessage 定型・Serilog・調査用トグル) |
+| [smart-data](.claude/rules/smart-data.md) | データアクセス(Smart.Data.Accessor・2-way SQL) |
+| [smart-web](.claude/rules/smart-web.md) | Web API(Minimal API・契約・NSwag) |
+| [smart-blazor](.claude/rules/smart-blazor.md) | Blazor(code-behind 分離・基底・検証) |
+| [smart-mvvm](.claude/rules/smart-mvvm.md) | MVVM(Smart.Mvvm / Navigation / Resolver・Modules 構成) |
+| [smart-wpf](.claude/rules/smart-wpf.md) | WPF(WindowManager 方式) |
+| [smart-avalonia](.claude/rules/smart-avalonia.md) | Avalonia(組込み向け入力抽象化) |
+| [smart-maui](.claude/rules/smart-maui.md) | MAUI(自前 Shell・Components 分割・Blazor Hybrid) |
+| [smart-worker](.claude/rules/smart-worker.md) | バッチ・CLI(IAction + ActionWorker・System.CommandLine) |
+| [smart-network](.claude/rules/smart-network.md) | TCP サーバ(Kestrel ConnectionHandler・アロケーションフリー) |
+| [smart-test](.claude/rules/smart-test.md) | テスト(xunit.v3 + MTP・AAA・モック方針) |
+| [smart-telemetry](.claude/rules/smart-telemetry.md) | テレメトリ・ヘルスチェック(ApplicationInstrument) |
+| [smart-generator](.claude/rules/smart-generator.md) | ソースジェネレータ(IIncrementalGenerator・実ビルドテスト) |
+| [smart-guideline](.claude/rules/smart-guideline.md) | 横断ガイドライン詳細(エラー処理・非同期・HTTP クライアント) |
+
+## 🧰 その他
 
 | 提供物 | 内容 |
 |---|---|
-| 分類 rule (19) | `smart-*` prefix: structure / solution / namespace / host / log / config / data / web / blazor / mvvm / wpf / avalonia / maui / worker / network / test / telemetry / generator / guideline。**init が `.claude/rules/` へ managed 展開し、対象ファイルを読むと `paths:` で自動適用** |
-| references の器 skill (19) | 分類毎の薄い skill が references (69 ドキュメント) を保持。rule 本文から誘導され、コード例付き詳細を必要時に読む |
-| init | `/aidd-smart:init` — smart rules の展開。プラグイン更新後の再実行で上書き更新 |
-
-## 導入
-
-```
-/plugin install aidd-smart@aidd
-```
-
-- 導入後に `/aidd-smart:init` で規範 rules をプロジェクトへ展開する (`/aidd-dotnet:init` が未実施ならそちらが先)。
-- `aidd-dotnet` に依存する (自動で併せて有効化される)。
-- 規範の序列: **プロジェクト rule > aidd-smart > aidd-dotnet > 外部 skill / MCP** — 本プラグインは第 1 段が「選定は `/adr`」とした箇所の標準を断定する。プロジェクトの事情で外れる場合は `/adr` に決定を残し、`.claude/rules/conventions.md` で上書きする。
-
-## 保守
-
-- 規範本体はプラグイン内 `.claude/rules/`(rule = 要約・強制注入)、詳細は各器 skill の references/ が正 (器の一覧と実ファイルの同期は回帰テストで機械検査される)。
-- 規範の改稿は開発リポジトリの `staging/architecture/`(原本)→ references へ反映する。
+| [init](skills/init/SKILL.md) | smart rules の展開 |
+| references | rule と対になる同名の器 skill(skills/smart-*/references/)がコード例付き詳細 69 本を保持。rule 末尾から誘導され必要時に読まれる |

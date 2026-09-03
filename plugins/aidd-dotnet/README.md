@@ -1,26 +1,49 @@
-# aidd-dotnet — AIDD for .NET
+# aidd-dotnet - C#/.NET 標準ルール
 
-**C# / .NET 標準のルール**プラグイン。ライブラリ中立のアーキ規範 rules と、コード品質の hooks・MCP を提供する。
+対象ファイルを読むと `paths:` で自動適用されるアーキ規範(ライブラリ中立)。
+序列は conventions.md(プロジェクト固有)> smart-* > dotnet-*。
+
+## 🚀 導入
+
+```
+/plugin install aidd-dotnet@aidd
+/aidd-dotnet:init   # rules 20 本を .claude/rules/ へ展開 (managed。プラグイン更新後は再実行)
+```
+
+## 📐 rules
+
+| rule | 内容 |
+|---|---|
+| [dotnet-coding-principles](.claude/rules/dotnet-coding-principles.md) | コーディング原則(.NET 共通) |
+| [dotnet-async](.claude/rules/dotnet-async.md) | 非同期処理の規約 |
+| [dotnet-errors](.claude/rules/dotnet-errors.md) | 例外・異常系の扱い |
+| [dotnet-logging](.claude/rules/dotnet-logging.md) | ログ設計 |
+| [dotnet-security](.claude/rules/dotnet-security.md) | セキュリティ標準(.NET 共通) |
+| [dotnet-data](.claude/rules/dotnet-data.md) | DB / データアクセス規約 |
+| [dotnet-domain](.claude/rules/dotnet-domain.md) | Domain 実装規約 |
+| [dotnet-http-client](.claude/rules/dotnet-http-client.md) | HTTP クライアント |
+| [dotnet-testing](.claude/rules/dotnet-testing.md) | テストの書き方 |
+| [dotnet-web](.claude/rules/dotnet-web.md) | アーキテクチャ(Web 全般) |
+| [dotnet-api](.claude/rules/dotnet-api.md) | Web API(minimal API) |
+| [dotnet-blazor](.claude/rules/dotnet-blazor.md) | Blazor(UI / コンポーネント) |
+| [dotnet-blazor-e2e](.claude/rules/dotnet-blazor-e2e.md) | Blazor E2E テスト(Playwright) |
+| [dotnet-grpc](.claude/rules/dotnet-grpc.md) | gRPC サーバ |
+| [dotnet-worker](.claude/rules/dotnet-worker.md) | アーキテクチャ(Worker / 常駐サービス) |
+| [dotnet-cli](.claude/rules/dotnet-cli.md) | CLI ツール |
+| [dotnet-mvvm](.claude/rules/dotnet-mvvm.md) | MVVM アーキテクチャ(XAML 系共通) |
+| [dotnet-desktop](.claude/rules/dotnet-desktop.md) | デスクトップ(Windows 環境固有) |
+| [dotnet-wpf](.claude/rules/dotnet-wpf.md) | WPF(UI 技術固有) |
+| [dotnet-maui](.claude/rules/dotnet-maui.md) | MAUI(プラットフォーム固有) |
+
+## 🧰 その他
 
 | 提供物 | 内容 |
 |---|---|
-| アーキ規範 rule (20) | `dotnet-*` prefix: coding-principles / async / errors / logging / security / data / domain / http-client / testing / web / api / blazor / blazor-e2e / grpc / worker / cli / mvvm / desktop / wpf / maui。**init が `.claude/rules/` へ managed 展開し、対象ファイルを読むと `paths:` で自動適用** |
-| init | `/aidd-dotnet:init` — dotnet rules の展開のみ。プラグイン更新後の再実行で上書き更新 |
-| hooks | 編集後の dotnet format 検証・UTF-8/CRLF 正規化 (コード品質の逆フィードバック) |
-| MCP | Microsoft Learn (docs grounding) + NuGet (パッケージ・脆弱性。.NET 10 SDK の `dnx` が必要) |
+| [init](skills/init/SKILL.md) | dotnet rules の展開 |
+| hooks | 編集後の dotnet format 検証・UTF-8/CRLF 正規化 |
+| MCP | 下表の 2 サーバーを同梱 |
 
-## 導入
-
-```
-/plugin marketplace add <この marketplace の Git URL>
-/plugin install aidd-dotnet@aidd
-```
-
-- 私有リポジトリのため、git 認証 (SSH または `gh auth login`) を事前に済ませておく (`GITHUB_TOKEN` 環境変数からの自動認証はない)。
-- 導入後に `/aidd-dotnet:init` で規範 rules をプロジェクトへ展開する (既存プロジェクトへの追加を想定。AGENTS.md / README / ビルド設定はアプリ側で用意)。
-
-## 規範の序列
-
-**プロジェクト rule (`.claude/rules/conventions.md`) > aidd-smart > aidd-dotnet > 外部 skill / MCP**。
-
-本プラグインはライブラリ選定を断定しない (選定は ADR に残す)。Smart 系スタック標準 (推奨ライブラリの断定 + 詳細リファレンス) を使う場合は `aidd-smart` を、spec / plan / 実装の基本ワークフローは `aidd-flow` を併せて導入する。
+| MCP サーバー | 種類 | 用途 |
+|---|---|---|
+| microsoft-learn | http(`learn.microsoft.com/api/mcp`) | Microsoft Learn ドキュメントの参照(API・設定の一次情報) |
+| nuget | stdio(`dnx NuGet.Mcp.Server` — .NET 10 SDK が必要) | パッケージ検索・バージョン確認・脆弱性チェック |
