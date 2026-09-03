@@ -1,0 +1,12 @@
+{
+  "name": "aidd-pm",
+  "displayName": "AIDD Project Management",
+  "version": "0.1.0",
+  "description": "feature 単位のプロジェクト管理アドオン (イテレーション計画 + 進捗集計。SDD full 前提)",
+  "author": {
+    "name": "usausa"
+  },
+  "dependencies": [
+    "aidd-dotnet"
+  ]
+}

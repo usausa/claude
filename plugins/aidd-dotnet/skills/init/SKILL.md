@@ -4,7 +4,7 @@ description: アーキ規範 rules (managed) とプロジェクト宣言 (SDD �
 disable-model-invocation: true
 ---
 
-> 引数: [lite|full|full-pm] (SDD レベル。省略時: 既存宣言を維持、初回は full)
+> 引数: [lite|full] (SDD レベル。省略時: 既存宣言を維持、初回は full)
 
 既存プロジェクトへ AI 開発基盤を導入する。**展開されるのは `.claude/rules/` のみ**(規範 rules 20 本 + プロジェクト宣言 aidd.md)。
 

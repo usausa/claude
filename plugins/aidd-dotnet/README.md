@@ -5,9 +5,9 @@ C# / .NET の AI 駆動開発基盤プラグイン。**ライブラリ中立の�
 | 提供物 | 内容 |
 |---|---|
 | アーキ規範 rule (20) | `dotnet-*` prefix: coding-principles / async / errors / logging / security / data / domain / http-client / testing / web / api / blazor / blazor-e2e / grpc / worker / cli / mvvm / desktop / wpf / maui。**init が `.claude/rules/` へ managed 展開し、対象ファイルを読むと `paths:` で自動適用** |
-| 開発フロー skill (20) | `/aidd-dotnet:spec` → `plan` → `impl` → `verify` → `review` → `done` のループ、`adr` / `reference` / `trace` / `review-cross` / `pm-plan` / `pm-status`、work-init / work-close / spec-close / adr-guide / rule-create / git-commit / csharp-layered-feature / sync-docs-from-code。SDD レベル (lite / full / full-pm) は aidd.md の宣言で実行時分岐 |
-| init | `/aidd-dotnet:init [lite\|full\|full-pm]` — `.claude/rules/` のみ展開 (規範 rules + プロジェクト宣言 aidd.md)。docs 骨格は各フロー skill が必要時に生成 |
-| agents (4) | spec / reviewer / doc-sync / pm |
+| 開発フロー skill (18) | `/aidd-dotnet:spec` → `plan` → `impl` → `verify` → `review` → `done` のループ、`adr` / `reference` / `trace` / `review-cross`、work-init / work-close / spec-close / adr-guide / rule-create / git-commit / csharp-layered-feature / sync-docs-from-code。SDD レベル (lite / full) は aidd.md の宣言で実行時分岐。プロジェクト管理は `aidd-pm` プラグイン |
+| init | `/aidd-dotnet:init [lite\|full]` — `.claude/rules/` のみ展開 (規範 rules + プロジェクト宣言 aidd.md)。docs 骨格は各フロー skill が必要時に生成 |
+| agents (3) | spec / reviewer / doc-sync |
 | hooks | 編集後の dotnet format 検証・UTF-8/CRLF 正規化、応答終了時の DoD リマインド |
 | MCP | Microsoft Learn (docs grounding) + NuGet (パッケージ・脆弱性。.NET 10 SDK の `dnx` が必要) |
 

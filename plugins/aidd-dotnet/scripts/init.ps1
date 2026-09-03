@@ -1,13 +1,13 @@
 # aidd-dotnet 初期化: アーキ規範 rules (managed) とプロジェクト宣言を .claude/rules/ へ展開する。
 # 使い方 (通常は /aidd-dotnet:init skill から実行される):
-#   pwsh <plugin>/scripts/init.ps1 [-Sdd lite|full|full-pm]
+#   pwsh <plugin>/scripts/init.ps1 [-Sdd lite|full]
 #
 #  - 展開されるのは .claude/rules/ のみ (既存プロジェクトへの追加を想定)。
 #  - managed rules は**常に上書き** (プラグイン update 後の再実行で更新)。
 #  - aidd.md (プロジェクト宣言) は -Sdd 未指定なら既存の SDD レベルを維持する (初回既定は full)。
 #  - docs 骨格 (adr / work / spec / reference / pm) は各フロー skill が必要時に生成する。
 param(
-    [ValidateSet('', 'lite', 'full', 'full-pm')]
+    [ValidateSet('', 'lite', 'full')]
     [string]$Sdd = '',
     [string]$Destination = (Get-Location).Path
 )
