@@ -42,7 +42,7 @@
 |---|---|---|
 | `settings.json` | 自動 | 権限。`reference/**` の手編集を deny |
 | `rules/conventions.md` | 自動適用 | プロジェクト固有方針(編集して育てる) |
-| (プラグイン提供) | 自動 | フック(format 検証・CRLF 正規化・DoD リマインド)/ アーキ規範 skill(`paths:` 自動適用)/ 開発ループの各段(`/aidd-dotnet:spec` 等)/ サブエージェント |
+| (プラグイン提供) | 自動 | フック(format 検証・CRLF 正規化・DoD リマインド)/ アーキ規範 rule(init が `.claude/rules/` へ展開・`paths:` 自動適用)/ 開発ループの各段(`/aidd-dotnet:spec` 等)/ サブエージェント |
 <!-- pm:guide-claude -->
 
 ## 🗂️ 寿命・永続化(何を編集し・生成し・残すか)

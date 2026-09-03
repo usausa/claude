@@ -27,7 +27,7 @@
 /plugin install aidd-dotnet@aidd
 ```
 
-新規プロジェクトでは続けて `/aidd-dotnet:init [lite|full|full-pm]` で骨格(ビルド設定・docs・AGENTS.md)を展開し、AGENTS.md の「スタック」節を記入する。以降の使い方は展開された README.md が入口。
+導入後に `/aidd-dotnet:init [lite|full|full-pm]`(+ aidd-smart 利用時は `/aidd-smart:init`)で AI 関連ファイル(AGENTS.md / docs 骨格 / **アーキ規範 rules**)を展開し、AGENTS.md の「スタック」節を記入する。規範 rules は managed(init 再実行で上書き更新)で、対象ファイルを読むと `paths:` で自動適用される。
 
 更新は以下(version が上がったときに反映される):
 
@@ -36,6 +36,8 @@
 /plugin update aidd-dotnet@aidd
 /plugin update aidd-smart@aidd
 ```
+
+更新後は **init を再実行**して規範 rules を最新化する(`/aidd-dotnet:init` + smart 利用時 `/aidd-smart:init`。managed rules だけが上書きされ、他の既存ファイルはスキップされる)。フロー skill・hooks・MCP・references はプラグイン本体から直接提供されるため update だけで最新になる。
 
 ## バージョン運用
 
@@ -46,8 +48,8 @@
 | 場所 | 内容 |
 |---|---|
 | `.claude-plugin/marketplace.json` | marketplace 定義(2 プラグイン・相対パス source) |
-| `plugins/aidd-dotnet/` | 第 1 段の実体(skills 39 / agents 4 / hooks / MCP / init + templates) |
-| `plugins/aidd-smart/` | 第 2 段の実体(skills 20 + references 93 / 正典 templates) |
+| `plugins/aidd-dotnet/` | 第 1 段の実体(`.claude/rules/` 20 / フロー skills 19 / agents 4 / hooks / MCP / init + templates) |
+| `plugins/aidd-smart/` | 第 2 段の実体(`.claude/rules/` 20 / references の器 skills 20 + references 93 / init) |
 | `.setup/maintenance/` | 保守文書・回帰テスト(利用者には不要) |
 | `staging/` | 統合移行中の原本の写し(Phase 5 で削除予定) |
 

@@ -11,7 +11,7 @@
 ## コーディング
 - 書式・命名は `.editorconfig` + analyzer が正 (機械が守るルールは文書化しない)。
 - **ビルド警告ゼロ + テスト緑が完了条件**: `dotnet build`(警告0)+ `dotnet test`(Claude は `/verify`)。警告抑制は適用前に確認。
-- アーキテクチャ・セキュリティ等の規範は **aidd プラグインの skill** が正 (対象ファイルを読むと `paths:` で自動適用される)。
+- アーキテクチャ・セキュリティ等の規範は **aidd プラグインが `.claude/rules/` へ展開する managed rule** が正 (対象ファイルを読むと `paths:` で自動適用される。プラグイン更新後は init の再実行で上書き更新)。
 - **プロジェクト固有方針は `.claude/rules/conventions.md`**(編集して育てる。対象ファイルで自動適用)。
 - 規範の序列: **プロジェクト rule (`.claude/rules/*`) > aidd-smart > aidd-dotnet > 外部 skill / MCP** (Microsoft Learn / NuGet 等)。
 

@@ -99,7 +99,9 @@
 > decisions「プラグインは既存プロジェクトへの追加型に徹する」「規範 skill は所属 prefix 付きで命名する」の実施。ドッグフーディング前に完了させる。
 
 - [x] 規範 skill のリネーム(40 本): 第 1 段 20 本 → `dotnet-*`、第 2 段 20 本 → `smart-*`(ディレクトリ + frontmatter name + 相互参照 16 ファイル + 裸名参照 11 ファイル + README 一覧。フロー系 18 本は据え置き。旧名の残存なしを機械確認)
-- [ ] paths 暗黙ロードの実機検証: カナリア方式のミニプラグイン(scratchpad/paths-verify に準備済み)を `claude -p` で実行(CLI 再ログイン待ち)。.cs 編集でカナリア発火 / .txt 編集で非発火を確認
+- [x] paths 暗黙ロードの実機検証 → **skill の paths は強制注入しないと判明**(カナリア実験: rules は発火・skill はローカル / プラグインとも注入ゼロ)。decisions「規範の配布は rules 展開に回帰する」で構成転換
+- [x] 構成転換の実施: 第 1 段規範 20 本 → `templates/rules/dotnet-*.md`(skill 廃止)、第 2 段規範 20 本 → `templates/rules/smart-*.md`(skill は references の器に縮退・rule 末尾から references へ誘導)、aidd-smart に `/aidd-smart:init` 新設、両 init が `.claude/rules/` へ managed 上書き展開、test-plugins に rules 形式検査 + 両段 init smoke(上書き更新含む)を追加、skill/rule 表記の全域整合
+- [x] 規範原本の置き場を `plugins/<p>/.claude/rules/` へ変更(templates/rules を廃止 — 規範ファイルの居場所を `.claude/rules` パスに統一)。references の rule 統合は実測 20 万トークンで不成立と確認し、詳細はプラグイン内 references 維持(decisions 参照)。staging/architecture を前倒し削除(全 93 本が references と一致することを機械検証済み。詳細の正は references へ)
 - [ ] templates の縮小: .NET 骨格(Directory.Build.* / Analyzers.ruleset / .editorconfig / App.slnx / DotSettings / XamlStyler / .gitattributes / .gitignore / src / tests)を削除し、AI 関連(AGENTS.md / CLAUDE.md / .claude/ / docs 骨格)のみに。root README.md の扱いと init.ps1・test-plugins の追随を含む
 - [ ] aidd-smart/templates(正典実物 4 ファイル)を削除(正典の正はアプリ側テンプレートへ。structure skill の参照を調整)
 - [ ] references の定型削減(積極適用・93 → 約 71 本): deploy は skill ごと削除 / host は di-registration へ再編 / structure・log・mvvm・wpf・avalonia・maui・blazor・test・telemetry・generator から定型 refs 削除 + 各 SKILL.md 本文の定型節削減(references 同期検査で機械保証)

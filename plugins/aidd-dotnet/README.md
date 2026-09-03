@@ -4,7 +4,7 @@ C# / .NET の AI 駆動開発基盤プラグイン。**ライブラリ中立の�
 
 | 提供物 | 内容 |
 |---|---|
-| アーキ規範 skill (20) | `dotnet-*` prefix: coding-principles / async / errors / logging / security / data / domain / http-client / testing / web / api / blazor / blazor-e2e / grpc / worker / cli / mvvm / desktop / wpf / maui。**対象ファイルを読むと `paths:` で自動適用** |
+| アーキ規範 rule (20) | `dotnet-*` prefix: coding-principles / async / errors / logging / security / data / domain / http-client / testing / web / api / blazor / blazor-e2e / grpc / worker / cli / mvvm / desktop / wpf / maui。**init が `.claude/rules/` へ managed 展開し、対象ファイルを読むと `paths:` で自動適用** |
 | 開発フロー skill (18) | `/aidd-dotnet:spec` → `plan` → `impl` → `verify` → `review` → `done` のループ、`adr` / `reference` / `review-cross` / `pm-plan` / `pm-status`、work-init / work-close / adr-guide / rule-create / git-commit / csharp-layered-feature / sync-docs-from-code |
 | init | `/aidd-dotnet:init [lite\|full\|full-pm]` — 骨格 (ビルド設定・docs・AGENTS) を展開し SDD レベルを確定 |
 | agents (4) | spec / reviewer / doc-sync / pm |

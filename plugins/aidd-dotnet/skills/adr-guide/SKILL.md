@@ -12,7 +12,7 @@ description: Architecture Decision Record(ADR)に何をどう書くか(内容・
 - 粒度の目安: 「後から誰かが『なぜこうなってる?』と聞く」ものは ADR にする。
   例: 認証方式の選定、DI コンテナの選定、例外を戻り値にする方針、DB を SQLite にした理由。
 - 迷い(trade-off があった判断)は、結論が平凡でも残す価値がある。
-- `tags` は 1〜3 個。語彙はアーキ規範 skill 名(data / api / logging 等)を第一候補に、足りなければ `docs/glossary.md` のドメイン語。何でも入るタグ(「共通」等)は使わない。
+- `tags` は 1〜3 個。語彙はアーキ規範 rule の分類語(data / api / logging 等)を第一候補に、足りなければ `docs/glossary.md` のドメイン語。何でも入るタグ(「共通」等)は使わない。
 - ADR と `.claude/rules/` は**独立して保管**する(相互リンクを持たない)。決定から日々守る書き方の制約が生じたなら `rule-create` で rules 化する。決定を覆した(supersede)ときは、関連するタグの rules の見直しも検討する。
 
 作成後、関連する SPEC の `related` に ADR-ID を追記する。

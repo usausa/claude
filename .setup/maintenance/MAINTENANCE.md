@@ -12,18 +12,17 @@
 1. **二重管理しない**: 規範は 1 箇所の「正」+ 参照に一本化する。複製・個名列挙は腐る(列挙が腐った実績あり)。意図的に許容する重複の基準は [decisions.md](decisions.md)。
 2. **機械が守るものは文書化しない**: analyzer(SA1309 等)/ permission deny / hook が強制するルールを文書に書かない。
 3. **プラグインは常に全部を持ち、必要分を選択展開する**: 配布物(プラグイン)に superset を持たせ、プロジェクトへの確定は init(skill + スクリプト)が行う。利用者向けでない情報は `.setup/` と `staging/` に置く(プラグインに含めない)。
-4. **命名原則**: 系名(web / desktop / mvvm)= 系の全般、技術名(api / blazor / wpf / winui)= 技術固有。skill はアプリ形態に依存しないフローのみとし、形態固有の規範・手順は paths 付き skill(旧 rules)に置く(`<platform>-xxx`、例: `blazor-e2e`)。
+4. **命名原則**: 系名(web / desktop / mvvm)= 系の全般、技術名(api / blazor / wpf / winui)= 技術固有。規範はプラグイン内 `.claude/rules/` の managed rule(`dotnet-*` / `smart-*`。init が `.claude/rules/` へ上書き展開 — skill の `paths:` は強制注入しないため rules 配布に回帰、経緯は decisions)。skill はフロー・手順と references の器のみ。
 5. **文体**: 日本語。ASCII 記号・括弧は半角(中黒 `・` は全角のまま)、`§` 不使用、冗長・自明な括弧補足を書かない。h2 絵文字は docs 系のみ(`.claude/` と AGENTS / CLAUDE には付けない)。
-6. **2 段プラグイン構成**: アーキ規範は 2 段で持つ — 第 1 段 `aidd-dotnet`(ライブラリ中立)/ 第 2 段 `aidd-smart`(Smart スタック標準の断定 + 詳細リファレンス)。序列は「プロジェクト rule > 第 2 段 > 第 1 段 > 外部」。旧上流 template-architecture の内容は本リポジトリへ統合済み(移行中は `staging/` が原本の写し)。
+6. **2 段プラグイン構成**: アーキ規範は 2 段で持つ — 第 1 段 `aidd-dotnet`(ライブラリ中立)/ 第 2 段 `aidd-smart`(Smart スタック標準の断定 + 詳細リファレンス)。序列は「プロジェクト rule > 第 2 段 > 第 1 段 > 外部」。旧上流 template-architecture の内容は本リポジトリへ統合済み(要約の正 = プラグイン内 `.claude/rules/`、詳細の正 = 器 skill の references/)。
 
 ## 🗺️ リポジトリの構成(どこを触ると何が起きるか)
 
 | 場所 | 内容 |
 |---|---|
 | `.claude/` | 第 1 段の素材(rules / skills / commands / agents / hooks)。Phase 2 で `plugins/aidd-dotnet/` へ変換する。それまで本リポジトリでの Claude 作業にもそのまま効く |
-| `.setup/rules/` | 規範カタログ(第 1 段 skill 化の原本) |
+| `.setup/rules/` | 規範カタログ(第 1 段 rules の原本) |
 | `.setup/pm/` | 旧 SDD full-pm の挿入素材(init の確定ロジックで使う予定) |
-| `staging/architecture/` | 旧 template-architecture の写し = **第 2 段の原本**(docs 93 本 + TOPICS.md + 正典実物)。規範の改稿はここで行う |
 | `staging/templates-neutral/` | 旧テンプレ骨格 = **init の素材**(src / tests / docs / ルート定型一式) |
 | `docs/` | 旧テンプレの配布 docs(Phase 2 で templates へ再編し整理) |
 | `plugins/`(Phase 2〜) | 配布物の実体(aidd-dotnet / aidd-smart) |

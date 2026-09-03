@@ -4,8 +4,8 @@
 #   pwsh <plugin>/scripts/init.ps1 -Sdd lite       # lite (SPEC は docs/work/ の一時物)
 #   pwsh <plugin>/scripts/init.ps1 -Sdd full-pm    # full + PM
 #
-#  - アーキ規範はプラグインの skill が paths で自動適用されるため、規範ファイルの配置は行わない。
-#  - 既存ファイルは上書きしない (スキップして報告する)。
+#  - アーキ規範 rules (managed) は .claude/rules/ へ**常に上書き**展開する (プラグイン update 後の再実行で更新)。
+#  - それ以外の既存ファイルは上書きしない (スキップして報告する)。
 param(
     [ValidateSet('lite', 'full', 'full-pm')]
     [string]$Sdd = 'full',
@@ -30,6 +30,14 @@ Get-ChildItem -Path $rootDir -Recurse -File -Force | ForEach-Object {
 }
 Write-Host "[init] 骨格を展開: $Destination"
 if ($skipped.Count -gt 0) { Write-Host "[init] 既存のためスキップ: $($skipped -join ' / ')" }
+
+# --- 1b. アーキ規範 rules の展開 (プラグインの .claude/rules -> プロジェクトの .claude/rules。managed = 常に上書き) ---
+$rulesDir = Join-Path $plugin '.claude/rules'
+$destRules = Join-Path $Destination '.claude/rules'
+New-Item -ItemType Directory -Force -Path $destRules | Out-Null
+$ruleFiles = @(Get-ChildItem -Path $rulesDir -File -Filter '*.md')
+$ruleFiles | ForEach-Object { Copy-Item -Force $_.FullName (Join-Path $destRules $_.Name) }
+Write-Host "[init] アーキ規範 rules を展開 (managed・上書き更新): $($ruleFiles.Count) 本"
 
 # --- 2. SDD: base (lite) に full 層を加算、または lite のまま確定 ---
 $sddDir = Join-Path $templates 'sdd'
