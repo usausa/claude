@@ -5,6 +5,8 @@ description: docs/reference 生成(Web API=OpenAPI・任意で DB スキーマ)�
 
 # docs/reference 生成の導入(初回セットアップと CI)
 
+0. `docs/reference/` が無ければ `api/`(+ 任意 `db/`)と README.md を作る。README には「生成物・手編集禁止。現状仕様(What/How)はコードから生成してドリフトを不能にする。生成は `/reference`」の旨を書く。
+
 **原則: 現状仕様は手で書かない。ズレようがない生成物にする。** 再生成の実行手順は `/reference` が正。ここは**未導入時のセットアップと CI 連携**のみ。
 
 ## Web API → OpenAPI(`Microsoft.AspNetCore.OpenApi`, .NET 10 内蔵)

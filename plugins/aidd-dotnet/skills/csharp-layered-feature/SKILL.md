@@ -7,7 +7,7 @@ description: このプロジェクトの層構成(採用形態のアーキ規範
 
 > レイヤの具体(名前・責務)は採用形態のアーキ規範 rule に従う(対象ファイルを読むと自動適用)。ここは順序と原則のみ。
 
-1. **仕様確認**: 対象の SPEC(lite: 作業フォルダ `docs/work/`。解決規則は同 README / full: `docs/spec/SPEC-*.md`)を確認(無ければ `/spec`)。承認済みの PLAN(作業フォルダ配下)があればそれに従い、フェーズ完了ごとにチェックを更新する。
+1. **仕様確認**: 対象の SPEC(lite = 作業フォルダ `docs/work/`。解決規則は `work-init` skill / full = `docs/spec/SPEC-*.md`。レベルは `.claude/rules/aidd.md`)を確認(無ければ `/spec`)。承認済みの PLAN(作業フォルダ配下)があればそれに従い、フェーズ完了ごとにチェックを更新する。
 2. **下位から上位へ**: Domain(純粋ロジック・IO を持たない)→ Service(DB/通信のプリミティブ)→ Usecase/Application(一連の流れ)→ 上位(ViewModel / Endpoint / Component / Worker)。**上位は薄く、下位へ委譲**。
 3. **テスト**(`tests/`): 受け入れ条件を xUnit で。**テスト名を仕様として書く**(英語 PascalCase 3 部構成。例: `Login_FailedFiveTimes_LocksAccount`)。
 4. **XML doc コメント**: 公開 API に付ける。

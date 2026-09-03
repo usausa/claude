@@ -1,6 +1,6 @@
 ---
 name: smart-log
-description: Smart スタックのログ標準 (LoggerMessage 定型・Serilog 構成・outputTemplate・トグル)
+description: Smart スタックのログ標準の詳細リファレンス (LoggerMessage 定型・調査用トグル)
 ---
 
 # ログ (Smart スタック標準) — 詳細リファレンスの器
@@ -9,4 +9,4 @@ description: Smart スタックのログ標準 (LoggerMessage 定型・Serilog �
 
 ## references (詳細)
 
-log-class / serilog-configuration / output-template / enricher-and-sinks / log-toggles
+log-class / log-toggles

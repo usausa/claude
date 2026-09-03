@@ -1,1 +1,0 @@
-- **退役**: 機能削除で SPEC=`status: retired`・`ADR`=`superseded`。`/trace` が退役漏れを検出、`/done` が 0 を要求。

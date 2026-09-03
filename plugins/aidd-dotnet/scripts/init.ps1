@@ -1,121 +1,42 @@
-# aidd-dotnet 初期化: テンプレ骨格を展開し、SDD レベルを確定する。
+# aidd-dotnet 初期化: アーキ規範 rules (managed) とプロジェクト宣言を .claude/rules/ へ展開する。
 # 使い方 (通常は /aidd-dotnet:init skill から実行される):
-#   pwsh <plugin>/scripts/init.ps1                 # SDD full (既定)
-#   pwsh <plugin>/scripts/init.ps1 -Sdd lite       # lite (SPEC は docs/work/ の一時物)
-#   pwsh <plugin>/scripts/init.ps1 -Sdd full-pm    # full + PM
+#   pwsh <plugin>/scripts/init.ps1 [-Sdd lite|full|full-pm]
 #
-#  - アーキ規範 rules (managed) は .claude/rules/ へ**常に上書き**展開する (プラグイン update 後の再実行で更新)。
-#  - それ以外の既存ファイルは上書きしない (スキップして報告する)。
+#  - 展開されるのは .claude/rules/ のみ (既存プロジェクトへの追加を想定)。
+#  - managed rules は**常に上書き** (プラグイン update 後の再実行で更新)。
+#  - aidd.md (プロジェクト宣言) は -Sdd 未指定なら既存の SDD レベルを維持する (初回既定は full)。
+#  - docs 骨格 (adr / work / spec / reference / pm) は各フロー skill が必要時に生成する。
 param(
-    [ValidateSet('lite', 'full', 'full-pm')]
-    [string]$Sdd = 'full',
+    [ValidateSet('', 'lite', 'full', 'full-pm')]
+    [string]$Sdd = '',
     [string]$Destination = (Get-Location).Path
 )
 
 $ErrorActionPreference = 'Stop'
 $plugin = Split-Path -Parent $PSScriptRoot
-$templates = Join-Path $plugin 'templates'
-$isFull = $Sdd -ne 'lite'
-$isPm = $Sdd -eq 'full-pm'
-
-# --- 1. 骨格の展開 (templates/root -> Destination。既存はスキップ) ---
-$rootDir = Join-Path $templates 'root'
-$skipped = @()
-Get-ChildItem -Path $rootDir -Recurse -File -Force | ForEach-Object {
-    $rel = $_.FullName.Substring($rootDir.Length + 1)
-    $dest = Join-Path $Destination $rel
-    if (Test-Path $dest) { $script:skipped += $rel; return }
-    New-Item -ItemType Directory -Force -Path (Split-Path -Parent $dest) | Out-Null
-    Copy-Item $_.FullName $dest
-}
-Write-Host "[init] 骨格を展開: $Destination"
-if ($skipped.Count -gt 0) { Write-Host "[init] 既存のためスキップ: $($skipped -join ' / ')" }
-
-# --- 1b. アーキ規範 rules の展開 (プラグインの .claude/rules -> プロジェクトの .claude/rules。managed = 常に上書き) ---
-$rulesDir = Join-Path $plugin '.claude/rules'
 $destRules = Join-Path $Destination '.claude/rules'
 New-Item -ItemType Directory -Force -Path $destRules | Out-Null
-$ruleFiles = @(Get-ChildItem -Path $rulesDir -File -Filter '*.md')
+
+# --- 1. アーキ規範 rules の展開 (プラグインの .claude/rules -> プロジェクト。managed = 常に上書き) ---
+$ruleFiles = @(Get-ChildItem -Path (Join-Path $plugin '.claude/rules') -File -Filter '*.md')
 $ruleFiles | ForEach-Object { Copy-Item -Force $_.FullName (Join-Path $destRules $_.Name) }
 Write-Host "[init] アーキ規範 rules を展開 (managed・上書き更新): $($ruleFiles.Count) 本"
 
-# --- 2. SDD: base (lite) に full 層を加算、または lite のまま確定 ---
-$sddDir = Join-Path $templates 'sdd'
-$sddFiles = @('AGENTS.md', 'README.md', 'docs/README.md', 'docs/review-checklist.md')
-
-if ($isFull) {
-    foreach ($f in $sddFiles) {
-        $file = Join-Path $Destination $f
-        if (-not (Test-Path $file)) { continue }
-        $text = Get-Content -Raw $file
-        $blockMatches = [regex]::Matches($text, '<!-- sdd:([a-z-]+):start -->')
-        foreach ($m in $blockMatches) {
-            $name = $m.Groups[1].Value
-            $snippet = (Get-Content -Raw (Join-Path $sddDir "$name-full.md")).TrimEnd("`r", "`n")
-            $pattern = "(?s)<!-- sdd:$name`:start -->.*?<!-- sdd:$name`:end -->"
-            $text = [regex]::Replace($text, $pattern, $snippet.Replace('$', '$$'))
-        }
-        Set-Content -NoNewline -Path $file -Value $text
-    }
-
-    # full 層のファイルを加算 (spec / work-close / done / workflow / docs/work は上書き、spec-close / trace / docs/spec / traceability は追加)
-    $fullDir = Join-Path $sddDir 'full'
-    Get-ChildItem -Path $fullDir -Recurse -File -Force | ForEach-Object {
-        $rel = $_.FullName.Substring($fullDir.Length + 1)
-        $dest = Join-Path $Destination $rel
-        New-Item -ItemType Directory -Force -Path (Split-Path -Parent $dest) | Out-Null
-        Copy-Item -Force $_.FullName $dest
-    }
-    Write-Host "[sdd=$Sdd] full 層を加算: SPEC 恒久化 (docs/spec)・spec-close・/trace・traceability (プロジェクト側 .claude に配置)。"
+# --- 2. プロジェクト宣言 aidd.md (SDD レベルの確定。未指定時は既存値を維持) ---
+$aidd = Join-Path $destRules 'aidd.md'
+$level = $Sdd
+if (-not $level) {
+    if ((Test-Path $aidd) -and ((Get-Content -Raw $aidd) -match 'SDD レベル:\s*(\S+)')) { $level = $Matches[1] }
+    else { $level = 'full' }
 }
-else {
-    foreach ($f in $sddFiles) {
-        $file = Join-Path $Destination $f
-        if (-not (Test-Path $file)) { continue }
-        $text = Get-Content -Raw $file
-        $new = $text -replace '(?m)^[ \t]*<!-- sdd:[a-z-]+:(start|end) -->\r?\n?', ''
-        if ($new -ne $text) { Set-Content -NoNewline -Path $file -Value $new }
-    }
-    Write-Host "[sdd=lite] 基層のまま確定: SPEC は docs/work/ の一時物 (完了時に work-close で片付け)。"
-}
-
-# --- 3. PM 層 (full-pm のみ): マーカーへ差分を挿入 / 除去、docs/pm を加算 ---
-$markers = @{
-    'pm:readme-lifespan'    = 'docs/README.md'
-    'pm:guide-claude'       = 'README.md'
-    'pm:workflow-iteration' = 'docs/guides/workflow.md'
-    'pm:agents'             = 'AGENTS.md'
-}
-$pmDir = Join-Path $templates 'pm'
-
-foreach ($m in $markers.Keys) {
-    $file = Join-Path $Destination $markers[$m]
-    if (-not (Test-Path $file)) { continue }
-    $token = "<!-- $m -->"
-    $text = Get-Content -Raw $file
-    if ($isPm) {
-        $snippet = (Get-Content -Raw (Join-Path $pmDir (($m -replace '^pm:', '') + '.md'))).TrimEnd("`r", "`n")
-        $text = $text.Replace($token, $snippet)
-    }
-    else {
-        $text = $text -replace "(\r?\n)?[ \t]*$([regex]::Escape($token))", ''
-    }
-    Set-Content -NoNewline -Path $file -Value $text
-}
-
-if ($isPm) {
-    $pmDocsDir = Join-Path $pmDir 'docs-pm'
-    Get-ChildItem -Path $pmDocsDir -Recurse -File -Force | ForEach-Object {
-        $rel = $_.FullName.Substring($pmDocsDir.Length + 1)
-        $dest = Join-Path $Destination "docs/pm/$rel"
-        New-Item -ItemType Directory -Force -Path (Split-Path -Parent $dest) | Out-Null
-        Copy-Item -Force $_.FullName $dest
-    }
-    Write-Host "[pm=on] docs/pm を配置。計画・進捗は /aidd-dotnet:pm-plan・/aidd-dotnet:pm-status。"
-}
+@"
+# aidd プロジェクト宣言
+<!-- managed by aidd-dotnet plugin: init が生成・更新する (SDD レベルの変更は init -Sdd で行う) -->
+- SDD レベル: $level (フロー skill /spec /plan /done 等はこの宣言を読んで分岐する)
+- 規範の序列: conventions.md (プロジェクト固有) > smart-* > dotnet-* > 外部 skill / MCP
+"@ | Set-Content -Path $aidd
+Write-Host "[init] プロジェクト宣言を展開: aidd.md (SDD レベル = $level)"
 
 Write-Host ""
-Write-Host "次の手順:"
-Write-Host " 1. AGENTS.md の『スタック』節を採用形態に記入。"
-Write-Host " 2. LINT/ビルド設定は superset (Settings.XamlStyler は XAML 系用)。実プロジェクトのテンプレで置換してよい。"
-Write-Host " 3. 始め方・使い方は README.md (入口。導入後は自プロジェクトの README に置換/削除可)。回し方の正は docs/guides/workflow.md、契約は docs/README.md。"
+Write-Host "docs 骨格 (adr / work / spec / reference / pm) は各フロー skill が必要時に生成する。"
+Write-Host "回し方 (人向け) は spec skill の references/workflow.md を参照。"

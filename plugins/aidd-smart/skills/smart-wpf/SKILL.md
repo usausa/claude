@@ -1,6 +1,6 @@
 ---
 name: smart-wpf
-description: Smart スタックの WPF 標準 (WindowManager 用途限定・配置永続化・例外フック)
+description: Smart スタックの WPF 標準の詳細リファレンス (WindowManager 方式)
 ---
 
 # WPF (Smart スタック標準) — 詳細リファレンスの器
@@ -9,4 +9,4 @@ description: Smart スタックの WPF 標準 (WindowManager 用途限定・配�
 
 ## references (詳細)
 
-window-manager / window-placement / exception-handling
+window-manager

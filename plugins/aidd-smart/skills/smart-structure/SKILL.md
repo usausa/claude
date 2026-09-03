@@ -1,6 +1,6 @@
 ---
 name: smart-structure
-description: Smart スタックのプロジェクト構造標準 (ビルド設定・ruleset 三層・定型ファイル・メンバ順序)
+description: Smart スタックのプロジェクト構造標準の詳細リファレンス (警告抑止三層・定型ファイル・メンバ順序・配置)
 ---
 
 # プロジェクト構造 (Smart スタック標準) — 詳細リファレンスの器
@@ -9,4 +9,4 @@ description: Smart スタックのプロジェクト構造標準 (ビルド設�
 
 ## references (詳細)
 
-repository-layout / directory-build-props / analyzers-ruleset / warning-suppression / standard-files / coding-style / member-order
+repository-layout / warning-suppression / coding-style / member-order

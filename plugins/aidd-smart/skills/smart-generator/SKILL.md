@@ -9,4 +9,4 @@ description: Smart スタックのソースジェネレータ標準 (4 プロジ
 
 ## references (詳細)
 
-project-packaging / implementation / testing / aop-di-registration
+implementation / testing / aop-di-registration

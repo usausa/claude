@@ -1,7 +1,9 @@
 ---
-description: SPEC→ADR→test→code の ID 整合を検査し、孤児・リンク切れ・未記録の決定を報告する。
-allowed-tools: Read, Grep, Glob
+name: trace
+description: SPEC→ADR→test→code の ID 整合を検査し、孤児・リンク切れ・未記録の決定を報告する (SDD レベル full 専用)。
 ---
+
+> SDD レベル **full** 専用 (`.claude/rules/aidd.md` の宣言)。
 
 `docs/` 配下の frontmatter(`id` / `related` / `supersedes` / `status`)を走査してトレーサビリティを検査する。
 
@@ -13,4 +15,4 @@ allowed-tools: Read, Grep, Glob
    - `status: superseded` なのに後継 ADR が無い / 後継が実在しない
    - 公開 API・型を変えた形跡があるのに対応する ADR が無い(→ `/adr` を促す)
    - リンク切れ(相対リンク・画像)
-3. `docs/traceability/index.md` を最新の対応表(SPEC↔ADR↔test↔code)に更新する
+3. `docs/traceability/index.md` を最新の対応表(SPEC↔ADR↔test↔code)に更新する(無ければ見出し + 表の骨格から作る)

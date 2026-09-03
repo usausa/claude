@@ -102,11 +102,10 @@
 - [x] paths 暗黙ロードの実機検証 → **skill の paths は強制注入しないと判明**(カナリア実験: rules は発火・skill はローカル / プラグインとも注入ゼロ)。decisions「規範の配布は rules 展開に回帰する」で構成転換
 - [x] 構成転換の実施: 第 1 段規範 20 本 → `templates/rules/dotnet-*.md`(skill 廃止)、第 2 段規範 20 本 → `templates/rules/smart-*.md`(skill は references の器に縮退・rule 末尾から references へ誘導)、aidd-smart に `/aidd-smart:init` 新設、両 init が `.claude/rules/` へ managed 上書き展開、test-plugins に rules 形式検査 + 両段 init smoke(上書き更新含む)を追加、skill/rule 表記の全域整合
 - [x] 規範原本の置き場を `plugins/<p>/.claude/rules/` へ変更(templates/rules を廃止 — 規範ファイルの居場所を `.claude/rules` パスに統一)。references の rule 統合は実測 20 万トークンで不成立と確認し、詳細はプラグイン内 references 維持(decisions 参照)。staging/architecture を前倒し削除(全 93 本が references と一致することを機械検証済み。詳細の正は references へ)
-- [ ] templates の縮小: .NET 骨格(Directory.Build.* / Analyzers.ruleset / .editorconfig / App.slnx / DotSettings / XamlStyler / .gitattributes / .gitignore / src / tests)を削除し、AI 関連(AGENTS.md / CLAUDE.md / .claude/ / docs 骨格)のみに。root README.md の扱いと init.ps1・test-plugins の追随を含む
-- [ ] aidd-smart/templates(正典実物 4 ファイル)を削除(正典の正はアプリ側テンプレートへ。structure skill の参照を調整)
-- [ ] references の定型削減(積極適用・93 → 約 71 本): deploy は skill ごと削除 / host は di-registration へ再編 / structure・log・mvvm・wpf・avalonia・maui・blazor・test・telemetry・generator から定型 refs 削除 + 各 SKILL.md 本文の定型節削減(references 同期検査で機械保証)
-- [ ] 第 1 段(aidd-dotnet)の規範にも同基準を適用(起動配線等の定型記述があれば削減)
-- [ ] test-plugins ALL PASS + README 3 本(ルート / 両プラグイン)の整合
+- [x] templates を**全廃**(縮小から拡大): AGENTS / CLAUDE / README / ビルド設定はアプリ側で用意、説明文書・雛形はフロー skill の references へ(workflow 統合版 / review-checklist / adr・spec テンプレ / pm 方針・雛形)、docs 骨格は各 skill が必要時に生成。SDD マーカー機構廃止 → aidd.md 宣言の実行時分岐(spec-close / trace を full 専用 skill として常備、フロー 12 skill + spec agent に分岐統合)。init は rules 展開 + aidd.md 生成のみ(レベル維持ロジック付き)。正典実物も削除(正はアプリ側テンプレートへ)
+- [x] references の定型削減(積極適用・93 → **69 本**): deploy は分類ごと削除(rule + 器)/ host は di-registration へ再編 / structure・log・mvvm・wpf・avalonia・maui・blazor・test・telemetry・generator から定型 refs 21 本削除 + 各 rule 本文の定型行削減(起動配線・outputTemplate・OTLP 分岐・Cookie 認証・MauiProgram 等 = テンプレート済みの旨を注記)+ 器 description の実態合わせ(references 同期検査で機械保証。第 2 段は rules 19 / 器 19 に)
+- [x] 第 1 段(aidd-dotnet)の規範にも同基準を適用 → 配線定型は無しと確認(dotnet-worker のホスティング行は「選定は /adr」の中立規律のため維持)
+- [x] test-plugins ALL PASS + README 3 本(ルート / 両プラグイン)の整合(数字 = rules 39 / 器 19 / references 69)
 
 ## Phase 5: 片付け
 

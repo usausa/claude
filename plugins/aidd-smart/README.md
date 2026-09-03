@@ -1,13 +1,12 @@
 # aidd-smart — AIDD Smart Architecture
 
-Smart 系スタック標準のアドオンプラグイン。`aidd-dotnet` の中立規律を**上書き具体化**し、ライブラリの断定 (Smart.Mvvm / Smart.Navigation / Smart.Data.Accessor / Serilog / NSwag ほか) と詳細リファレンス (93 ドキュメント) を提供する。
+Smart 系スタック標準のアドオンプラグイン。`aidd-dotnet` の中立規律を**上書き具体化**し、ライブラリの断定 (Smart.Mvvm / Smart.Navigation / Smart.Data.Accessor / Serilog / NSwag ほか) と詳細リファレンス (69 ドキュメント) を提供する。
 
 | 提供物 | 内容 |
 |---|---|
-| 分類 rule (20) | `smart-*` prefix: structure / solution / namespace / host / deploy / log / config / data / web / blazor / mvvm / wpf / avalonia / maui / worker / network / test / telemetry / generator / guideline。**init が `.claude/rules/` へ managed 展開し、対象ファイルを読むと `paths:` で自動適用** |
-| references の器 skill (20) | 分類毎の薄い skill が references (93 ドキュメント) を保持。rule 本文から誘導され、コード例付き詳細を必要時に読む |
+| 分類 rule (19) | `smart-*` prefix: structure / solution / namespace / host / log / config / data / web / blazor / mvvm / wpf / avalonia / maui / worker / network / test / telemetry / generator / guideline。**init が `.claude/rules/` へ managed 展開し、対象ファイルを読むと `paths:` で自動適用** |
+| references の器 skill (19) | 分類毎の薄い skill が references (69 ドキュメント) を保持。rule 本文から誘導され、コード例付き詳細を必要時に読む |
 | init | `/aidd-smart:init` — smart rules の展開。プラグイン更新後の再実行で上書き更新 |
-| templates | 正典実物 (Analyzers.ruleset / .editorconfig / Directory.Build.props / .targets)。テンプレ群リポジトリの正典参照先 |
 
 ## 導入
 

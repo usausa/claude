@@ -9,4 +9,4 @@ description: Smart スタックのテスト標準 (xunit.v3 + MTP・AAA・テス
 
 ## references (詳細)
 
-test-platform / test-project-layout / layout-and-naming / aaa-pattern / helper-section / mocking / scenario-integration-test / bunit
+test-project-layout / layout-and-naming / aaa-pattern / helper-section / mocking / scenario-integration-test / bunit

@@ -111,28 +111,27 @@ $tmp = Join-Path ([IO.Path]::GetTempPath()) ("aidd-init-test-" + [Guid]::NewGuid
 New-Item -ItemType Directory -Path $tmp | Out-Null
 try {
     & $initScript -Sdd lite -Destination $tmp *> $null
-    $markers = @(Get-ChildItem -Path $tmp -Recurse -Filter '*.md' | Where-Object { (Get-Content -Raw $_.FullName) -match '<!-- (sdd|pm):' })
-    Assert ($markers.Count -eq 0) "lite 展開後にマーカーが残っていない"
-    Assert (Test-Path (Join-Path $tmp 'AGENTS.md')) "AGENTS.md が展開される"
-    Assert (Test-Path (Join-Path $tmp '.claude/rules/conventions.md')) "conventions.md が展開される"
-    Assert (Test-Path (Join-Path $tmp '.claude/settings.json')) "settings.json が展開される"
-    Assert (-not (Test-Path (Join-Path $tmp '.mcp.json'))) ".mcp.json は展開されない (プラグインが提供)"
-    Assert (-not (Test-Path (Join-Path $tmp 'docs/spec'))) "lite では docs/spec を作らない"
 
-    # 第 1 段 rules の managed 展開 + 上書き更新
+    # 展開されるのは .claude/rules/ のみ (既存プロジェクトへの追加型)
     $dotnetRules = @(Get-ChildItem -Path (Join-Path $tmp '.claude/rules') -Filter 'dotnet-*.md')
     Assert ($dotnetRules.Count -eq 20) "dotnet-* rules が 20 本展開される ($($dotnetRules.Count) 本)"
+    $aidd = Join-Path $tmp '.claude/rules/aidd.md'
+    Assert ((Test-Path $aidd) -and ((Get-Content -Raw $aidd) -match 'SDD レベル: lite')) "aidd.md が SDD レベル lite で生成される"
+    $others = @(Get-ChildItem -Path $tmp -Force | Where-Object { $_.Name -ne '.claude' })
+    Assert ($others.Count -eq 0) ".claude 以外は何も展開されない (AGENTS / docs / ビルド設定なし)"
+
+    # 再実行: managed 上書き + SDD レベル維持 (引数なし)
     $probe = Join-Path $tmp '.claude/rules/dotnet-async.md'
     Set-Content -Path $probe -Value 'stale'
-    & $initScript -Sdd lite -Destination $tmp *> $null
+    & $initScript -Destination $tmp *> $null
     Assert ((Get-Content -Raw $probe) -match 'managed by') "managed rule は init 再実行で上書き更新される"
+    Assert ((Get-Content -Raw $aidd) -match 'SDD レベル: lite') "引数なしの再実行で SDD レベルが維持される"
 
     # 第 2 段 init: smart rules の展開
     $smartInit = Join-Path $root 'plugins/aidd-smart/scripts/init.ps1'
     & $smartInit -Destination $tmp *> $null
     $smartRules = @(Get-ChildItem -Path (Join-Path $tmp '.claude/rules') -Filter 'smart-*.md')
-    Assert ($smartRules.Count -eq 20) "smart-* rules が 20 本展開される ($($smartRules.Count) 本)"
-    Assert (Test-Path (Join-Path $tmp '.claude/rules/conventions.md')) "conventions.md が rules 展開後も残る"
+    Assert ($smartRules.Count -eq 19) "smart-* rules が 19 本展開される ($($smartRules.Count) 本)"
 }
 finally {
     Remove-Item -Recurse -Force $tmp -ErrorAction SilentlyContinue

@@ -9,4 +9,4 @@ description: Smart スタックの Blazor 標準 (code-behind 分離・AppCompon
 
 ## references (詳細)
 
-code-behind / app-component-base / state-management / view-helper-and-extensions / framework-extensions / layout-and-shell / cookie-authentication / validation / ui-library
+code-behind / app-component-base / state-management / view-helper-and-extensions / framework-extensions / layout-and-shell / validation / ui-library

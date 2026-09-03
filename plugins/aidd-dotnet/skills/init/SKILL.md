@@ -1,19 +1,19 @@
 ---
 name: init
-description: 新規リポジトリに .NET プロジェクトの骨格 (ビルド設定・docs・AGENTS) を展開し、SDD レベルを確定する初期化。プロジェクトを始めるときに一度だけ使う。
+description: アーキ規範 rules (managed) とプロジェクト宣言 (SDD レベル) を .claude/rules/ へ展開する初期化。導入時とプラグイン更新後に使う。
 disable-model-invocation: true
 ---
 
-> 引数: [lite|full|full-pm] (SDD レベル。省略時 full)
+> 引数: [lite|full|full-pm] (SDD レベル。省略時: 既存宣言を維持、初回は full)
 
-新規プロジェクトの初期化を行う。
+既存プロジェクトへ AI 開発基盤を導入する。**展開されるのは `.claude/rules/` のみ**(規範 rules 20 本 + プロジェクト宣言 aidd.md)。
 
-1. 展開先を確認する: カレントディレクトリがプロジェクトのルートであることを確かめる (既存プロジェクトへの追加を想定)。既存ファイルは上書きせずスキップして報告する。ただし `.claude/rules/` のアーキ規範 rules (managed) は常に上書き展開される。
-2. 初期化スクリプトを実行する ($ARGUMENTS が空なら -Sdd は付けない = full):
+1. カレントディレクトリがプロジェクトのルートであることを確かめる。
+2. 展開スクリプトを実行する ($ARGUMENTS が空でもそのまま実行してよい = 既存レベル維持 / 初回 full):
 
 ```
 pwsh "${CLAUDE_PLUGIN_ROOT}/scripts/init.ps1" -Sdd $ARGUMENTS
 ```
 
-3. スクリプトの出力 (スキップされた既存ファイル・次の手順) をユーザーへ報告する。
-4. 続けて AGENTS.md の「スタック」節の記入を促す (採用するアプリ形態を聞いて記入まで手伝ってよい)。
+3. スクリプトの出力を報告する。managed rules と aidd.md は init 再実行で上書き更新されるため手編集しない (プロジェクト固有の上書きは `.claude/rules/conventions.md` へ)。
+4. docs 骨格 (adr / work / spec / reference / pm) は各フロー skill が必要時に生成することを伝え、回し方 (人向け) として spec skill の references/workflow.md を案内する。aidd-smart 併用時は続けて `/aidd-smart:init` を案内する。

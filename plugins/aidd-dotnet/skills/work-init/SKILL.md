@@ -5,7 +5,15 @@ description: 機能作業の初期化(任意)。作業ブランチの確認・�
 
 # 作業の初期化(ブランチ + 作業フォルダ)
 
-> 任意の工程。main 直下の小変更は省略してよい(作業フォルダは `docs/work/` 直下の従来形式になる)。解決規則の正は `docs/work/README.md`。
+> 任意の工程。main 直下の小変更は省略してよい(作業フォルダは `docs/work/` 直下の従来形式になる)。
+
+## 作業フォルダの解決規則(中間フロー /spec /plan /impl /review が共有する正)
+
+1. `docs/work/<現ブランチの slug>/` が存在する → それを使う(slug = ブランチ名の `/` を `-` に置換。例 `feature/foo-bar` → `feature-foo-bar`)
+2. 存在しない → `docs/work/` 直下(`SPEC-<topic>.md` / `PLAN-<topic>.md` の従来形式)
+
+- `docs/work/` は**一時物**の置き場(git 管理。完了時に削除するが履歴には残る = 仕様レビュー・worktree・別マシン再開・引き継ぎが成立)。フォルダが無ければ最初に使う skill が作る。
+- 初期化(`work-init`)と完了(`work-close`)は任意。中間フローはこの規則だけに依存し、どちらの方式でも動く。
 
 ## 手順
 

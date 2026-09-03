@@ -5,8 +5,8 @@ C# / .NET の AI 駆動開発基盤プラグイン。**ライブラリ中立の�
 | 提供物 | 内容 |
 |---|---|
 | アーキ規範 rule (20) | `dotnet-*` prefix: coding-principles / async / errors / logging / security / data / domain / http-client / testing / web / api / blazor / blazor-e2e / grpc / worker / cli / mvvm / desktop / wpf / maui。**init が `.claude/rules/` へ managed 展開し、対象ファイルを読むと `paths:` で自動適用** |
-| 開発フロー skill (18) | `/aidd-dotnet:spec` → `plan` → `impl` → `verify` → `review` → `done` のループ、`adr` / `reference` / `review-cross` / `pm-plan` / `pm-status`、work-init / work-close / adr-guide / rule-create / git-commit / csharp-layered-feature / sync-docs-from-code |
-| init | `/aidd-dotnet:init [lite\|full\|full-pm]` — 骨格 (ビルド設定・docs・AGENTS) を展開し SDD レベルを確定 |
+| 開発フロー skill (20) | `/aidd-dotnet:spec` → `plan` → `impl` → `verify` → `review` → `done` のループ、`adr` / `reference` / `trace` / `review-cross` / `pm-plan` / `pm-status`、work-init / work-close / spec-close / adr-guide / rule-create / git-commit / csharp-layered-feature / sync-docs-from-code。SDD レベル (lite / full / full-pm) は aidd.md の宣言で実行時分岐 |
+| init | `/aidd-dotnet:init [lite\|full\|full-pm]` — `.claude/rules/` のみ展開 (規範 rules + プロジェクト宣言 aidd.md)。docs 骨格は各フロー skill が必要時に生成 |
 | agents (4) | spec / reviewer / doc-sync / pm |
 | hooks | 編集後の dotnet format 検証・UTF-8/CRLF 正規化、応答終了時の DoD リマインド |
 | MCP | Microsoft Learn (docs grounding) + NuGet (パッケージ・脆弱性。.NET 10 SDK の `dnx` が必要) |
@@ -19,7 +19,7 @@ C# / .NET の AI 駆動開発基盤プラグイン。**ライブラリ中立の�
 ```
 
 - 私有リポジトリのため、git 認証 (SSH または `gh auth login`) を事前に済ませておく (`GITHUB_TOKEN` 環境変数からの自動認証はない)。
-- 新規プロジェクトでは続けて `/aidd-dotnet:init` を実行し、AGENTS.md の「スタック」節を記入する。以降の始め方・使い方は展開された README.md が入口。
+- 導入後に `/aidd-dotnet:init` を実行する (既存プロジェクトへの追加を想定。AGENTS.md / README / ビルド設定はアプリ側で用意)。回し方 (人向け) は spec skill の references/workflow.md。
 
 ## 規範の序列
 

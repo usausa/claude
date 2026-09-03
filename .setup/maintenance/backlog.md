@@ -93,3 +93,4 @@
 - 汎用プロンプト集(bug-fix / test-gen 等)の扱い(現状: レビュー出力の拡充のみ想定)。
 - **nested `AGENTS.md`**(agents.md 標準機能)= マルチプロジェクト構成なら有用だが単一アプリには過剰、で保留。
 - **org での AGENTS.md 必須化**: `mackowski/10xGitHubPolicies` の `has_agents_md` は「担保のハード強制」の組織レベル版。導入するなら org 側。
+- **aidd.md(常時適用のプロジェクト宣言)の撤廃検討**: 現在は SDD レベル + 序列の 2 行の極小 rule。常時適用 rule は最小限に保つ方針のため、SDD レベルの持ち方(フロー skill が都度読む設定ファイル化等)を再確認して撤廃できるか判断する(2026-09 templates 全廃時の仮置き)。

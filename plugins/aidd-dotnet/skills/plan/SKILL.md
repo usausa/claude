@@ -7,7 +7,7 @@ description: 承認済み SPEC から実装プラン (チェックリスト) を
 
 承認済みの SPEC から実装プランを作る。
 
-1. 対象 SPEC を読む($ARGUMENTS 指定があればそれ。無ければ直近の SPEC — 作業フォルダ(解決規則は `docs/work/README.md`)または `docs/spec/SPEC-*.md`)
+1. 対象 SPEC を読む($ARGUMENTS 指定があればそれ。無ければ直近の SPEC — lite = 作業フォルダ(解決規則は `work-init` skill)/ full = `docs/spec/SPEC-*.md`)
 2. 作業フォルダに PLAN(ブランチフォルダなら `PLAN.md`、直下なら `PLAN-<topic>.md`)を**チェックリスト形式**で作成:
    - 大きい場合は**フェーズ分割**する(フェーズ = 独立して `/verify` が緑になる単位)
    - 各項目は `- [ ]`。レイヤ順と責務は `csharp-layered-feature` / 採用形態のアーキ規範 rule に沿う

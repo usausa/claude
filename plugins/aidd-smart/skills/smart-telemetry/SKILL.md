@@ -1,6 +1,6 @@
 ---
 name: smart-telemetry
-description: Smart スタックの観測標準 (ApplicationInstrument・OTLP 環境変数分岐・HealthChecks・保護)
+description: Smart スタックの観測標準の詳細リファレンス (ApplicationInstrument 計装・HealthChecks)
 ---
 
 # テレメトリ・ヘルスチェック (Smart スタック標準) — 詳細リファレンスの器
@@ -9,4 +9,4 @@ description: Smart スタックの観測標準 (ApplicationInstrument・OTLP 環
 
 ## references (詳細)
 
-opentelemetry / health-checks / endpoint-protection
+opentelemetry / health-checks

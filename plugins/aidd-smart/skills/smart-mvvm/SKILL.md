@@ -1,6 +1,6 @@
 ---
 name: smart-mvvm
-description: Smart スタックの MVVM 標準 (Smart.Mvvm・Smart.Navigation・Smart.Resolver・Modules 構成)
+description: Smart スタックの MVVM 標準の詳細リファレンス (Smart.Mvvm・Smart.Navigation・Smart.Resolver・Modules 構成)
 ---
 
 # MVVM (Smart スタック標準) — 詳細リファレンスの器
@@ -9,4 +9,4 @@ description: Smart スタックの MVVM 標準 (Smart.Mvvm・Smart.Navigation・
 
 ## references (詳細)
 
-smart-mvvm / smart-navigation / smart-resolver / modules-structure / client-startup-hub
+smart-mvvm / smart-navigation / smart-resolver / modules-structure

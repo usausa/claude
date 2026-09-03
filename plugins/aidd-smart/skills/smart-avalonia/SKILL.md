@@ -1,6 +1,6 @@
 ---
 name: smart-avalonia
-description: Smart スタックの Avalonia 標準 (起動 3 段・組込み実行形態・入力抽象化)
+description: Smart スタックの Avalonia 標準の詳細リファレンス (組込み向け入力抽象化)
 ---
 
 # Avalonia (Smart スタック標準) — 詳細リファレンスの器
@@ -9,4 +9,4 @@ description: Smart スタックの Avalonia 標準 (起動 3 段・組込み実�
 
 ## references (詳細)
 
-startup-and-lifetime / embedded-execution-model / embedded-input-abstraction
+embedded-input-abstraction

@@ -1,1 +1,0 @@
-- `SPEC-NNNN` (仕様) / `ADR-NNNN` (決定)。手書き文書は frontmatter (`id` / `status` / `related`)。

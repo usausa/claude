@@ -1,6 +1,6 @@
 ---
 name: smart-maui
-description: Smart スタックの MAUI 標準 (MauiProgram チェーン・ApplicationInitializer・自前 Shell・Components)
+description: Smart スタックの MAUI 標準の詳細リファレンス (自前 Shell・Components 分割・Blazor Hybrid)
 ---
 
 # MAUI (Smart スタック標準) — 詳細リファレンスの器
@@ -9,4 +9,4 @@ description: Smart スタックの MAUI 標準 (MauiProgram チェーン・Appli
 
 ## references (詳細)
 
-mauiprogram-chain / application-initializer / custom-shell / platform-wrappers / blazor-hybrid
+custom-shell / platform-wrappers / blazor-hybrid

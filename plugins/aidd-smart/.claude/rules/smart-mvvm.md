@@ -13,4 +13,3 @@ paths:
 - **画面遷移はプラットフォームを問わず Smart.Navigation**: 画面 ID は enum (`ViewId` / `DialogId`)、View に `[View(ViewId.X)]`、登録は `[ViewSource]` partial + `AutoRegister`、シェルは `NavigationContainer`、起動末尾に `ForwardAsync(初期画面)`、DEBUG 時のみ遷移トレース。ツール的な子ウィンドウ管理のみ `WindowManager`。
 - DI は **Smart.Resolver**: `ConfigureContainer(new SmartServiceProviderFactory(), ConfigureContainer)`、冒頭で `UseAutoBinding/ArrayBinding/AssignableBinding`、ホスト構築後に `ResolveProvider.Default.Provider = host.Services`、XAML から `s:DataContextResolver.Type` で VM 解決 (code-behind は `InitializeComponent()` のみ)。
 - **多数の画面を持つアプリは `Modules/<機能>` に View + ViewModel を機能単位で同居配置** (vertical slice)。`Modules/` 直下は横断部品 (ViewId・基底 VM) のみ。
-- 起動ハブ: `ApplicationExtensions.cs` に `ConfigureLogging` / `ConfigureComponents` / `StartApplicationAsync` / `ExitApplicationAsync` を集約し App を薄く保つ。
