@@ -4,7 +4,7 @@ Smart 系スタック標準のアドオンプラグイン。`aidd-dotnet` の中
 
 | 提供物 | 内容 |
 |---|---|
-| 分類 skill (20) | structure / solution / namespace / host / deploy / log / config / data / web / blazor / mvvm / wpf / avalonia / maui / worker / network / test / telemetry / generator / guideline。**本文 = スタック標準の要約 (対象ファイルで `paths:` 自動適用)、references/ = コード例付き詳細 (必要時に読む)** |
+| 分類 skill (20) | `smart-*` prefix: structure / solution / namespace / host / deploy / log / config / data / web / blazor / mvvm / wpf / avalonia / maui / worker / network / test / telemetry / generator / guideline。**本文 = スタック標準の要約 (対象ファイルで `paths:` 自動適用)、references/ = コード例付き詳細 (必要時に読む)** |
 | templates | 正典実物 (Analyzers.ruleset / .editorconfig / Directory.Build.props / .targets)。テンプレ群リポジトリの正典参照先 |
 
 ## 導入
