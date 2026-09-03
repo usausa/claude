@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 Smart スタック規範 (smart-*.md × 20) をプロジェクトへ展開する。
 
-1. 前提を確認する: 第 1 段の骨格・rules が未展開なら、先に `/aidd-dotnet:init` を案内する。
+1. 前提を確認する: 第 1 段の rules が未展開なら、先に `/aidd-dotnet:init` を案内する。
 2. 展開スクリプトを実行する:
 
 ```

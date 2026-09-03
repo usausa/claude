@@ -8,7 +8,7 @@ paths:
 
 # Blazor E2E テスト (Playwright)
 
-> 配置は `tests/README.md`、UI 原則は `dotnet-blazor` rule に従う。E2E はクリティカルパス (ログイン・主要フロー) に絞り、ロジックの網羅は下位層のユニットテストへ寄せる (`csharp-layered-feature` 参照)。
+> 配置は `tests/README.md`、UI 原則は `dotnet-blazor` rule に従う。E2E はクリティカルパス (ログイン・主要フロー) に絞り、ロジックの網羅は下位層のユニットテストへ寄せる (aidd-flow の `csharp-layered-feature` skill 参照・導入時)。
 
 ## 手順
 

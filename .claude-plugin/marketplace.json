@@ -10,12 +10,22 @@
     {
       "name": "aidd-dotnet",
       "source": "./plugins/aidd-dotnet",
-      "description": "C# / .NET の AI 駆動開発基盤 (ライブラリ中立の規律 + SDD フロー + プロジェクト初期化)"
+      "description": "C# / .NET 標準のアーキ規範 rules (ライブラリ中立) + コード品質 hooks + MCP"
     },
     {
       "name": "aidd-smart",
       "source": "./plugins/aidd-smart",
       "description": "Smart 系スタック標準の断定 + 詳細リファレンス (aidd-dotnet の規律を具体化するアドオン)"
+    },
+    {
+      "name": "aidd-flow",
+      "source": "./plugins/aidd-flow",
+      "description": "spec / plan / 実装の基本ワークフロー (SDD フロー + ADR + 作業フォルダ運用 + DoD ゲート)"
+    },
+    {
+      "name": "aidd-pm",
+      "source": "./plugins/aidd-pm",
+      "description": "feature 単位のプロジェクト管理アドオン (イテレーション計画 + 進捗集計。SDD full 前提)"
     }
   ]
 }

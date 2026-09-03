@@ -5,7 +5,7 @@ paths:
   - "**/Services/**"
 ---
 
-<!-- managed by aidd-smart plugin: 手編集しない (init 再実行で上書き更新される)。プロジェクト固有の上書きは conventions.md へ -->
+<!-- managed by aidd-smart plugin: 手編集しない (init 再実行で上書き更新される)。dotnet-* と重なる規範は smart-* が優先。プロジェクト固有の上書きは conventions.md へ -->
 
 # データアクセス (Smart スタック標準)
 

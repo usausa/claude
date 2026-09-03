@@ -16,4 +16,4 @@ New-Item -ItemType Directory -Force -Path $destRules | Out-Null
 $ruleFiles = @(Get-ChildItem -Path $rulesDir -File -Filter '*.md')
 $ruleFiles | ForEach-Object { Copy-Item -Force $_.FullName (Join-Path $destRules $_.Name) }
 Write-Host "[aidd-smart init] Smart スタック規範 rules を展開 (managed・上書き更新): $($ruleFiles.Count) 本"
-Write-Host "第 1 段の骨格・rules が未展開の場合は /aidd-dotnet:init を先に実行する。"
+Write-Host "第 1 段の rules が未展開の場合は /aidd-dotnet:init を先に実行する。"

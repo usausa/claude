@@ -105,29 +105,35 @@ if (Test-Path $mkPath) {
 }
 
 # --- init の実動スモーク (aidd-dotnet) ---
-Write-Host "== init smoke (lite) =="
+Write-Host "== init smoke =="
 $initScript = Join-Path $root 'plugins/aidd-dotnet/scripts/init.ps1'
 $tmp = Join-Path ([IO.Path]::GetTempPath()) ("aidd-init-test-" + [Guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $tmp | Out-Null
 try {
-    & $initScript -Sdd lite -Destination $tmp *> $null
+    & $initScript -Destination $tmp *> $null
 
-    # 展開されるのは .claude/rules/ のみ (既存プロジェクトへの追加型)
+    # dotnet init: rules 展開のみ (既存プロジェクトへの追加型)
     $dotnetRules = @(Get-ChildItem -Path (Join-Path $tmp '.claude/rules') -Filter 'dotnet-*.md')
     Assert ($dotnetRules.Count -eq 20) "dotnet-* rules が 20 本展開される ($($dotnetRules.Count) 本)"
     $aidd = Join-Path $tmp '.claude/rules/aidd.md'
-    Assert ((Test-Path $aidd) -and ((Get-Content -Raw $aidd) -match 'SDD レベル: lite')) "aidd.md が SDD レベル lite で生成される"
+    Assert (-not (Test-Path $aidd)) "dotnet init は aidd.md を生成しない (SDD 宣言は aidd-flow の管轄)"
     $others = @(Get-ChildItem -Path $tmp -Force | Where-Object { $_.Name -ne '.claude' })
     Assert ($others.Count -eq 0) ".claude 以外は何も展開されない (AGENTS / docs / ビルド設定なし)"
 
-    # 再実行: managed 上書き + SDD レベル維持 (引数なし)
+    # 再実行: managed 上書き
     $probe = Join-Path $tmp '.claude/rules/dotnet-async.md'
     Set-Content -Path $probe -Value 'stale'
     & $initScript -Destination $tmp *> $null
     Assert ((Get-Content -Raw $probe) -match 'managed by') "managed rule は init 再実行で上書き更新される"
+
+    # flow init: aidd.md 生成 + SDD レベル維持
+    $flowInit = Join-Path $root 'plugins/aidd-flow/scripts/init.ps1'
+    & $flowInit -Sdd lite -Destination $tmp *> $null
+    Assert ((Test-Path $aidd) -and ((Get-Content -Raw $aidd) -match 'SDD レベル: lite')) "flow init が aidd.md を SDD レベル lite で生成する"
+    & $flowInit -Destination $tmp *> $null
     Assert ((Get-Content -Raw $aidd) -match 'SDD レベル: lite') "引数なしの再実行で SDD レベルが維持される"
 
-    # 第 2 段 init: smart rules の展開
+    # smart init: smart rules の展開
     $smartInit = Join-Path $root 'plugins/aidd-smart/scripts/init.ps1'
     & $smartInit -Destination $tmp *> $null
     $smartRules = @(Get-ChildItem -Path (Join-Path $tmp '.claude/rules') -Filter 'smart-*.md')

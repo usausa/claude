@@ -1,0 +1,10 @@
+{
+  "name": "aidd-flow",
+  "displayName": "AIDD Flow",
+  "version": "0.1.0",
+  "description": "spec / plan / 実装の基本ワークフロー (SDD フロー + ADR + 作業フォルダ運用 + DoD ゲート)",
+  "author": {
+    "name": "usausa"
+  },
+  "hooks": "./hooks/hooks.json"
+}

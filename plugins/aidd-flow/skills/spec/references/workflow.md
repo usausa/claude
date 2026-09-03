@@ -1,7 +1,7 @@
 # 開発ワークフロー (人が読む運用手順書)
 
 > 機能を 1 つ作る / 直すたびに、各段階で「打つもの」を実行する。
-> SDD レベルはプロジェクトの `.claude/rules/aidd.md` の宣言で決まる (init が確定)。
+> SDD レベルはプロジェクトの `.claude/rules/aidd.md` の宣言で決まる (/aidd-flow:init が確定)。
 > **lite**: SPEC / PLAN は作業フォルダ `docs/work/` の一時物 (完了時に削除)。**full**: SPEC は `docs/spec/` の恒久文書 (蒸留して残す)。PLAN は全レベルで一時物。
 
 ## ループ

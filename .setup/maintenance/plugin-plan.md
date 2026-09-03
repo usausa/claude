@@ -106,6 +106,8 @@
 - [x] references の定型削減(積極適用・93 → **69 本**): deploy は分類ごと削除(rule + 器)/ host は di-registration へ再編 / structure・log・mvvm・wpf・avalonia・maui・blazor・test・telemetry・generator から定型 refs 21 本削除 + 各 rule 本文の定型行削減(起動配線・outputTemplate・OTLP 分岐・Cookie 認証・MauiProgram 等 = テンプレート済みの旨を注記)+ 器 description の実態合わせ(references 同期検査で機械保証。第 2 段は rules 19 / 器 19 に)
 - [x] 第 1 段(aidd-dotnet)の規範にも同基準を適用 → 配線定型は無しと確認(dotnet-worker のホスティング行は「選定は /adr」の中立規律のため維持)
 - [x] test-plugins ALL PASS + README 3 本(ルート / 両プラグイン)の整合(数字 = rules 39 / 器 19 / references 69)
+- [x] ワークフローを `aidd-flow` へ分離し 4 プラグイン構成に(2026-09-03 決定): フロー skill 18 + agents 3 + DoD hook + init(aidd.md 生成)を aidd-flow へ。aidd-dotnet はルール配布に純化(rules 20 + init + 品質 hooks + MCP)、aidd-pm の依存は flow へ付け替え、aidd.md は SDD 宣言 1 行に縮小(序列行廃止 — smart 側 rule ヘッダに優先 1 行を追記)。marketplace 4 件・test-plugins の init smoke を 3 段(dotnet → flow → smart)に改修・ALL PASS
+- [x] PM を第 3 プラグイン `aidd-pm` へ分離(2026-09-03 決定): pm-plan + references 3 / pm-status / pm agent を移設、SDD レベルは lite|full の 2 値へ縮約(full-pm 廃止 — PM の有効化はプラグイン導入で表現)。agents/pm の旧 docs/pm/README.md 参照も pm-policy へ修正。marketplace 3 プラグイン化・README 整合・ALL PASS
 
 ## Phase 5: 片付け
 
