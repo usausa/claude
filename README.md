@@ -23,7 +23,7 @@
 /aidd-smart:init             # smart rules 19 本を展開
 ```
 
-init が展開するファイル(`.claude/rules/` の dotnet-* / smart-* / aidd.md)は managed で、**init 再実行時に上書きされる**(手編集しない。プロジェクト固有の上書きは conventions.md へ)。
+init がプロジェクトへ置くのは `.claude/rules/`(dotnet-* / smart-* / aidd.md)**だけ**で、managed のため **init 再実行時に上書きされる**(手編集しない。プロジェクト固有の上書きは conventions.md へ)。skills / agents / hooks / MCP はプラグイン本体から直接提供され、プロジェクトへは展開されない。
 
 更新は `/plugin marketplace update aidd` → `/plugin update <plugin>@aidd` → rules 系の init を再実行。  
 更新検知は plugin.json の version 比較のみ(内容を変えたら必ずバンプ)。

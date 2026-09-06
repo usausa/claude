@@ -7,6 +7,8 @@ paths:
 
 # コーディング原則 (.NET 共通)
 
+> ファイルを**新規に**作るときは、置き先に対応する rule を先に確認する (rule は既存ファイルを読むと自動適用されるが、新規作成では事前注入されないため)。特にテストコードは `dotnet-testing` rule (AAA 区切り・テスト名 3 部構成) に従う。
+
 > .NET 共通の不変原則 (全形態で同一)。書式は `.editorconfig` + analyzer が正。
 > プロジェクト固有で編集する方針 (analyzer で機械化できないもの) は プロジェクトの `.claude/rules/conventions.md` に置く。
 

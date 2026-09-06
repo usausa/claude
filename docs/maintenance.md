@@ -37,10 +37,10 @@
 
 - [ ] `/plugin marketplace add usausa/template-spec` → install が私有認証込みで通る
 - [ ] 各 init の実動(`/aidd-dotnet:init` = rules 20 / `/aidd-flow:init` = aidd.md / `/aidd-smart:init` = rules 19。${CLAUDE_PLUGIN_ROOT} 解決)
-- [ ] rules の実発火: 対象ファイル(*.cs / *.razor / *.xaml.cs 等)の編集で該当規範が自動適用される
+- [x] rules の実発火(ローカル実証 2026-09-03): init 展開したプロジェクトの `.claude/rules/` が Read で paths 注入される(*.cs → 10 本 / tests/ 直下 → dotnet-testing)。sonnet は AAA 区切り・例外の Act & Assert 畳み込み・3 部命名まで準拠。注意: **新規 Write のみでは事前注入されない**(→ coding-principles にポインタ追加で対策)、haiku は既存様式に引きずられることがある。プラグイン install 経由の再確認のみ残る
 - [ ] dotnet-* と smart-* の同時発火で矛盾なし・smart の断定が優先される
 - [ ] hooks(format 検証 / CRLF 正規化 / DoD リマインド)がプラグイン経由で発火する
-- [ ] MCP(microsoft-learn / nuget)が接続できる
+- [ ] MCP(microsoft-learn / nuget)が接続できる(プロジェクト `.mcp.json` 経路はローカル実証済み 2026-09-03: 認識 → `enableAllProjectMcpServers: true` で自動有効化 → `permissions.allow` の `mcp__<server>__*` で呼び出し可 → 実検索成功。allow はワークスペース信頼が前提。プラグイン mcp-servers.json 経路の確認が残り)
 - [ ] rule 末尾の誘導から references をモデルが必要時に読みに行く
 - [ ] 実プロジェクトでの一巡(init → /spec → /plan → /impl → /done)
 
