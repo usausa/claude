@@ -21,15 +21,17 @@ foreach ($plugin in $plugins) {
     Assert ($pj.name -eq $plugin.Name) "plugin.json の name がディレクトリ名と一致する"
     Assert ([bool]$pj.version -and [bool]$pj.description) "plugin.json に version / description がある"
 
-    # --- 参照 JSON (mcpServers / hooks) ---
-    foreach ($field in @('mcpServers', 'hooks')) {
-        $val = $pj.$field
-        if ($val -is [string]) {
-            $refPath = Join-Path $plugin.FullName $val
-            Assert (Test-Path $refPath) "$field の参照先 ($val) が存在する"
-            $null = Get-Content -Raw $refPath | ConvertFrom-Json
-            Assert $true "$field の参照先が JSON として妥当"
-        }
+    # --- hooks の参照 JSON / プラグインルート .mcp.json (規約名) ---
+    if ($pj.hooks -is [string]) {
+        $refPath = Join-Path $plugin.FullName $pj.hooks
+        Assert (Test-Path $refPath) "hooks の参照先 ($($pj.hooks)) が存在する"
+        $null = Get-Content -Raw $refPath | ConvertFrom-Json
+        Assert $true "hooks の参照先が JSON として妥当"
+    }
+    $mcpPath = Join-Path $plugin.FullName '.mcp.json'
+    if (Test-Path $mcpPath) {
+        $mcp = Get-Content -Raw $mcpPath | ConvertFrom-Json
+        Assert ([bool]$mcp.mcpServers) ".mcp.json (プラグインルート規約) に mcpServers がある"
     }
 
     # --- skills ---

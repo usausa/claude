@@ -25,7 +25,7 @@
 - **UI テストの対称展開** — MAUI(`maui-appium` 等)/ Desktop(FlaUI 等)の E2E 規範を blazor-e2e と同じイディオムで用意するか。`/verify` での E2E 実行方針(実行時間が問題化したら `[Trait("Category", "E2E")]` で分離)
 - **Aaronontheweb/dotnet-skills の蒸留候補** — slopwatch(ハード強制と連動)/ Aspire 系(実装開始時)/ EF Core 系(採用時)。一括導入せず cherry-pick + 日本語蒸留の方針は確定済み
 
-## 追加を検討すべき MCP サーバー(必要が出たら aidd-dotnet の mcp-servers.json へ。プロジェクト固有なら導入先の .mcp.json)
+## 追加を検討すべき MCP サーバー(必要が出たら aidd-dotnet のプラグインルート .mcp.json へ。プロジェクト固有なら導入先の .mcp.json)
 
 - **Playwright MCP**(Microsoft 公式)— ブラウザ操作・E2E のデバッグ。blazor-e2e 規範と連動して価値が出る
 - **Azure MCP Server**(microsoft/mcp 配下・`dnx` 配布)— Azure リソース参照・ログ / DB クエリ。Azure 採用プロジェクトで
