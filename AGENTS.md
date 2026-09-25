@@ -1,6 +1,6 @@
 # プロジェクト規約 (Claude / Codex 共通)
 
-> このリポジトリは **Claude Code プラグイン 4 本(aidd-dotnet / aidd-smart / aidd-flow / aidd-pm)の開発リポジトリ**。`CLAUDE.md` はこれを import するだけ。
+> このリポジトリは **Claude Code プラグイン 4 本(aidd-dotnet / aidd-smart / aidd-flow / aidd-pm)の開発リポジトリ**。
 
 - 保守はまず `docs/maintenance.md` を読む (原則・構成・検証・残る検証)。
 - ドキュメントは日本語。文体・構成の原則は maintenance.md に従う。
