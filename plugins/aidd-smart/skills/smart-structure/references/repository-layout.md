@@ -12,7 +12,7 @@
 
 - 設定ファイルはソリューション全体で1セットのみ持ち、プロジェクト間の設定差分を構造的に発生させない
 - 新しいリポジトリは骨格のコピーから開始でき、「どこに何があるか」を探す必要がない
-- AI エージェント向けの規約(AGENTS.md / CLAUDE.md)も骨格の一部として標準化する
+- AI エージェント向けの規約(AGENTS.md)も骨格の一部として標準化する
 
 ## 標準形
 
@@ -27,7 +27,6 @@
 ├─ .editorconfig             … コーディングスタイル(structure-6)
 ├─ App.sln.DotSettings       … ReSharper / Rider 補完設定
 ├─ AGENTS.md                 … コーディング規約(エージェント向け)
-├─ CLAUDE.md                 … AGENTS.md への参照のみ
 ├─ .gitignore / .gitattributes / README.md / LICENSE
 ├─ App.Core/                 … プロジェクト群(solution-1)
 ├─ App.Host/
@@ -63,7 +62,7 @@
 </Solution>
 ```
 
-### AGENTS.md / CLAUDE.md
+### AGENTS.md
 
 AGENTS.md は要点4行のみとする。詳細ルールは .editorconfig / ruleset 側が機械可読に定義しているため、文章としての規約は最小限でよい。
 
@@ -76,11 +75,7 @@ AGENTS.md は要点4行のみとする。詳細ルールは .editorconfig / rule
 - **Suppress warnings:** If warning suppression is needed, ask before applying the fix
 ```
 
-CLAUDE.md は AGENTS.md への参照1行のみとし、内容を二重管理しない。
-
-```markdown
-@AGENTS.md
-```
+エージェント向けの規約はこの AGENTS.md 1 本とし、Claude Code もこれを直接読む。
 
 ### .sln.DotSettings
 
@@ -95,7 +90,7 @@ ReSharper / Rider 利用時の追加検査・命名規則を定義する。.edit
 | Analyzers.ruleset | アナライザルールの強度定義 | structure-3 |
 | .editorconfig | スタイルとフォーマットの定義 | structure-6 |
 | <ソリューション名>.sln.DotSettings | ReSharper / Rider 補完設定 | 本トピック |
-| AGENTS.md + CLAUDE.md | エージェント向け規約 | 本トピック |
+| AGENTS.md | エージェント向け規約 | 本トピック |
 
 いずれもルート直下に1セットのみ置き、プロジェクト配下にコピーや上書き版を作らない。
 
@@ -110,5 +105,5 @@ ReSharper / Rider 利用時の追加検査・命名規則を定義する。.edit
 - **設定ファイルのプロジェクト配下コピー** — プロジェクト間で内容が乖離し、品質ゲートがリポジトリ内で不均一になる
 - **Solution Items 未登録** — 設定ファイルの存在が IDE から見えず、編集・レビューの対象から漏れる
 - **AGENTS.md の肥大化** — 機械可読な設定(.editorconfig / ruleset)で表現できるルールを文章で重複記述しない。文章規約は要点4行に留める
-- **CLAUDE.md への直接記述** — AGENTS.md と内容が分裂する。参照1行に固定する
+- **CLAUDE.md の併置** — 作業フォルダーかその上に CLAUDE.md があると、Claude Code は AGENTS.md の代わりに CLAUDE.md を読み、エージェントごとに規約がずれる。規約は AGENTS.md 1 本に置く
 - **旧 .sln 形式の継続使用** — 差分・マージが困難な独自フォーマットを避け、.slnx に統一する

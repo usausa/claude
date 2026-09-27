@@ -29,4 +29,5 @@
 - **ADR と rules は独立して保管する**: `docs/adr` = なぜの履歴(不変・追記のみ・`index.md` は生成物)、`.claude/rules` = 決定の機械制約面。相互リンクは持たない(発見はタグ・語彙の一致)。レビューが見るのは ADR 準拠(rules は paths で効くため再確認しない)。
 - **作業フォルダは docs/work/ で git 管理する**: 一時物だが履歴に残す(仕様レビュー・worktree・別マシン再開・引き継ぎが成立)。解決規則 =「ブランチ slug フォルダ優先・無ければ直下」(正は work-init skill)。git 操作の型は git-commit skill に一元化(提示のみ・実行は人。work-close / git-commit skill として依頼されたときは AI 実行可)。
 - **Blazor / domain / testing の残決定**: Blazor は code-behind 常時分離(Server / WASM 共通)・フォーム検証はライブラリ選定を ADR に。domain の Code 定数は DB 格納型と同型・Subcase は Usecase 層の DI 部品に限る。テストのモックは NSubstitute 標準・テスト名は英語 PascalCase 3 部構成。
+- **エージェント向けの規約は AGENTS.md 1 本**: Claude Code は v2.1.277 から AGENTS.md を直接読み、作業フォルダーかその上に CLAUDE.md・`.claude/CLAUDE.md`・`CLAUDE.local.md` があると AGENTS.md の代わりにそちらを読む。`@AGENTS.md` 1 行の CLAUDE.md を骨格(structure-1)から外し、規約を AGENTS.md に一本化した(2026-09-27)。
 - **文体**: 日本語。ASCII 記号・括弧は半角(中黒 `・` は全角)、`§` 不使用、冗長・自明な括弧補足を書かない。
