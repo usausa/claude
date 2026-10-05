@@ -116,7 +116,7 @@ Areas/
 
 - **Blazor Server 同居型**: Blazor Server に少数の内部 API を持たせる場合は `Api/` フォルダ(`BaseApiController` + `Controllers/` + `Models/`)の最小構成でよい。Areas のフォルダ規約は Area が複数になってから導入する
 - **JSON オプション**: Controller 方式では `AddControllers().AddJsonOptions(...)` で web-3 の命名規約(camelCase)と受け付けの設定を適用する。入出力に効くのは `AddJsonOptions` の設定だが、OpenAPI のスキーマは `ConfigureHttpJsonOptions` の設定から作られるので、共通のメソッドで両方に同じ設定を入れる
-- **OpenAPI の記述**: アクションに `[EndpointName("DataList")]`(web-3 の機能名 + 操作名)と `[ProducesResponseType<T>]` を付ける。ProblemDetails の応答は `[ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound, "application/problem+json")]`、検証は `ValidationProblemDetails`、本文の無い応答は `[ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]` で書く。全アクションに共通の応答は `BaseApiController` に付ける
+- **OpenAPI の記述**: アクションに `[EndpointName("DataList")]`(web-3 の機能名 + 操作名)と `[ProducesResponseType<T>]` を付ける。ProblemDetails の応答は `[ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound, "application/problem+json")]`、検証は `ValidationProblemDetails`、認証の 401 / 403 も API のパスに掛けた `UseStatusCodePages` で ProblemDetails になるので同じ形で書き、本文の無い応答は `[ProducesResponseType(StatusCodes.Status204NoContent)]` で書く。全アクションに共通の応答(401・500)は `BaseApiController` に付ける
 - **認証状態の注入**: Controller 方式ではアクション引数への ModelBinder 注入が使える(web-5)
 
 ## アンチパターン

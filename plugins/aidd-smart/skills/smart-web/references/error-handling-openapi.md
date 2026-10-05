@@ -56,11 +56,17 @@ public static IHostApplicationBuilder ConfigureApi(this IHostApplicationBuilder 
 
 public static WebApplication UseErrorHandler(this WebApplication app)
 {
+    // ProblemDetails
     app.UseExceptionHandler();
+
+    // Status code page
+    app.UseStatusCodePages();
 
     return app;
 }
 ```
+
+本文の無いエラー(認証の 401 / 403、`TypedResults.NotFound()` の 404 など)は `UseStatusCodePages()` で ProblemDetails にする。画面と同居するホストでは `UseWhen` で API のパスにだけ掛ける。
 
 `GlobalExceptionHandler` はログ出力と定型応答のみを行う。例外の詳細(型・メッセージ・スタックトレース)はクライアントへ返さない。読めない本文(壊れた JSON・型違い)は Development では `ThrowOnBadRequest` の既定で、本文の上限超過(アップロード)はどの環境でも `BadHttpRequestException` になるので、500 にせず例外のステータス(400 / 413 など)で返し、エラーとしてログに出さない。
 
@@ -189,7 +195,7 @@ group.MapDelete("/{id:long}", HandleDeleteAsync)
 ```
 
 - 全 API に共通の応答(500、レート制限の 429)は `MapApiGroup`、認証の 401 は認証を掛けたグループ、管理者だけの 403 などはエンドポイントに付ける
-- 本文が ProblemDetails の応答は `ProducesProblem` / `ProducesValidationProblem` で書く。`UseStatusCodePages` を使わない構成で本文の無い 401 / 404 などは `Produces(StatusCodes.Status404NotFound)` で書き、グループには `WithMetadata(new ProducesResponseTypeMetadata(StatusCodes.Status401Unauthorized, typeof(void)))` で付ける(非汎用の `Produces` はグループに付かず、型を省くと文書に出ない)
+- 本文が ProblemDetails の応答は `ProducesProblem` / `ProducesValidationProblem` で書く。認証の 401 / 403 や `TypedResults.NotFound()` の 404 も `UseStatusCodePages` で ProblemDetails になるので `ProducesProblem` で書く。`UseStatusCodePages` を使わない構成で本文の無い 401 / 404 などは `Produces(StatusCodes.Status404NotFound)` で書き、グループには `WithMetadata(new ProducesResponseTypeMetadata(StatusCodes.Status401Unauthorized, typeof(void)))` で付ける(非汎用の `Produces` はグループに付かず、型を省くと文書に出ない)
 - ファイルの応答は `Produces<Stream>(StatusCodes.Status200OK, "application/octet-stream")` で書く(型を省くと content type が文書から落ちる)
 - 1 つのステータスには 1 つの形しか載らない(同じステータスに別の型を宣言すると後の宣言で上書きされる)
 - `WithRequestTimeout` は汎用でない型を返すので、`Produces<T>` より後ろに書く
