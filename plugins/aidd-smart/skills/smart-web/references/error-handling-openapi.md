@@ -62,7 +62,7 @@ public static WebApplication UseErrorHandler(this WebApplication app)
 }
 ```
 
-`GlobalExceptionHandler` はログ出力と定型応答のみを行う。例外の詳細(型・メッセージ・スタックトレース)はクライアントへ返さない。
+`GlobalExceptionHandler` はログ出力と定型応答のみを行う。例外の詳細(型・メッセージ・スタックトレース)はクライアントへ返さない。読めない本文(壊れた JSON・型違い)は Development では `ThrowOnBadRequest` の既定で、本文の上限超過(アップロード)はどの環境でも `BadHttpRequestException` になるので、500 にせず例外のステータス(400 / 413 など)で返し、エラーとしてログに出さない。
 
 ```csharp
 public sealed class GlobalExceptionHandler : IExceptionHandler
@@ -81,6 +81,21 @@ public sealed class GlobalExceptionHandler : IExceptionHandler
 
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
+        if (exception is BadHttpRequestException badRequest)
+        {
+            httpContext.Response.StatusCode = badRequest.StatusCode;
+
+            return await problemDetailsService.TryWriteAsync(new ProblemDetailsContext
+            {
+                HttpContext = httpContext,
+                Exception = exception,
+                ProblemDetails = new ProblemDetails
+                {
+                    Status = badRequest.StatusCode
+                }
+            });
+        }
+
         logger.ErrorUnhandledException(exception);
 
         httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
@@ -141,6 +156,44 @@ public static IHostApplicationBuilder ConfigureOpenApi(this IHostApplicationBuil
     return builder;
 }
 ```
+
+### エンドポイントの記述(WithName / Produces)
+
+`IResult` を返すハンドラは応答の型が推測されないため、全エンドポイントに名前(web-3 の機能名 + 操作名)と実際に返す応答を宣言する。全 API に共通の応答はグループに付ける。
+
+```csharp
+public static RouteGroupBuilder MapApiGroup(this IEndpointRouteBuilder endpoints, string prefix) =>
+    endpoints.MapGroup(prefix)
+        .ProducesProblem(StatusCodes.Status429TooManyRequests)
+        .ProducesProblem(StatusCodes.Status500InternalServerError);
+
+var group = app.MapApiGroup(ApiRoutes.Data)
+    .RequireAuthorization()
+    .ProducesProblem(StatusCodes.Status401Unauthorized);
+
+group.MapGet("/{id:long}", HandleGetAsync)
+    .WithName("DataGet")
+    .Produces<DataGetResponse>()
+    .ProducesProblem(StatusCodes.Status404NotFound);
+group.MapPost("/", HandleCreateAsync)
+    .WithName("DataCreate")
+    .Produces<DataCreateResponse>(StatusCodes.Status201Created)
+    .ProducesValidationProblem()
+    .ProducesProblem(StatusCodes.Status409Conflict);
+group.MapDelete("/{id:long}", HandleDeleteAsync)
+    .RequireAuthorization(Policies.Administrator)
+    .WithName("DataDelete")
+    .Produces(StatusCodes.Status204NoContent)
+    .ProducesProblem(StatusCodes.Status403Forbidden)
+    .ProducesProblem(StatusCodes.Status404NotFound);
+```
+
+- 全 API に共通の応答(500、レート制限の 429)は `MapApiGroup`、認証の 401 は認証を掛けたグループ、管理者だけの 403 などはエンドポイントに付ける
+- 本文が ProblemDetails の応答は `ProducesProblem` / `ProducesValidationProblem` で書く。`UseStatusCodePages` を使わない構成で本文の無い 401 / 404 などは `Produces(StatusCodes.Status404NotFound)` で書き、グループには `WithMetadata(new ProducesResponseTypeMetadata(StatusCodes.Status401Unauthorized, typeof(void)))` で付ける(非汎用の `Produces` はグループに付かず、型を省くと文書に出ない)
+- ファイルの応答は `Produces<Stream>(StatusCodes.Status200OK, "application/octet-stream")` で書く(型を省くと content type が文書から落ちる)
+- 1 つのステータスには 1 つの形しか載らない(同じステータスに別の型を宣言すると後の宣言で上書きされる)
+- `WithRequestTimeout` は汎用でない型を返すので、`Produces<T>` より後ろに書く
+- `WithName` の名前はアプリ全体で一意にする。版ごとに別のハンドラを登録するときは名前に版を付ける
 
 公開は Development のみとし、UI が必要なら生成された仕様を NSwag の Swagger UI(`NSwag.AspNetCore`)から参照する。
 

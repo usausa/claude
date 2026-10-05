@@ -35,11 +35,30 @@ public static class DataEndpoints
             .RequireAuthorization()
             .AddEndpointFilter<CredentialEndpointFilter>();
 
-        group.MapGet("/", HandleListAsync);
-        group.MapGet("/{id:long}", HandleGetAsync);
-        group.MapPost("/", HandleCreateAsync);
-        group.MapPut("/{id:long}", HandleUpdateAsync);
-        group.MapDelete("/{id:long}", HandleDeleteAsync).RequireAuthorization(Policies.Administrator);
+        group.MapGet("/", HandleListAsync)
+            .WithName("DataList")
+            .Produces<DataListResponse>()
+            .ProducesValidationProblem();
+        group.MapGet("/{id:long}", HandleGetAsync)
+            .WithName("DataGet")
+            .Produces<DataGetResponse>()
+            .ProducesProblem(StatusCodes.Status404NotFound);
+        group.MapPost("/", HandleCreateAsync)
+            .WithName("DataCreate")
+            .Produces<DataCreateResponse>(StatusCodes.Status201Created)
+            .ProducesValidationProblem()
+            .ProducesProblem(StatusCodes.Status409Conflict);
+        group.MapPut("/{id:long}", HandleUpdateAsync)
+            .WithName("DataUpdate")
+            .Produces(StatusCodes.Status204NoContent)
+            .ProducesValidationProblem()
+            .ProducesProblem(StatusCodes.Status404NotFound);
+        group.MapDelete("/{id:long}", HandleDeleteAsync)
+            .RequireAuthorization(Policies.Administrator)
+            .WithName("DataDelete")
+            .Produces(StatusCodes.Status204NoContent)
+            .ProducesProblem(StatusCodes.Status403Forbidden)
+            .ProducesProblem(StatusCodes.Status404NotFound);
     }
 
     //--------------------------------------------------------------------------------
@@ -57,7 +76,7 @@ public static class DataEndpoints
             result.Total,
             result.Page,
             result.Size,
-            result.Items.Select(MapToResponse).ToList()));
+            result.Items.Select(MapToListEntry).ToList()));
     }
 
     private static async ValueTask<IResult> HandleGetAsync(
@@ -66,7 +85,7 @@ public static class DataEndpoints
     {
         var entity = await dataService.QueryAsync(id);
         return entity is not null
-            ? TypedResults.Ok(MapToResponse(entity))
+            ? TypedResults.Ok(MapToGetResponse(entity))
             : TypedResults.NotFound();
     }
 
@@ -84,7 +103,10 @@ public static class DataEndpoints
     // Mapper
     //--------------------------------------------------------------------------------
 
-    private static DataResponse MapToResponse(DataEntity entity) =>
+    private static DataListEntry MapToListEntry(DataEntity entity) =>
+        new(entity.Id, entity.Name, entity.Value, entity.CreatedAt);
+
+    private static DataGetResponse MapToGetResponse(DataEntity entity) =>
         new(entity.Id, entity.Name, entity.Value, entity.CreatedAt);
 }
 ```
@@ -93,6 +115,7 @@ public static class DataEndpoints
 - ハンドラは **static メソッド**とし、依存(Service / Usecase)・ルート値・クエリ・ボディをすべて引数で受ける。戻り値は `IResult`(`TypedResults` で生成)
 - ハンドラは入出力の詰め替えと HTTP ステータスへの変換のみを行い、**実処理は Service / Usecase へ委譲する**。Response への詰め替えは `Mapper` セクションの private メソッドに寄せる
 - 異常系はハンドラ内で例外を投げず `IResult` で応答する(web-6)
+- 各エンドポイントに `WithName`(機能名 + 操作名、web-3)と実際に返す応答の宣言(`Produces<T>` / `ProducesProblem` / `ProducesValidationProblem`、web-6)を付ける
 
 ### ApiRoutes(ルート定数)
 

@@ -27,7 +27,9 @@ private static IResult HandleGet(string id, FileStorageService storage)
 ```
 
 ## API 命名・構造の方針
-- リクエスト / レスポンスの型は `XxxRequest` / `YyyResponse` と命名する。
+- エンドポイント名 (`.WithName()` = OpenAPI の operationId) は **機能名 + 操作名** (`DataList` / `DataGet` / `AuthLogin`) とする。機能名は `<Feature>Endpoints` の `<Feature>`、操作名はハンドラ名 (`Handle<操作>Async`) の `<操作>`。
+- リクエスト / レスポンスの型は **機能名 + 操作名 + `Request` / `Response`** (`DataCreateRequest` / `DataGetResponse`) とする。中身が同じでも操作ごとに型を分け、一覧の要素は一覧の型 + `Entry` (`DataListEntry`) とする。
+- 受け付ける JSON は厳しくする (`NumberHandling.Strict` / `AllowDuplicateProperties = false` / `UnmappedMemberHandling.Disallow`)。項目名の大文字・小文字は区別しない (既定のまま)。
 - **レスポンスは必ず専用の `YyyResponse` を用意し、トップレベルで配列を返さない** (将来の項目追加・メタ情報付与のためオブジェクトでラップする)。
 - 一覧応答は件数上限を設け、`IAsyncEnumerable` の List 化境界で適用する。上限超過は黙って切らず、**業務エラーとして条件の絞り込みを促す**。全件出力 (CSV 等) は List 化せずストリームで返す。
 - ルートは `Application/ApiRoutes.cs` に定数化する。
@@ -44,8 +46,10 @@ private static IResult HandleGet(string id, FileStorageService storage)
 | 業務検証エラー (蓄積器の一括例外) | 400 `ValidationProblemDetails` (エラーを列挙) |
 | 一意制約違反 | 409 |
 | 外部サービス例外 | 502 |
+| `BadHttpRequestException` (読めない本文・本文の上限超過) | 例外のステータスのまま (400 / 413 など)。エラーとしてログに出さない |
 | その他 | 変換せず伝播 (500 = ProblemDetails) |
 
 ## OpenAPI (現状仕様の生成)
 - `Microsoft.AspNetCore.OpenApi` (.NET 10 内蔵): `AddOpenApi()` / `MapOpenApi()`。
-- 仕様書は手で書かず、`/reference` で `docs/reference/api/openapi.json` に生成する。エンドポイントに `.WithName()` / `.Produces<T>()` を付けて意味ある OpenAPI にする。
+- 仕様書は手で書かず、`/reference` で `docs/reference/api/openapi.json` に生成する。
+- 全エンドポイントに `.WithName()` と、実際に返す応答 (`.Produces<T>()` / `.ProducesProblem()` / `.ProducesValidationProblem()`) を付ける。全 API に共通の応答 (500、レート制限の 429) は `MapApiGroup`、認証の 401 は認証を掛けたグループ、管理者だけの 403 などはエンドポイントに付ける。
